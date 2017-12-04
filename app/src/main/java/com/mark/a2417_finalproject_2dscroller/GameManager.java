@@ -1,6 +1,7 @@
 package com.mark.a2417_finalproject_2dscroller;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -34,6 +35,15 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+    }
+
+    public void update() {
 
     }
 }
