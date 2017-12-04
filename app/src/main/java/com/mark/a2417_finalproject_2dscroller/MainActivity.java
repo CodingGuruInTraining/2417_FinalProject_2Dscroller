@@ -3,6 +3,7 @@ package com.mark.a2417_finalproject_2dscroller;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -16,7 +17,13 @@ public class MainActivity extends Activity {
         // Get rid of title bar on top.
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setContentView(R.layout.activity_main);
+        // Set constant values for screen size.
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        Constants.SCREEN_WIDTH = dm.widthPixels;
+        Constants.SCREEN_HEIGHT = dm.heightPixels;
+
+        setContentView(new GameManager(this));
     }
 }
 
