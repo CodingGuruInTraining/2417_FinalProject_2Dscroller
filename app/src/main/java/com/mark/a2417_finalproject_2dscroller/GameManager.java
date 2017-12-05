@@ -3,6 +3,7 @@ package com.mark.a2417_finalproject_2dscroller;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -16,6 +17,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameThread thread;
     private Player mPlayer;
+    private Point playerPoint;
 
 
     public GameManager(Context context) {
@@ -34,7 +36,8 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 Constants.PLAYER_START_Y,
                 Constants.PLAYER_START_X + Constants.PLAYER_WIDTH,
                 Constants.PLAYER_START_Y + Constants.PLAYER_HEIGHT));
-
+// TODO create Point
+        mPlayer.update(playerPoint);
         setFocusable(true);
     }
 
@@ -95,6 +98,9 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void update() {
-        mPlayer.update();
+
+// TODO find out where to move to and adjust Point object.
+
+        mPlayer.update(playerPoint);
     }
 }

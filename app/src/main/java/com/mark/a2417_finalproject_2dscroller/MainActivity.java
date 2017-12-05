@@ -49,4 +49,4 @@ public class MainActivity extends Activity {
 
 
 // References:
-    // game setup and processes - https://www.youtube.com/watch?v=OojQitoAEXs
+    // game setup and processes (whole series) - https://www.youtube.com/watch?v=OojQitoAEXs

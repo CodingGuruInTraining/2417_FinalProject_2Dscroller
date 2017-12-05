@@ -3,6 +3,7 @@ package com.mark.a2417_finalproject_2dscroller;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 
 /**
@@ -28,8 +29,11 @@ public class Player {
         canvas.drawRect(playerRect, paint);
     }
 
-    protected void update() {
-
+    protected void update(Point point) {
+        int width = playerRect.width() / 2;
+        int height = playerRect.height() / 2;
+        // Changes the position of the player based on where the Point is.
+        playerRect.set(point.x - width, point.y - height, point.x + width, point.y + height);
     }
 
     public Rect getPlayerRect() {
