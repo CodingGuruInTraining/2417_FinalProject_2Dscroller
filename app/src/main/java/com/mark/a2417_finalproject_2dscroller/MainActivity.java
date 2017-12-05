@@ -19,7 +19,6 @@ public class MainActivity extends Activity {
 
         setConstants();
 
-
         setContentView(new GameManager(this));
     }
 
@@ -50,3 +49,4 @@ public class MainActivity extends Activity {
 
 // References:
     // game setup and processes (whole series) - https://www.youtube.com/watch?v=OojQitoAEXs
+    // joystick - https://android-arsenal.com/details/1/2712#!package

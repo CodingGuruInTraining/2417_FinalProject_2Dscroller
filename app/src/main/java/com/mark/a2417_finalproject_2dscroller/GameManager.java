@@ -3,11 +3,14 @@ package com.mark.a2417_finalproject_2dscroller;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.erz.joysticklibrary.JoyStick;
 
 /**
  * Class to manage various parts of the game.
@@ -18,6 +21,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     private GameThread thread;
     private Player mPlayer;
     private Point playerPoint;
+    private JoyStick mJoyStick;
 
 
     public GameManager(Context context) {
@@ -37,7 +41,12 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 Constants.PLAYER_START_X + Constants.PLAYER_WIDTH,
                 Constants.PLAYER_START_Y + Constants.PLAYER_HEIGHT));
 // TODO create Point
-        mPlayer.update(playerPoint);
+//        mPlayer.update(playerPoint);
+
+
+//        mJoyStick = new JoyStick(context);
+//        setupJoystick();
+
         setFocusable(true);
     }
 
@@ -95,12 +104,42 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         canvas.drawColor(Color.WHITE);
         mPlayer.draw(canvas);
+//        setupJoystick();
+//        mJoyStick.draw(canvas);
+//        Paint paint = new Paint();
+//        paint.setColor(Color.BLUE);
+//        canvas.drawRect(mJoyStick.getLeft(), mJoyStick.getTop(), mJoyStick.getRight(), mJoyStick.getBottom(), paint);
     }
 
     public void update() {
 
 // TODO find out where to move to and adjust Point object.
 
-        mPlayer.update(playerPoint);
+//        mPlayer.update(playerPoint);
     }
+//
+//    private void setupJoystick() {
+//        mJoyStick.setPadColor(Color.BLACK);
+//        mJoyStick.bringToFront();
+////        mJoyStick.forceHasOverlappingRendering(true);
+//        mJoyStick.setLeft(500);
+//        mJoyStick.setTop(300);
+//        mJoyStick.setRight(800);
+//        mJoyStick.setBottom(600);
+//        mJoyStick.setMinimumWidth(300);
+//        mJoyStick.setMinimumHeight(300);
+//        mJoyStick.setButtonColor(Color.RED);
+//        mJoyStick.enableStayPut(true);
+////        mJoyStick.setForegroundGravity(300);
+//        mJoyStick.setX(500);
+//        mJoyStick.setY(300);
+//        mJoyStick.setType(JoyStick.TYPE_2_AXIS_LEFT_RIGHT);
+//
+//
+//
+//        mJoyStick.setActivated(true);
+//        mJoyStick.setEnabled(true);
+//// TODO try this if possible:
+////        http://www.akexorcist.com/2012/10/android-code-joystick-controller.html
+//    }
 }

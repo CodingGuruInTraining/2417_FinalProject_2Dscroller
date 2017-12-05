@@ -29,12 +29,12 @@ public class Player {
         canvas.drawRect(playerRect, paint);
     }
 
-    protected void update(Point point) {
-        int width = playerRect.width() / 2;
-        int height = playerRect.height() / 2;
-        // Changes the position of the player based on where the Point is.
-        playerRect.set(point.x - width, point.y - height, point.x + width, point.y + height);
-    }
+//    protected void update(Point point) {
+//        int width = playerRect.width() / 2;
+//        int height = playerRect.height() / 2;
+//        // Changes the position of the player based on where the Point is.
+//        playerRect.set(point.x - width, point.y - height, point.x + width, point.y + height);
+//    }
 
     public Rect getPlayerRect() {
         return playerRect;
