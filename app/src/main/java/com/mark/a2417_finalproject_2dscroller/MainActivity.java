@@ -51,3 +51,11 @@ public class MainActivity extends Activity {
     // game setup and processes (whole series) - https://www.youtube.com/watch?v=OojQitoAEXs
     // joystick - https://android-arsenal.com/details/1/2712#!package
     // drawing background image - https://stackoverflow.com/questions/5176441/drawable-image-on-a-canvas
+    // side scrolling background - https://www.youtube.com/watch?v=GPzTSpZwFoU&index=3&list=PLWweaDaGRHjvQlpLV0yZDmRKVBdy6rSlg
+
+
+
+
+
+    // Game Art:
+        // city night background - https://opengameart.org/content/city-background-repetitive-3

@@ -118,7 +118,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     public void update() {
 
 // TODO find out where to move to and adjust Point object.
-
+        mBackground.update();
 //        mPlayer.update(playerPoint);
     }
 //
@@ -143,7 +143,11 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 //
 //        mJoyStick.setActivated(true);
 //        mJoyStick.setEnabled(true);
-//// TODO try this if possible:
+
+
+
+//// TODO try these if possible:
 ////        http://www.akexorcist.com/2012/10/android-code-joystick-controller.html
+        //https://web.archive.org/web/20111229070701/http://www.java2s.com/Open-Source/Android/Widget/mobile-anarchy-widgets/com/MobileAnarchy/Android/Widgets/Joystick/JoystickView.java.htm
 //    }
 }
