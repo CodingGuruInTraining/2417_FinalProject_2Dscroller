@@ -17,6 +17,13 @@ public class MainActivity extends Activity {
         // Get rid of title bar on top.
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        setConstants();
+
+
+        setContentView(new GameManager(this));
+    }
+
+    private void setConstants() {
         // Set constant values for screen size.
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -27,7 +34,9 @@ public class MainActivity extends Activity {
         Constants.PLAYER_WIDTH = (dm.widthPixels / Constants.PLAYER_SIZE_RATIO);
         Constants.PLAYER_HEIGHT = (dm.heightPixels / Constants.PLAYER_SIZE_RATIO);
 
-        setContentView(new GameManager(this));
+        // Set player's start location.
+        Constants.PLAYER_START_X = (dm.widthPixels / Constants.PLAYER_START_RATIO);
+        Constants.PLAYER_START_Y = -(dm.heightPixels / Constants.PLAYER_START_RATIO);
     }
 }
 

@@ -44,6 +44,7 @@ public class GameThread extends Thread {
 
             // Attempt to synchronize with the game manager in case
             // there is a problem with multiple threads.
+// TODO may not need this; check later on.
             try {
                 mCanvas = this.mSurfaceHolder.lockCanvas();
                 synchronized (mSurfaceHolder) {
@@ -85,5 +86,9 @@ public class GameThread extends Thread {
                 totalTime = 0;
             }
         }
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 }
