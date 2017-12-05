@@ -13,6 +13,13 @@ import android.graphics.Rect;
 public class Player {
 
     private Rect playerRect;
+    private boolean isMoving;
+    private int movementSpeed = 10;     // TODO add to constants.
+    private int xPos;
+    private int yPos;
+    private int width;
+    private int height;
+//    private int ground;
 
 //    public Player(int width, int height) {
 //
@@ -20,6 +27,8 @@ public class Player {
 
     public Player(Rect rectangle) {
         playerRect = rectangle;
+        width = playerRect.width();
+        height = playerRect.height();
     }
 
     protected void draw(Canvas canvas) {
@@ -29,14 +38,25 @@ public class Player {
         canvas.drawRect(playerRect, paint);
     }
 
-//    protected void update(Point point) {
+    protected void update(Point point) {
 //        int width = playerRect.width() / 2;
 //        int height = playerRect.height() / 2;
-//        // Changes the position of the player based on where the Point is.
-//        playerRect.set(point.x - width, point.y - height, point.x + width, point.y + height);
-//    }
+
+//        if ((point.y + height/2) > )
+
+        // Changes the position of the player based on where the Point is.
+        playerRect.set(point.x - width/2,
+                point.y - height/2,
+                point.x + width/2,
+                point.y + height/2);
+    }
 
     public Rect getPlayerRect() {
         return playerRect;
     }
+
+    public boolean getIsMoving() { return isMoving; }
+
+    public void setIsMoving(boolean moving) { isMoving = moving; }
+//    public void setGround(int ground) { this.ground = ground; }
 }

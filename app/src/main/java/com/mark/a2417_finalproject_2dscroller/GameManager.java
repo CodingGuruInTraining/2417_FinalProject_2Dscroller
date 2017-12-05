@@ -24,6 +24,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     private Point playerPoint;
     private JoyStick mJoyStick;
     private Background mBackground;
+    private boolean playerMoving = false;
 
 
     public GameManager(Context context) {
@@ -44,8 +45,10 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 Constants.PLAYER_START_Y,
                 Constants.PLAYER_START_X + Constants.PLAYER_WIDTH,
                 Constants.PLAYER_START_Y + Constants.PLAYER_HEIGHT));
+
 // TODO create Point
-//        mPlayer.update(playerPoint);
+        playerPoint = new Point(mPlayer.getPlayerRect().left, mPlayer.getPlayerRect().top);
+        mPlayer.update(playerPoint);
 
 
 //        mJoyStick = new JoyStick(context);
@@ -88,14 +91,28 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         switch (event.getAction()) {
             // Press down.
             case MotionEvent.ACTION_DOWN:
+                if (mPlayer.getPlayerRect().contains((int) event.getX(), (int) event.getY())) {
+                    playerMoving = true;
+                }
                 break;
 
             // Moving finger across screen.
             case MotionEvent.ACTION_MOVE:
+                if (playerMoving) {
+                    // Check if player is at ground level.
+                    float y = event.getY();
+                    int height = mPlayer.getPlayerRect().height();
+                    int ground = mBackground.getGroundY();
+                    if ((y + height) > ground) {
+                        y = ground - height;
+                    }
+                    playerPoint.set((int) event.getX(), (int) y);
+                }
                 break;
 
             // Lifting finger off screen.
             case MotionEvent.ACTION_UP:
+                playerMoving = false;
                 break;
         }
 
@@ -119,7 +136,11 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
 // TODO find out where to move to and adjust Point object.
         mBackground.update();
-//        mPlayer.update(playerPoint);
+        mPlayer.setIsMoving(playerMoving);
+        if (playerMoving) {
+
+        }
+        mPlayer.update(playerPoint);
     }
 //
 //    private void setupJoystick() {
