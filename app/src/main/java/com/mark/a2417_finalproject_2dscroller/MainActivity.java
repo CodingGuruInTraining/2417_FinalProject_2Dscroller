@@ -50,3 +50,4 @@ public class MainActivity extends Activity {
 // References:
     // game setup and processes (whole series) - https://www.youtube.com/watch?v=OojQitoAEXs
     // joystick - https://android-arsenal.com/details/1/2712#!package
+    // drawing background image - https://stackoverflow.com/questions/5176441/drawable-image-on-a-canvas

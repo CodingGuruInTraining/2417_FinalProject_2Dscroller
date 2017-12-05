@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,6 +23,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     private Player mPlayer;
     private Point playerPoint;
     private JoyStick mJoyStick;
+    private Background mBackground;
 
 
     public GameManager(Context context) {
@@ -32,6 +34,8 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
         // Instantiate game thread.
         thread = new GameThread(getHolder(), this);
+
+        mBackground = new Background(context);
 
         // Uses constants to determine where player should start and
         // what its size will be. These are declared in MainActivity.
@@ -102,7 +106,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        canvas.drawColor(Color.WHITE);
+        mBackground.draw(canvas);
         mPlayer.draw(canvas);
 //        setupJoystick();
 //        mJoyStick.draw(canvas);
