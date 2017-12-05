@@ -31,4 +31,8 @@ public class Player {
     protected void update() {
 
     }
+
+    public Rect getPlayerRect() {
+        return playerRect;
+    }
 }

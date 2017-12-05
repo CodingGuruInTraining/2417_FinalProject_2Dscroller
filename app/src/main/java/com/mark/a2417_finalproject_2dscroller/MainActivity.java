@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
 
         // Set player's start location.
         Constants.PLAYER_START_X = (dm.widthPixels / Constants.PLAYER_START_RATIO);
-        Constants.PLAYER_START_Y = -(dm.heightPixels / Constants.PLAYER_START_RATIO);
+        Constants.PLAYER_START_Y = dm.heightPixels - (dm.heightPixels / Constants.PLAYER_START_RATIO);
     }
 }
 

@@ -2,7 +2,9 @@ package com.mark.a2417_finalproject_2dscroller;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -65,11 +67,34 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // Detect how the screen was touched and acts on it.
+        switch (event.getAction()) {
+            // Press down.
+            case MotionEvent.ACTION_DOWN:
+                break;
+
+            // Moving finger across screen.
+            case MotionEvent.ACTION_MOVE:
+                break;
+
+            // Lifting finger off screen.
+            case MotionEvent.ACTION_UP:
+                break;
+        }
+
+        // Always returning true detects every touch to screen.
+        return true;
+    }
+
+    @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+        canvas.drawColor(Color.WHITE);
+        mPlayer.draw(canvas);
     }
 
     public void update() {
-
+        mPlayer.update();
     }
 }
