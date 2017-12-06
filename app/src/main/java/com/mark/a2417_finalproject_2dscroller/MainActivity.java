@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
     // joystick - https://android-arsenal.com/details/1/2712#!package
     // drawing background image - https://stackoverflow.com/questions/5176441/drawable-image-on-a-canvas
     // side scrolling background - https://www.youtube.com/watch?v=GPzTSpZwFoU&index=3&list=PLWweaDaGRHjvQlpLV0yZDmRKVBdy6rSlg
+    // sprite animation - https://www.youtube.com/watch?v=WxkuDwJcq6M
 
 
 

@@ -73,7 +73,7 @@ public class GameThread extends Thread {
                 if (waitTime > 0) {
                     this.sleep(waitTime);
                 }
-            } catch (Exception error) {
+            } catch (InterruptedException error) {
                 error.printStackTrace();
             }
 
