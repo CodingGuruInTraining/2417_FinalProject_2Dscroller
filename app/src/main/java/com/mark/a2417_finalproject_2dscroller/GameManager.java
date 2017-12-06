@@ -44,7 +44,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 Constants.PLAYER_START_X,
                 Constants.PLAYER_START_Y,
                 Constants.PLAYER_START_X + Constants.PLAYER_WIDTH,
-                Constants.PLAYER_START_Y + Constants.PLAYER_HEIGHT));
+                Constants.PLAYER_START_Y + Constants.PLAYER_HEIGHT), context);
 
 // TODO create Point
         playerPoint = new Point(mPlayer.getPlayerRect().left, mPlayer.getPlayerRect().top);
