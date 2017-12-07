@@ -41,8 +41,8 @@ public class Player {
 
     protected void draw(Canvas canvas) {
 // TODO replace with sprite once mechanics are worked out.
-        Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
+//        Paint paint = new Paint();
+//        paint.setColor(Color.GREEN);
 //        canvas.drawRect(playerRect, paint);
         canvas.drawBitmap(playerImage, null, playerRect, null);
     }
@@ -68,4 +68,9 @@ public class Player {
 
     public void setIsMoving(boolean moving) { isMoving = moving; }
 //    public void setGround(int ground) { this.ground = ground; }
+
+
+    public int getMovementSpeed() {
+        return movementSpeed;
+    }
 }

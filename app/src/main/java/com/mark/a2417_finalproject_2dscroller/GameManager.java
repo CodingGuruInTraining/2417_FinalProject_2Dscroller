@@ -8,7 +8,9 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.erz.joysticklibrary.JoyStick;
 
@@ -26,11 +28,13 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     private JoyStick mJoyStick;
     private Background mBackground;
     private boolean playerMoving = false;
+    private RelativeLayout parent;
+    private Context mContext;
 
 
     public GameManager(Context context) {
         super(context);
-
+        this.mContext = context;
         // Set up interface to interact with SurfaceView.
         getHolder().addCallback(this);
 
@@ -51,20 +55,22 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         playerPoint = new Point(mPlayer.getPlayerRect().left, mPlayer.getPlayerRect().top);
         mPlayer.update(playerPoint);
 
-        final FrameLayout frameLayout = new FrameLayout(context);
+//        final FrameLayout frameLayout = new FrameLayout(context);
 
 //        mJoyStick = (JoyStick) findViewById(R.layout.joystickwidget);
-        mJoyStick = new JoyStick(context);
+//        mJoyStick = new JoyStick(context);
 
-        this.mJoyStick.findViewById(R.layout.joystickwidget); // addView(frameLayout);
-        frameLayout.addView(mJoyStick);
+//        this.mJoyStick.findViewById(R.layout.joystickwidget); // addView(frameLayout);
+//        frameLayout.addView(mJoyStick);
 
-        ArrayList frame = new ArrayList();
-        frame.add(frameLayout);
+//        ArrayList frame = new ArrayList();
+//        frame.add(frameLayout);
 
-        this.addTouchables(frame);
+//        this.addTouchables(frame);
 
-        setupJoystick();
+//        setupJoystick();
+
+// TODO set up enemies
 
         setFocusable(true);
     }
@@ -137,14 +143,20 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         mBackground.draw(canvas);
         mPlayer.draw(canvas);
-        setupJoystick();
-        mJoyStick.draw(canvas);
+//        setupJoystick();
+//        mJoyStick.draw(canvas);
+
 //        Paint paint = new Paint();
 //        paint.setColor(Color.BLUE);
 //        canvas.drawRect(mJoyStick.getLeft(), mJoyStick.getTop(), mJoyStick.getRight(), mJoyStick.getBottom(), paint);
     }
 
     public void update() {
+
+        if (parent == null) {
+            findParentLayout();
+            setupJoystick();
+        }
 
 // TODO find out where to move to and adjust Point object.
         mBackground.update();
@@ -153,34 +165,57 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
         }
         mPlayer.update(playerPoint);
+
+
     }
 //
     private void setupJoystick() {
-        mJoyStick.setPadColor(Color.WHITE);
-        mJoyStick.bringToFront();
-        mJoyStick.forceHasOverlappingRendering(true);
-        mJoyStick.setLeft(500);
-        mJoyStick.setTop(300);
-        mJoyStick.setRight(800);
-        mJoyStick.setBottom(600);
-        mJoyStick.setMinimumWidth(300);
-        mJoyStick.setMinimumHeight(300);
-        mJoyStick.setButtonColor(Color.RED);
-        mJoyStick.enableStayPut(true);
-        mJoyStick.setForegroundGravity(300);
-        mJoyStick.setX(500);
-        mJoyStick.setY(300);
-        mJoyStick.setType(JoyStick.TYPE_2_AXIS_LEFT_RIGHT);
 
-        mJoyStick.setButtonRadiusScale(5);
+        mJoyStick = (JoyStick) parent.getChildAt(1);
 
-        mJoyStick.setActivated(true);
-        mJoyStick.setEnabled(true);
+//        mJoyStick = new JoyStick(mContext);
+//        mJoyStick.bringToFront();
+//        parent.addView(mJoyStick);
+//        mJoyStick.bringToFront();
+//
+//        mJoyStick.setPadColor(Color.BLACK);
+//        mJoyStick.bringToFront();
+//        mJoyStick.forceHasOverlappingRendering(true);
+//        mJoyStick.setLeft(500);
+//        mJoyStick.setTop(300);
+//        mJoyStick.setRight(800);
+//        mJoyStick.setBottom(600);
+//        mJoyStick.setMinimumWidth(300);
+//        mJoyStick.setMinimumHeight(300);
+//        mJoyStick.setButtonColor(Color.RED);
+//        mJoyStick.enableStayPut(true);
+//        mJoyStick.setForegroundGravity(300);
+//        mJoyStick.setX(500);
+//        mJoyStick.setY(300);
+//        mJoyStick.setType(JoyStick.TYPE_2_AXIS_LEFT_RIGHT);
+//
+//        mJoyStick.setButtonRadiusScale(5);
+//
+//        mJoyStick.setActivated(true);
+//        mJoyStick.setEnabled(true);
 
 
 
 //// TODO try these if possible:
 ////        http://www.akexorcist.com/2012/10/android-code-joystick-controller.html
         //https://web.archive.org/web/20111229070701/http://www.java2s.com/Open-Source/Android/Widget/mobile-anarchy-widgets/com/MobileAnarchy/Android/Widgets/Joystick/JoystickView.java.htm
+    }
+
+
+
+    private void findParentLayout() {
+        ViewParent parent = this.getParent();
+//        RelativeLayout r;
+
+        if (parent != null) {
+            if (parent instanceof RelativeLayout) {
+                this.parent = (RelativeLayout) parent;
+            }
+        }
     }
 }

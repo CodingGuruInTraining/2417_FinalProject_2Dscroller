@@ -1,10 +1,14 @@
 package com.mark.a2417_finalproject_2dscroller;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
+
+import com.erz.joysticklibrary.JoyStick;
 
 public class MainActivity extends Activity {
 
@@ -18,7 +22,14 @@ public class MainActivity extends Activity {
 
         setConstants();
 
-        setContentView(new GameManager(this));
+        RelativeLayout relativeLayout = new RelativeLayout(this);
+        JoyStick joyStick = new JoyStick(this);
+//        joyStick.setPadColor(Color.BLACK);
+        GameManager gameManager = new GameManager(this);
+        relativeLayout.addView(gameManager);
+        relativeLayout.addView(joyStick);
+
+        setContentView(relativeLayout); //new GameManager(this));
     }
 
     private void setConstants() {
@@ -53,6 +64,7 @@ public class MainActivity extends Activity {
     // side scrolling background - https://www.youtube.com/watch?v=GPzTSpZwFoU&index=3&list=PLWweaDaGRHjvQlpLV0yZDmRKVBdy6rSlg
     // sprite animation - https://www.youtube.com/watch?v=WxkuDwJcq6M
     // enemy class setup - http://www.kilobolt.com/day-6-adding-enemies/unit-2-day-6-adding-enemies
+    // finding parent layout - https://stackoverflow.com/questions/17879743/get-parents-view-from-a-layout
 
 
 
