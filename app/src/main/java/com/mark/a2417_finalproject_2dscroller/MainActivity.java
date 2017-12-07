@@ -1,7 +1,6 @@
 package com.mark.a2417_finalproject_2dscroller;
 
 import android.app.Activity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Window;
@@ -53,6 +52,8 @@ public class MainActivity extends Activity {
     // drawing background image - https://stackoverflow.com/questions/5176441/drawable-image-on-a-canvas
     // side scrolling background - https://www.youtube.com/watch?v=GPzTSpZwFoU&index=3&list=PLWweaDaGRHjvQlpLV0yZDmRKVBdy6rSlg
     // sprite animation - https://www.youtube.com/watch?v=WxkuDwJcq6M
+    // enemy class setup - http://www.kilobolt.com/day-6-adding-enemies/unit-2-day-6-adding-enemies
+
 
 
 

@@ -3,15 +3,16 @@ package com.mark.a2417_finalproject_2dscroller;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.FrameLayout;
 
 import com.erz.joysticklibrary.JoyStick;
+
+import java.util.ArrayList;
 
 /**
  * Class to manage various parts of the game.
@@ -46,13 +47,24 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 Constants.PLAYER_START_X + Constants.PLAYER_WIDTH,
                 Constants.PLAYER_START_Y + Constants.PLAYER_HEIGHT), context);
 
-// TODO create Point
+
         playerPoint = new Point(mPlayer.getPlayerRect().left, mPlayer.getPlayerRect().top);
         mPlayer.update(playerPoint);
 
+        final FrameLayout frameLayout = new FrameLayout(context);
 
-//        mJoyStick = new JoyStick(context);
-//        setupJoystick();
+//        mJoyStick = (JoyStick) findViewById(R.layout.joystickwidget);
+        mJoyStick = new JoyStick(context);
+
+        this.mJoyStick.findViewById(R.layout.joystickwidget); // addView(frameLayout);
+        frameLayout.addView(mJoyStick);
+
+        ArrayList frame = new ArrayList();
+        frame.add(frameLayout);
+
+        this.addTouchables(frame);
+
+        setupJoystick();
 
         setFocusable(true);
     }
@@ -125,8 +137,8 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         mBackground.draw(canvas);
         mPlayer.draw(canvas);
-//        setupJoystick();
-//        mJoyStick.draw(canvas);
+        setupJoystick();
+        mJoyStick.draw(canvas);
 //        Paint paint = new Paint();
 //        paint.setColor(Color.BLUE);
 //        canvas.drawRect(mJoyStick.getLeft(), mJoyStick.getTop(), mJoyStick.getRight(), mJoyStick.getBottom(), paint);
@@ -143,32 +155,32 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         mPlayer.update(playerPoint);
     }
 //
-//    private void setupJoystick() {
-//        mJoyStick.setPadColor(Color.BLACK);
-//        mJoyStick.bringToFront();
-////        mJoyStick.forceHasOverlappingRendering(true);
-//        mJoyStick.setLeft(500);
-//        mJoyStick.setTop(300);
-//        mJoyStick.setRight(800);
-//        mJoyStick.setBottom(600);
-//        mJoyStick.setMinimumWidth(300);
-//        mJoyStick.setMinimumHeight(300);
-//        mJoyStick.setButtonColor(Color.RED);
-//        mJoyStick.enableStayPut(true);
-////        mJoyStick.setForegroundGravity(300);
-//        mJoyStick.setX(500);
-//        mJoyStick.setY(300);
-//        mJoyStick.setType(JoyStick.TYPE_2_AXIS_LEFT_RIGHT);
-//
-//
-//
-//        mJoyStick.setActivated(true);
-//        mJoyStick.setEnabled(true);
+    private void setupJoystick() {
+        mJoyStick.setPadColor(Color.WHITE);
+        mJoyStick.bringToFront();
+        mJoyStick.forceHasOverlappingRendering(true);
+        mJoyStick.setLeft(500);
+        mJoyStick.setTop(300);
+        mJoyStick.setRight(800);
+        mJoyStick.setBottom(600);
+        mJoyStick.setMinimumWidth(300);
+        mJoyStick.setMinimumHeight(300);
+        mJoyStick.setButtonColor(Color.RED);
+        mJoyStick.enableStayPut(true);
+        mJoyStick.setForegroundGravity(300);
+        mJoyStick.setX(500);
+        mJoyStick.setY(300);
+        mJoyStick.setType(JoyStick.TYPE_2_AXIS_LEFT_RIGHT);
+
+        mJoyStick.setButtonRadiusScale(5);
+
+        mJoyStick.setActivated(true);
+        mJoyStick.setEnabled(true);
 
 
 
 //// TODO try these if possible:
 ////        http://www.akexorcist.com/2012/10/android-code-joystick-controller.html
         //https://web.archive.org/web/20111229070701/http://www.java2s.com/Open-Source/Android/Widget/mobile-anarchy-widgets/com/MobileAnarchy/Android/Widgets/Joystick/JoystickView.java.htm
-//    }
+    }
 }
