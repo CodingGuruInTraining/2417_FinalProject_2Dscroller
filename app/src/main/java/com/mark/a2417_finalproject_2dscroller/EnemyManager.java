@@ -23,13 +23,14 @@ public class EnemyManager {
 
     public void draw(Canvas canvas) {
         for (Enemy enemy : enemies) {
-            if (enemy.isActive()) {
+//            if (enemy.isActive()) {
 
                 enemy.draw(canvas);
 
 
-            } else if (activeEnemies < 5) {
-                enemy.setActive(true);
+//            }
+             if (activeEnemies < 5) {
+//                enemy.setActive(true);
             }
             // else don't draw
         }
@@ -41,5 +42,13 @@ public class EnemyManager {
 
 
         }
+    }
+
+
+
+    private void createEnemy() {
+        // TODO pick 1/3 numbers to decide which side of screen to spaawn on.
+        // TODO set Enemy's direction AND location (static start point).
+        // TODO add to arraylist.
     }
 }
