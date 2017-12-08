@@ -3,7 +3,10 @@ package com.mark.a2417_finalproject_2dscroller;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
+import android.text.Layout;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
@@ -23,11 +26,13 @@ public class MainActivity extends Activity {
         setConstants();
 
         RelativeLayout relativeLayout = new RelativeLayout(this);
-        JoyStick joyStick = new JoyStick(this);
-//        joyStick.setPadColor(Color.BLACK);
+        JoyStick joyStick = setupJoystick();
         GameManager gameManager = new GameManager(this);
         relativeLayout.addView(gameManager);
+
         relativeLayout.addView(joyStick);
+//        joyStick.setX(100);
+//        joyStick.
 
         setContentView(relativeLayout); //new GameManager(this));
     }
@@ -46,6 +51,32 @@ public class MainActivity extends Activity {
         // Set player's start location.
         Constants.PLAYER_START_X = (dm.widthPixels / Constants.PLAYER_START_RATIO);
         Constants.PLAYER_START_Y = dm.heightPixels - (dm.heightPixels / Constants.PLAYER_START_RATIO);
+
+        // Set joystick's location and size.
+        Constants.STICK_X = (dm.widthPixels / Constants.STICK_X_RATIO);
+        Constants.STICK_Y = (int)(dm.heightPixels * Constants.STICK_Y_RATIO);
+        Constants.STICK_SIZE = (dm.widthPixels / Constants.STICK_SIZE_RATIO);
+    }
+
+    // Unable to modify joystick's properties from within SurfaceView.
+    private JoyStick setupJoystick() {
+
+        View view = new JoyStick(this);
+        view.setLayoutParams(new RelativeLayout.LayoutParams(Constants.STICK_SIZE, Constants.STICK_SIZE));
+
+        JoyStick joyStick = (JoyStick) view;
+
+        joyStick.setPadColor(Color.BLACK);
+        joyStick.setButtonColor(Color.GREEN);
+//        joyStick.setLeft(Constants.STICK_X);
+//        joyStick.setTop(Constants.STICK_Y);
+//        joyStick.setRight(Constants.STICK_SIZE + Constants.STICK_X);
+//        joyStick.setBottom(Constants.STICK_SIZE + Constants.STICK_Y);
+        joyStick.setX(Constants.STICK_X);
+        joyStick.setY(Constants.STICK_Y);
+//        joyStick.enableStayPut(true);
+
+        return joyStick;
     }
 }
 

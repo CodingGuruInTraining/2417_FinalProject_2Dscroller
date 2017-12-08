@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -172,6 +173,22 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     private void setupJoystick() {
 
         mJoyStick = (JoyStick) parent.getChildAt(1);
+        mJoyStick.setListener(new JoyStick.JoyStickListener() {
+            @Override
+            public void onMove(JoyStick joyStick, double angle, double power, int direction) {
+                Log.d("tag", "moved!");
+            }
+
+            @Override
+            public void onTap() {
+
+            }
+
+            @Override
+            public void onDoubleTap() {
+
+            }
+        });
 
 //        mJoyStick = new JoyStick(mContext);
 //        mJoyStick.bringToFront();
