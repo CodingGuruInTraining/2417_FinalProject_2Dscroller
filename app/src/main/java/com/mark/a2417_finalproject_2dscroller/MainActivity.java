@@ -91,11 +91,14 @@ public class MainActivity extends Activity {
 // References:
     // game setup and processes (whole series) - https://www.youtube.com/watch?v=OojQitoAEXs
     // joystick - https://android-arsenal.com/details/1/2712#!package
+                // https://github.com/erz05/JoyStick?utm_source=android-arsenal.com&utm_medium=referral&utm_campaign=2712
+                // https://github.com/minneapolis-edu/hello_joystick
     // drawing background image - https://stackoverflow.com/questions/5176441/drawable-image-on-a-canvas
     // side scrolling background - https://www.youtube.com/watch?v=GPzTSpZwFoU&index=3&list=PLWweaDaGRHjvQlpLV0yZDmRKVBdy6rSlg
     // sprite animation - https://www.youtube.com/watch?v=WxkuDwJcq6M
     // enemy class setup - http://www.kilobolt.com/day-6-adding-enemies/unit-2-day-6-adding-enemies
     // finding parent layout - https://stackoverflow.com/questions/17879743/get-parents-view-from-a-layout
+    // setting size of joystick - https://stackoverflow.com/questions/5042197/android-set-height-and-width-of-custom-view-programmatically
 
 
 

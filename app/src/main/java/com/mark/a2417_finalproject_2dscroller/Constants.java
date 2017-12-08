@@ -17,7 +17,7 @@ public class Constants {
     public static final int PLAYER_START_RATIO = 4;     // declaring player will start 1/4 of the screen's width from the left side.
     public static int STICK_X;
     public static int STICK_Y;
-    public static final int STICK_X_RATIO = 5;
+    public static final int STICK_X_RATIO = 10;
     public static final double STICK_Y_RATIO = 0.666666667;
     public static int STICK_SIZE;
     public static final int STICK_SIZE_RATIO = 6;
