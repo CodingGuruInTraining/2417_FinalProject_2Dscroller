@@ -17,7 +17,7 @@ public class Player {
 
     private Rect playerRect;
     private boolean isMoving;
-    private int movementSpeed = 10;     // TODO add to constants.
+    private int movementSpeed = 75;     // TODO add to constants.
     private int xPos;
     private int yPos;
     private int width;
@@ -35,6 +35,8 @@ public class Player {
         playerRect = rectangle;
         width = playerRect.width();
         height = playerRect.height();
+        xPos = playerRect.left;
+        yPos = playerRect.top;
         playerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle__000);
 //        playerImage = Bitmap.createScaledBitmap(playerImage, width)   <<< start of splitting sprite image page
     }
@@ -47,17 +49,26 @@ public class Player {
         canvas.drawBitmap(playerImage, null, playerRect, null);
     }
 
-    protected void update(Point point) {
+//    protected void update(Point point) {
+    protected void update(int direction) {
 //        int width = playerRect.width() / 2;
 //        int height = playerRect.height() / 2;
 
 //        if ((point.y + height/2) > )
 
         // Changes the position of the player based on where the Point is.
-        playerRect.set(point.x - width/2,
-                point.y - height/2,
-                point.x + width/2,
-                point.y + height/2);
+//        playerRect.set(point.x - width/2,
+//                point.y - height/2,
+//                point.x + width/2,
+//                point.y + height/2);
+        if (direction > 0) {
+            if (direction == 1) {
+                xPos -= movementSpeed;
+            } else if (direction == 2) {
+                xPos += movementSpeed;
+            }
+            playerRect.set(xPos, yPos, xPos + width, yPos + height);
+        }
     }
 
     public Rect getPlayerRect() {

@@ -3,12 +3,16 @@ package com.mark.a2417_finalproject_2dscroller;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -32,6 +36,11 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     private RelativeLayout parent;
     private Context mContext;
 
+    private double angle;
+    private double power;
+    public Rect mRect;
+    private int playerDirection = 0;
+
 
     public GameManager(Context context) {
         super(context);
@@ -54,7 +63,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
 
         playerPoint = new Point(mPlayer.getPlayerRect().left, mPlayer.getPlayerRect().top);
-        mPlayer.update(playerPoint);
+//        mPlayer.update(playerPoint);
 
 //        final FrameLayout frameLayout = new FrameLayout(context);
 
@@ -86,7 +95,10 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
-
+//        int w = Constants.SCREEN_WIDTH;
+//        int h = Constants.SCREEN_HEIGHT;
+//        int a = Constants.STICK_SIZE;
+//        Log.d("blah", width + "");
     }
 
     @Override
@@ -104,46 +116,50 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // Detect how the screen was touched and acts on it.
-        switch (event.getAction()) {
-            // Press down.
-            case MotionEvent.ACTION_DOWN:
-                if (mPlayer.getPlayerRect().contains((int) event.getX(), (int) event.getY())) {
-                    playerMoving = true;
-                }
-                break;
-
-            // Moving finger across screen.
-            case MotionEvent.ACTION_MOVE:
-                if (playerMoving) {
-                    // Check if player is at ground level.
-                    float y = event.getY();
-                    int height = mPlayer.getPlayerRect().height();
-                    int ground = mBackground.getGroundY();
-                    if ((y + height) > ground) {
-                        y = ground - height;
-                    }
-                    playerPoint.set((int) event.getX(), (int) y);
-                }
-                break;
-
-            // Lifting finger off screen.
-            case MotionEvent.ACTION_UP:
-                playerMoving = false;
-                break;
-        }
-
-        // Always returning true detects every touch to screen.
-        return true;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        // Detect how the screen was touched and acts on it.
+//        switch (event.getAction()) {
+//            // Press down.
+//            case MotionEvent.ACTION_DOWN:
+//                if (mPlayer.getPlayerRect().contains((int) event.getX(), (int) event.getY())) {
+//                    playerMoving = true;
+//                }
+//                break;
+//
+//            // Moving finger across screen.
+//            case MotionEvent.ACTION_MOVE:
+//                if (playerMoving) {
+//                    // Check if player is at ground level.
+//                    float y = event.getY();
+//                    int height = mPlayer.getPlayerRect().height();
+//                    int ground = mBackground.getGroundY();
+//                    if ((y + height) > ground) {
+//                        y = ground - height;
+//                    }
+//                    playerPoint.set((int) event.getX(), (int) y);
+//                }
+//                break;
+//
+//            // Lifting finger off screen.
+//            case MotionEvent.ACTION_UP:
+//                playerMoving = false;
+//                break;
+//        }
+//
+//        // Always returning true detects every touch to screen.
+//        return true;
+//    }
 
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
         mBackground.draw(canvas);
         mPlayer.draw(canvas);
+
+//        Paint paint = new Paint();
+//        paint.setColor(Color.BLUE);
+//        canvas.drawRect(mRect, paint);
 //        setupJoystick();
 //        mJoyStick.draw(canvas);
 
@@ -161,12 +177,12 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
 // TODO find out where to move to and adjust Point object.
         mBackground.update();
-        mPlayer.setIsMoving(playerMoving);
-        if (playerMoving) {
-
-        }
-        mPlayer.update(playerPoint);
-
+//        mPlayer.setIsMoving(playerMoving);
+//        if (playerMoving) {
+//
+//        }
+//        mPlayer.update(playerPoint);
+        mPlayer.update(playerDirection);
 
     }
 //
@@ -176,7 +192,62 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         mJoyStick.setListener(new JoyStick.JoyStickListener() {
             @Override
             public void onMove(JoyStick joyStick, double angle, double power, int direction) {
-                Log.d("tag", "moved!");
+
+                if (direction >= 0) {
+//                    int spd = mPlayer.getMovementSpeed();
+                    if (direction == 3 || direction == 4 || direction == 5) {
+                        playerDirection = 2;
+//                        playerPoint.set(mPlayer.getPlayerRect().left + spd, mPlayer.getPlayerRect().top);
+                    } else if (direction < 2 || direction == 7) {
+                        playerDirection = 1;
+//                        playerPoint.set(mPlayer.getPlayerRect().left = spd, mPlayer.getPlayerRect().top);
+                    }
+                } else {
+                    playerDirection = 0;
+//                    playerPoint.set(mPlayer.getPlayerRect().left, mPlayer.getPlayerRect().top);
+                }
+//                double posX = mPlayer.getPlayerRect().left;
+//                double posY = mPlayer.getPlayerRect().top;
+//
+//                posX -= Math.cos(angle) * power;
+//                posY += Math.sin(-angle) * power;
+//
+//                float a = mJoyStick.getX();
+//                float bs = Constants.STICK_X;
+//
+//                double radius = Constants.STICK_SIZE / 2;
+//
+//                if (posX > Constants.SCREEN_WIDTH - radius) {
+//                    posX = Constants.SCREEN_WIDTH - radius;
+//                }
+//
+//                if (posX < radius) {
+//                    posX = radius;
+//                }
+//
+//                if (posY > Constants.SCREEN_HEIGHT - radius) {
+//                    posY = Constants.SCREEN_HEIGHT - radius;
+//                }
+//
+//                if (posY < radius) {
+//                    posY = radius;
+//                }
+//
+////                playerPoint.set(Integer.parseInt(posX - radius + ""), Integer.parseInt(posY - radius + ""));
+//                int x = (int)(posX - radius);
+//                int y = (int)(posY - radius);
+//                int r = (int)(posX + radius);
+//                int b = (int)(posY + radius);
+//                Rect rect = new Rect(x, y, r, b);
+////                RectF rf = new RectF(posX - radius, posY - radius, posX + radius, posY + radius);
+////                playerPoint.set(x, y);
+//                mRect = rect;
+//
+//                double xx = ((mJoyStick.getX() + radius) + radius * Math.cos(Math.toRadians(angle)));
+//                double yy = ((mJoyStick.getY() + radius) + radius * Math.sin(Math.toRadians(angle)));
+//
+////                Log.d("tag", "xx = " + xx + " and yy = " + yy);
+//                Log.d("tag", "angle: " + angle + " power: " + power + " dir: " + direction);
             }
 
             @Override
