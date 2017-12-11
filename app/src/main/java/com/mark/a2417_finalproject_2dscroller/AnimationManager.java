@@ -43,5 +43,12 @@ public class AnimationManager {
         }
     }
 
-
+    public float getActiveWidth() {
+        for (int i = 0; i < animations.length; i++) {
+            if (animations[i].isPlaying()) {
+                return animations[i].getWidth();
+            }
+        }
+        return 0;
+    }
 }

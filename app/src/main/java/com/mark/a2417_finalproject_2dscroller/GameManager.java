@@ -101,7 +101,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
             retry = false;
         }
     }
-
+// TODO may need to use floating action button instead.
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // Detect how the screen was touched and acts on it.
@@ -111,6 +111,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 // Checks if action button was pressed.
                 if (attackButton.getButton().contains((int)event.getX(), (int)event.getY())) {
                     playerAttacking = true;
+                    Log.d("tag", "attack button pressed");
                 }
                 break;
 

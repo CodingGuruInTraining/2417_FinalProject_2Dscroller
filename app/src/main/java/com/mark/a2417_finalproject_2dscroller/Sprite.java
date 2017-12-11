@@ -158,4 +158,7 @@ public class Sprite {
 
 
     public boolean isPlaying() { return isPlaying; }
+    public float getWholeWidth() { return picWidth * 3; }
+    public float getWholeHeight() { return picHeight * 4; }
+    public float getWidth() { return picWidth; }
 }

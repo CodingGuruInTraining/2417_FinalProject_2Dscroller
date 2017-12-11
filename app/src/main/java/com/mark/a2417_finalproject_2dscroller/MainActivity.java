@@ -1,6 +1,7 @@
 package com.mark.a2417_finalproject_2dscroller;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
@@ -48,8 +49,8 @@ public class MainActivity extends Activity {
         Constants.PLAYER_HEIGHT = (dm.heightPixels / Constants.PLAYER_SIZE_RATIO);
 
         // Set player's start location.
-        Constants.PLAYER_START_X = (dm.widthPixels / Constants.PLAYER_START_RATIO);
-        Constants.PLAYER_START_Y = dm.heightPixels - (dm.heightPixels / Constants.PLAYER_START_RATIO);
+        Constants.PLAYER_START_X = (dm.widthPixels / Constants.PLAYER_START_X_RATIO);
+        Constants.PLAYER_START_Y = (int)(dm.heightPixels * Constants.PLAYER_START_Y_RATIO); // dm.heightPixels - (dm.heightPixels / Constants.PLAYER_START_RATIO);
 
         // Set joystick's location and size.
         Constants.STICK_X = (dm.widthPixels / Constants.STICK_X_RATIO);

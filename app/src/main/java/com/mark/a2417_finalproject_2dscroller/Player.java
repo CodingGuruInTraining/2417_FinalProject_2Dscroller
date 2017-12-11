@@ -31,32 +31,41 @@ public class Player {
 
     private AnimationManager mAnimationManager;
     private Sprite idle;
+    private Sprite attack;
+    private Context mContext;
 
     // Constructor.
     public Player(Rect rectangle, Context context) {
+        mContext = context;
         playerRect = rectangle;
         width = playerRect.width();
         height = playerRect.height();
         xPos = playerRect.left;
         yPos = playerRect.top;
-        playerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle__000);
+//        playerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle__000);
 //        playerImage = Bitmap.createScaledBitmap(playerImage, width)   <<< start of splitting sprite image page
 
-        Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle_sprite);
+//        Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle_sprite);
 //        Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.attack_sprite);
 
-        float scaler = sprite.getHeight() / height;
-        width = (int)(sprite.getWidth() / scaler);
+        idle = makeSprite(R.drawable.idle_sprite, 1f);
+        attack = makeSprite(R.drawable.attack_sprite, 1.5f);
 
+        float scaler = idle.getWholeHeight() / height;
+// TODO this width may be a problem since sprites are all different.
+// TODO maybe find the widest and use that's width.
+        width = (int)(idle.getWholeWidth() / scaler);
+
+        playerRect.right = xPos + width;
 //        Bitmap[] sprites = new Bitmap[10];
 //        for (int i = 0; i < 4; i++) {
 //            for (int j = 0; j < 3; j++) {
 //
 //            }
 //        }
-        idle = new Sprite(sprite, 2);
+//        idle = new Sprite(sprite, 2);
 
-        mAnimationManager = new AnimationManager(new Sprite[] {idle});
+        mAnimationManager = new AnimationManager(new Sprite[] {idle, attack});
     }
 
 
@@ -79,7 +88,8 @@ public class Player {
             } else if (direction == 2) {
                 xPos += movementSpeed;
             }
-            playerRect.set(xPos, yPos, xPos + width, yPos + height);
+            int currWidth = (int)mAnimationManager.getActiveWidth();
+            playerRect.set(xPos, yPos, xPos + currWidth, yPos + height);
         }
 // TODO will need to change once more sprites are added.
         mAnimationManager.playAnim(0);
@@ -92,6 +102,12 @@ public class Player {
         Log.d("tag", "attacking!");
     }
 
+
+    private Sprite makeSprite(int id, float time) {
+
+        Bitmap sprite = BitmapFactory.decodeResource(mContext.getResources(), id);
+        return new Sprite(sprite, time);
+    }
 
 
     // Getters and Setters.
