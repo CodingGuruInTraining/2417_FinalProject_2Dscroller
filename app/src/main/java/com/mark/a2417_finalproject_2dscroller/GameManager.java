@@ -40,6 +40,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     private double power;
     public Rect mRect;
     private int playerDirection = 0;
+    private EnemyManager mEnemyManager;
 
 
     public GameManager(Context context) {
@@ -62,7 +63,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 Constants.PLAYER_START_Y + Constants.PLAYER_HEIGHT), context);
 
 
-        playerPoint = new Point(mPlayer.getPlayerRect().left, mPlayer.getPlayerRect().top);
+//        playerPoint = new Point(mPlayer.getPlayerRect().left, mPlayer.getPlayerRect().top);
 //        mPlayer.update(playerPoint);
 
 //        final FrameLayout frameLayout = new FrameLayout(context);
@@ -81,6 +82,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 //        setupJoystick();
 
 // TODO set up enemies
+        mEnemyManager = new EnemyManager();
 
         setFocusable(true);
     }
@@ -156,6 +158,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
         mBackground.draw(canvas);
         mPlayer.draw(canvas);
+        mEnemyManager.draw(canvas);
 
 //        Paint paint = new Paint();
 //        paint.setColor(Color.BLUE);
@@ -183,7 +186,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 //        }
 //        mPlayer.update(playerPoint);
         mPlayer.update(playerDirection);
-
+        mEnemyManager.update();
     }
 //
     private void setupJoystick() {
