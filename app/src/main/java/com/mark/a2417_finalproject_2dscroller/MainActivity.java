@@ -44,13 +44,16 @@ public class MainActivity extends Activity {
         Constants.SCREEN_WIDTH = dm.widthPixels;
         Constants.SCREEN_HEIGHT = dm.heightPixels;
 
-// TODO may need to adjust ratio later.
+        // Set player's size based on screen size.
+        // Currently, width is overridden when determining sprite width.
         Constants.PLAYER_WIDTH = (dm.widthPixels / Constants.PLAYER_SIZE_RATIO);
         Constants.PLAYER_HEIGHT = (dm.heightPixels / Constants.PLAYER_SIZE_RATIO);
 
         // Set player's start location.
         Constants.PLAYER_START_X = (dm.widthPixels / Constants.PLAYER_START_X_RATIO);
-        Constants.PLAYER_START_Y = (int)(dm.heightPixels * Constants.PLAYER_START_Y_RATIO); // dm.heightPixels - (dm.heightPixels / Constants.PLAYER_START_RATIO);
+        Constants.PLAYER_START_Y = (int)(dm.heightPixels - (Constants.PLAYER_HEIGHT * Constants.PLAYER_START_Y_RATIO));
+                // (int)(dm.heightPixels * Constants.PLAYER_START_Y_RATIO);
+                // dm.heightPixels - (dm.heightPixels / Constants.PLAYER_START_RATIO);
 
         // Set joystick's location and size.
         Constants.STICK_X = (dm.widthPixels / Constants.STICK_X_RATIO);
