@@ -56,7 +56,7 @@ public class Enemy {
             xPos = 2 * -width;
             xSpeed = 100; // TODO Constant.
         }
-        yPos = 300; // TODO Constant.
+        yPos = 800; // TODO Constant.
 
 //        xPos = rectangle.left;
 //        yPos = rectangle.top;
@@ -90,8 +90,8 @@ public class Enemy {
 
 
 // TODO may need to change when adding bitmaps.
-    public boolean checkCollision(Player player) {
-        return Rect.intersects(rectangle, player.getPlayerRect());
+    protected boolean checkCollision(Rect player) {
+        return Rect.intersects(rectangle, player);
     }
 
 

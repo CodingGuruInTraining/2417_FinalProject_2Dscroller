@@ -1,6 +1,8 @@
 package com.mark.a2417_finalproject_2dscroller;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -60,13 +62,16 @@ public class EnemyManager {
     }
 
 
-    private void checkCollisions() {
+    public boolean checkCollisions(Rect player) {
         for (Enemy enemy : enemies) {
 // TODO check if player collided
 // TODO check if enemy is in range to attack
 // TODO check if in player's attack range and player is attacking
-
-
+            if (enemy.checkCollision(player)) {
+                enemies.remove(enemy);
+                return true;
+            }
         }
+        return false;
     }
 }

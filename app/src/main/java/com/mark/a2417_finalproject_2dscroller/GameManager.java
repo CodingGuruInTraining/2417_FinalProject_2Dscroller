@@ -187,6 +187,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 //        mPlayer.update(playerPoint);
         mPlayer.update(playerDirection);
         mEnemyManager.update();
+        boolean collision = mEnemyManager.checkCollisions(mPlayer.getPlayerRect());
     }
 //
     private void setupJoystick() {
