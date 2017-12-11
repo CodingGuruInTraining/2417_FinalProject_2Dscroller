@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.util.Log;
 
 /**
  * Class for Player objects.
@@ -50,7 +51,7 @@ public class Player {
     }
 
 //    protected void update(Point point) {
-    protected void update(int direction) {
+    protected void update(int direction, boolean attacking) {
 //        int width = playerRect.width() / 2;
 //        int height = playerRect.height() / 2;
 
@@ -69,6 +70,10 @@ public class Player {
             }
             playerRect.set(xPos, yPos, xPos + width, yPos + height);
         }
+    }
+
+    protected void attack() {
+        Log.d("tag", "attacking!");
     }
 
     public Rect getPlayerRect() {

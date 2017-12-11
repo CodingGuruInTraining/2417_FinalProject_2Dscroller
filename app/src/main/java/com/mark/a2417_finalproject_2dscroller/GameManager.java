@@ -42,6 +42,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     private int playerDirection = 0;
     private EnemyManager mEnemyManager;
     private ActionButtons attackButton;
+    private boolean playerAttacking = false;
 
 
     public GameManager(Context context) {
@@ -130,6 +131,9 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 //                if (mPlayer.getPlayerRect().contains((int) event.getX(), (int) event.getY())) {
 //                    playerMoving = true;
 //                }
+                if (attackButton.getButton().contains((int)event.getX(), (int)event.getY())) {
+                    playerAttacking = true;
+                }
                 break;
 
             // Moving finger across screen.
@@ -149,6 +153,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
             // Lifting finger off screen.
             case MotionEvent.ACTION_UP:
 //                playerMoving = false;
+                playerAttacking = false;
                 break;
         }
 
@@ -189,7 +194,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 //
 //        }
 //        mPlayer.update(playerPoint);
-        mPlayer.update(playerDirection);
+        mPlayer.update(playerDirection, playerAttacking);
         mEnemyManager.update();
         boolean collision = mEnemyManager.checkCollisions(mPlayer.getPlayerRect());
     }
