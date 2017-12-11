@@ -41,6 +41,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     public Rect mRect;
     private int playerDirection = 0;
     private EnemyManager mEnemyManager;
+    private ActionButtons attackButton;
 
 
     public GameManager(Context context) {
@@ -84,6 +85,8 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 // TODO set up enemies
         mEnemyManager = new EnemyManager();
 
+        attackButton = new ActionButtons();
+
         setFocusable(true);
     }
 
@@ -118,19 +121,19 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        // Detect how the screen was touched and acts on it.
-//        switch (event.getAction()) {
-//            // Press down.
-//            case MotionEvent.ACTION_DOWN:
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // Detect how the screen was touched and acts on it.
+        switch (event.getAction()) {
+            // Press down.
+            case MotionEvent.ACTION_DOWN:
 //                if (mPlayer.getPlayerRect().contains((int) event.getX(), (int) event.getY())) {
 //                    playerMoving = true;
 //                }
-//                break;
-//
-//            // Moving finger across screen.
-//            case MotionEvent.ACTION_MOVE:
+                break;
+
+            // Moving finger across screen.
+            case MotionEvent.ACTION_MOVE:
 //                if (playerMoving) {
 //                    // Check if player is at ground level.
 //                    float y = event.getY();
@@ -141,17 +144,17 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 //                    }
 //                    playerPoint.set((int) event.getX(), (int) y);
 //                }
-//                break;
-//
-//            // Lifting finger off screen.
-//            case MotionEvent.ACTION_UP:
+                break;
+
+            // Lifting finger off screen.
+            case MotionEvent.ACTION_UP:
 //                playerMoving = false;
-//                break;
-//        }
-//
-//        // Always returning true detects every touch to screen.
-//        return true;
-//    }
+                break;
+        }
+
+        // Always returning true detects every touch to screen.
+        return true;
+    }
 
     @Override
     public void draw(Canvas canvas) {
@@ -159,6 +162,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         mBackground.draw(canvas);
         mPlayer.draw(canvas);
         mEnemyManager.draw(canvas);
+        attackButton.draw(canvas);
 
 //        Paint paint = new Paint();
 //        paint.setColor(Color.BLUE);
