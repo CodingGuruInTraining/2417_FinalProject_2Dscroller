@@ -29,6 +29,8 @@ public class Player {
 // TODO probably need a class later to handle sprites so this is temporary.
     private Bitmap playerImage;
 
+    private AnimationManager mAnimationManager;
+    private Sprite idle;
 
     // Constructor.
     public Player(Rect rectangle, Context context) {
@@ -41,13 +43,20 @@ public class Player {
 //        playerImage = Bitmap.createScaledBitmap(playerImage, width)   <<< start of splitting sprite image page
 
         Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle_sprite);
+//        Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.attack_sprite);
 
-        Bitmap[] sprites = new Bitmap[10];
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 3; j++) {
+        float scaler = sprite.getHeight() / height;
+        width = (int)(sprite.getWidth() / scaler);
 
-            }
-        }
+//        Bitmap[] sprites = new Bitmap[10];
+//        for (int i = 0; i < 4; i++) {
+//            for (int j = 0; j < 3; j++) {
+//
+//            }
+//        }
+        idle = new Sprite(sprite, 2);
+
+        mAnimationManager = new AnimationManager(new Sprite[] {idle});
     }
 
 
@@ -57,7 +66,8 @@ public class Player {
 //        Paint paint = new Paint();
 //        paint.setColor(Color.GREEN);
 //        canvas.drawRect(playerRect, paint);
-        canvas.drawBitmap(playerImage, null, playerRect, null);
+//        canvas.drawBitmap(playerImage, null, playerRect, null);
+        mAnimationManager.draw(canvas, playerRect);
     }
 
 
@@ -71,6 +81,9 @@ public class Player {
             }
             playerRect.set(xPos, yPos, xPos + width, yPos + height);
         }
+// TODO will need to change once more sprites are added.
+        mAnimationManager.playAnim(0);
+        mAnimationManager.update();
     }
 
 
