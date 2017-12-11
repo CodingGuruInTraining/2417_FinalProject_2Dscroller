@@ -66,8 +66,8 @@ public class MainActivity extends Activity {
 
         JoyStick joyStick = (JoyStick) view;
 
-        joyStick.setPadColor(Color.BLACK);
-        joyStick.setButtonColor(Color.GREEN);
+        joyStick.setPadColor(Color.argb(80, 0, 0, 0));
+        joyStick.setButtonColor(Color.argb(80, 41, 163, 41));
 //        joyStick.setLeft(Constants.STICK_X);
 //        joyStick.setTop(Constants.STICK_Y);
 //        joyStick.setRight(Constants.STICK_SIZE + Constants.STICK_X);
