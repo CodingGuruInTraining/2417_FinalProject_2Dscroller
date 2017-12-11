@@ -31,10 +31,9 @@ public class MainActivity extends Activity {
         relativeLayout.addView(gameManager);
 
         relativeLayout.addView(joyStick);
-//        joyStick.setX(100);
-//        joyStick.
 
-        setContentView(relativeLayout); //new GameManager(this));
+
+        setContentView(relativeLayout);
     }
 
     private void setConstants() {
@@ -68,13 +67,8 @@ public class MainActivity extends Activity {
 
         joyStick.setPadColor(Color.argb(80, 0, 0, 0));
         joyStick.setButtonColor(Color.argb(80, 41, 163, 41));
-//        joyStick.setLeft(Constants.STICK_X);
-//        joyStick.setTop(Constants.STICK_Y);
-//        joyStick.setRight(Constants.STICK_SIZE + Constants.STICK_X);
-//        joyStick.setBottom(Constants.STICK_SIZE + Constants.STICK_Y);
         joyStick.setX(Constants.STICK_X);
         joyStick.setY(Constants.STICK_Y);
-//        joyStick.enableStayPut(true);
 
         return joyStick;
     }
@@ -108,3 +102,5 @@ public class MainActivity extends Activity {
     // Game Art:
         // city night background - https://opengameart.org/content/city-background-repetitive-3
         // ground - https://opengameart.org/content/blocks
+        // ninja character - https://opengameart.org/content/ninja-adventure-free-sprite
+

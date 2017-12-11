@@ -54,6 +54,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         // Instantiate game thread.
         thread = new GameThread(getHolder(), this);
 
+        // Instantiate background object.
         mBackground = new Background(context);
 
         // Uses constants to determine where player should start and
@@ -64,28 +65,10 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 Constants.PLAYER_START_X + Constants.PLAYER_WIDTH,
                 Constants.PLAYER_START_Y + Constants.PLAYER_HEIGHT), context);
 
-
-//        playerPoint = new Point(mPlayer.getPlayerRect().left, mPlayer.getPlayerRect().top);
-//        mPlayer.update(playerPoint);
-
-//        final FrameLayout frameLayout = new FrameLayout(context);
-
-//        mJoyStick = (JoyStick) findViewById(R.layout.joystickwidget);
-//        mJoyStick = new JoyStick(context);
-
-//        this.mJoyStick.findViewById(R.layout.joystickwidget); // addView(frameLayout);
-//        frameLayout.addView(mJoyStick);
-
-//        ArrayList frame = new ArrayList();
-//        frame.add(frameLayout);
-
-//        this.addTouchables(frame);
-
-//        setupJoystick();
-
-// TODO set up enemies
+        // Instantiates enemy manager object for handling all enemy objects.
         mEnemyManager = new EnemyManager();
 
+        // Instantiates action button object.
         attackButton = new ActionButtons();
 
         setFocusable(true);
@@ -101,15 +84,12 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
-//        int w = Constants.SCREEN_WIDTH;
-//        int h = Constants.SCREEN_HEIGHT;
-//        int a = Constants.STICK_SIZE;
-//        Log.d("blah", width + "");
+        // N/A
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
+        // Closes game thread.
         boolean retry = true;
         while (retry) {
             try {
@@ -128,9 +108,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         switch (event.getAction()) {
             // Press down.
             case MotionEvent.ACTION_DOWN:
-//                if (mPlayer.getPlayerRect().contains((int) event.getX(), (int) event.getY())) {
-//                    playerMoving = true;
-//                }
+                // Checks if action button was pressed.
                 if (attackButton.getButton().contains((int)event.getX(), (int)event.getY())) {
                     playerAttacking = true;
                 }
@@ -138,21 +116,12 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
             // Moving finger across screen.
             case MotionEvent.ACTION_MOVE:
-//                if (playerMoving) {
-//                    // Check if player is at ground level.
-//                    float y = event.getY();
-//                    int height = mPlayer.getPlayerRect().height();
-//                    int ground = mBackground.getGroundY();
-//                    if ((y + height) > ground) {
-//                        y = ground - height;
-//                    }
-//                    playerPoint.set((int) event.getX(), (int) y);
-//                }
+                // N/A
                 break;
 
             // Lifting finger off screen.
             case MotionEvent.ACTION_UP:
-//                playerMoving = false;
+                // Sets flag back to false.
                 playerAttacking = false;
                 break;
         }
@@ -161,157 +130,84 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
+
+    // Draw function that determines which objects should be drawn.
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
         mBackground.draw(canvas);
         mPlayer.draw(canvas);
         mEnemyManager.draw(canvas);
         attackButton.draw(canvas);
-
-//        Paint paint = new Paint();
-//        paint.setColor(Color.BLUE);
-//        canvas.drawRect(mRect, paint);
-//        setupJoystick();
-//        mJoyStick.draw(canvas);
-
-//        Paint paint = new Paint();
-//        paint.setColor(Color.BLUE);
-//        canvas.drawRect(mJoyStick.getLeft(), mJoyStick.getTop(), mJoyStick.getRight(), mJoyStick.getBottom(), paint);
     }
 
-    public void update() {
 
+    // Update function that determines which objects are updated.
+    public void update() {
+        // Checks if the SurfaceView's parent object has been captured in variable yet.
+        // Currently, this is only needed during the first update in order to create
+        // a reference to the joystick. Joystick widget seems to only work if added in
+        // a View/Layout at the start of the app (MainActivity).
         if (parent == null) {
             findParentLayout();
             setupJoystick();
         }
 
-// TODO find out where to move to and adjust Point object.
+// TODO find out where to move to and adjust.
         mBackground.update();
-//        mPlayer.setIsMoving(playerMoving);
-//        if (playerMoving) {
-//
-//        }
-//        mPlayer.update(playerPoint);
-        mPlayer.update(playerDirection, playerAttacking);
-        mEnemyManager.update();
-        boolean collision = mEnemyManager.checkCollisions(mPlayer.getPlayerRect());
-    }
-//
-    private void setupJoystick() {
 
+        // Calls player's update function and passes flags.
+        mPlayer.update(playerDirection, playerAttacking);
+
+        // Calls the enemy manager to run its updates.
+        mEnemyManager.update();
+
+        // Checks with the enemy manager whether any collisions occurred.
+        boolean collision = mEnemyManager.checkCollisions(mPlayer.getPlayerRect());
+// TODO do something with this perhaps.
+    }
+
+
+    // Function to create reference to joystick widget and add event listener.
+    // Only called once at start of app.
+    private void setupJoystick() {
+        // Gets reference assuming joystick is the 2nd child.
         mJoyStick = (JoyStick) parent.getChildAt(1);
+
+        // Set up listener.
         mJoyStick.setListener(new JoyStick.JoyStickListener() {
             @Override
             public void onMove(JoyStick joyStick, double angle, double power, int direction) {
-
-                if (direction >= 0) {
-//                    int spd = mPlayer.getMovementSpeed();
-                    if (direction == 3 || direction == 4 || direction == 5) {
+                // Checks if joystick is in motion.
+                // A flag variable is set depending on outcome.
+                if (direction >= 0) {   // NOT IDLE
+                    // Checks what direction the joystick is in at the moment.
+                    if (direction == 3 || direction == 4 || direction == 5) {   // RIGHT
                         playerDirection = 2;
-//                        playerPoint.set(mPlayer.getPlayerRect().left + spd, mPlayer.getPlayerRect().top);
-                    } else if (direction < 2 || direction == 7) {
+                    } else if (direction < 2 || direction == 7) {               // LEFT
                         playerDirection = 1;
-//                        playerPoint.set(mPlayer.getPlayerRect().left = spd, mPlayer.getPlayerRect().top);
                     }
                 } else {
-                    playerDirection = 0;
-//                    playerPoint.set(mPlayer.getPlayerRect().left, mPlayer.getPlayerRect().top);
+                    playerDirection = 0;    // IDLE
                 }
-//                double posX = mPlayer.getPlayerRect().left;
-//                double posY = mPlayer.getPlayerRect().top;
-//
-//                posX -= Math.cos(angle) * power;
-//                posY += Math.sin(-angle) * power;
-//
-//                float a = mJoyStick.getX();
-//                float bs = Constants.STICK_X;
-//
-//                double radius = Constants.STICK_SIZE / 2;
-//
-//                if (posX > Constants.SCREEN_WIDTH - radius) {
-//                    posX = Constants.SCREEN_WIDTH - radius;
-//                }
-//
-//                if (posX < radius) {
-//                    posX = radius;
-//                }
-//
-//                if (posY > Constants.SCREEN_HEIGHT - radius) {
-//                    posY = Constants.SCREEN_HEIGHT - radius;
-//                }
-//
-//                if (posY < radius) {
-//                    posY = radius;
-//                }
-//
-////                playerPoint.set(Integer.parseInt(posX - radius + ""), Integer.parseInt(posY - radius + ""));
-//                int x = (int)(posX - radius);
-//                int y = (int)(posY - radius);
-//                int r = (int)(posX + radius);
-//                int b = (int)(posY + radius);
-//                Rect rect = new Rect(x, y, r, b);
-////                RectF rf = new RectF(posX - radius, posY - radius, posX + radius, posY + radius);
-////                playerPoint.set(x, y);
-//                mRect = rect;
-//
-//                double xx = ((mJoyStick.getX() + radius) + radius * Math.cos(Math.toRadians(angle)));
-//                double yy = ((mJoyStick.getY() + radius) + radius * Math.sin(Math.toRadians(angle)));
-//
-////                Log.d("tag", "xx = " + xx + " and yy = " + yy);
-//                Log.d("tag", "angle: " + angle + " power: " + power + " dir: " + direction);
             }
-
             @Override
             public void onTap() {
-
+                // N/A
             }
-
             @Override
             public void onDoubleTap() {
-
+                // N/A
             }
         });
-
-//        mJoyStick = new JoyStick(mContext);
-//        mJoyStick.bringToFront();
-//        parent.addView(mJoyStick);
-//        mJoyStick.bringToFront();
-//
-//        mJoyStick.setPadColor(Color.BLACK);
-//        mJoyStick.bringToFront();
-//        mJoyStick.forceHasOverlappingRendering(true);
-//        mJoyStick.setLeft(500);
-//        mJoyStick.setTop(300);
-//        mJoyStick.setRight(800);
-//        mJoyStick.setBottom(600);
-//        mJoyStick.setMinimumWidth(300);
-//        mJoyStick.setMinimumHeight(300);
-//        mJoyStick.setButtonColor(Color.RED);
-//        mJoyStick.enableStayPut(true);
-//        mJoyStick.setForegroundGravity(300);
-//        mJoyStick.setX(500);
-//        mJoyStick.setY(300);
-//        mJoyStick.setType(JoyStick.TYPE_2_AXIS_LEFT_RIGHT);
-//
-//        mJoyStick.setButtonRadiusScale(5);
-//
-//        mJoyStick.setActivated(true);
-//        mJoyStick.setEnabled(true);
-
-
-
-//// TODO try these if possible:
-////        http://www.akexorcist.com/2012/10/android-code-joystick-controller.html
-        //https://web.archive.org/web/20111229070701/http://www.java2s.com/Open-Source/Android/Widget/mobile-anarchy-widgets/com/MobileAnarchy/Android/Widgets/Joystick/JoystickView.java.htm
     }
 
 
-
+    // Function to capture reference to SurfaceView's parent layout.
+    // Only called once at start of app.
     private void findParentLayout() {
         ViewParent parent = this.getParent();
-//        RelativeLayout r;
 
         if (parent != null) {
             if (parent instanceof RelativeLayout) {

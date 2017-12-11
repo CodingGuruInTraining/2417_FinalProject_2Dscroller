@@ -8,7 +8,7 @@ import java.util.Random;
 
 
 /**
- *
+ * Class for managing all the Enemy objects and their functions.
  */
 
 public class EnemyManager {
@@ -17,61 +17,62 @@ public class EnemyManager {
     private int activeEnemies;
 
 
-
+    // Constructor.
     public EnemyManager() {
         enemies = new ArrayList<Enemy>();
     }
 
 
 
+    // Function that draws each Enemy object.
     public void draw(Canvas canvas) {
         for (Enemy enemy : enemies) {
-//            if (enemy.isActive()) {
-
                 enemy.draw(canvas);
-
-
-//            }
-//             if (activeEnemies < 5) {
-////                enemy.setActive(true);
-//            }
-            // else don't draw
         }
     }
 
+
+    // Function that updates each Enemy object.
     public void update() {
+        // Checks if there are at least a certain number of active
+        // enemies in play.
+// TODO determine constant value for size check.
         if (enemies.size() < 3) {
             createEnemy();
         }
 
+        // Loops through array and calls each enemy's update function.
         for (Enemy enemy : enemies) {
             enemy.update();
         }
     }
 
 
-
-    private void createEnemy() {
-        // TODO pick 1/3 numbers to decide which side of screen to spaawn on.
-        // TODO set Enemy's direction AND location (static start point).
-        // TODO add to arraylist.
-        Random random = new Random();
-        int side = random.nextInt(3);
-        Enemy enemy = new Enemy(side);
-        enemies.add(enemy);
-    }
-
-
+    // Function to check whether an enemy has collided with the player.
+    // This is called from the GameManager.
     public boolean checkCollisions(Rect player) {
         for (Enemy enemy : enemies) {
-// TODO check if player collided
 // TODO check if enemy is in range to attack
 // TODO check if in player's attack range and player is attacking
             if (enemy.checkCollision(player)) {
+                // Removes enemy from array.
                 enemies.remove(enemy);
                 return true;
             }
         }
         return false;
+    }
+
+
+
+
+    // Function to create new Enemy object.
+    private void createEnemy() {
+        // A random number is picked to decide which side of screen to spawn on.
+        // There is a higher chance to spawn on the right side.
+        Random random = new Random();
+        int side = random.nextInt(3);
+        Enemy enemy = new Enemy(side);
+        enemies.add(enemy);
     }
 }

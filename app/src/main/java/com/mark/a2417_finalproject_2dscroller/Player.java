@@ -23,15 +23,12 @@ public class Player {
     private int yPos;
     private int width;
     private int height;
-//    private int ground;
 
 // TODO probably need a class later to handle sprites so this is temporary.
     private Bitmap playerImage;
 
-//    public Player(int width, int height) {
-//
-//    }
 
+    // Constructor.
     public Player(Rect rectangle, Context context) {
         playerRect = rectangle;
         width = playerRect.width();
@@ -42,6 +39,8 @@ public class Player {
 //        playerImage = Bitmap.createScaledBitmap(playerImage, width)   <<< start of splitting sprite image page
     }
 
+
+    // Draw function.
     protected void draw(Canvas canvas) {
 // TODO replace with sprite once mechanics are worked out.
 //        Paint paint = new Paint();
@@ -50,18 +49,9 @@ public class Player {
         canvas.drawBitmap(playerImage, null, playerRect, null);
     }
 
-//    protected void update(Point point) {
+
+    // Update function.
     protected void update(int direction, boolean attacking) {
-//        int width = playerRect.width() / 2;
-//        int height = playerRect.height() / 2;
-
-//        if ((point.y + height/2) > )
-
-        // Changes the position of the player based on where the Point is.
-//        playerRect.set(point.x - width/2,
-//                point.y - height/2,
-//                point.x + width/2,
-//                point.y + height/2);
         if (direction > 0) {
             if (direction == 1) {
                 xPos -= movementSpeed;
@@ -72,20 +62,20 @@ public class Player {
         }
     }
 
-    protected void attack() {
+
+    // Function to use attack sprite for engaging an enemy.
+    private void attack() {
         Log.d("tag", "attacking!");
     }
 
+
+
+    // Getters and Setters.
     public Rect getPlayerRect() {
         return playerRect;
     }
-
     public boolean getIsMoving() { return isMoving; }
-
     public void setIsMoving(boolean moving) { isMoving = moving; }
-//    public void setGround(int ground) { this.ground = ground; }
-
-
     public int getMovementSpeed() {
         return movementSpeed;
     }
