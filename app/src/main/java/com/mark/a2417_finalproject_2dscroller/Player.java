@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 /**
@@ -37,6 +39,15 @@ public class Player {
         yPos = playerRect.top;
         playerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle__000);
 //        playerImage = Bitmap.createScaledBitmap(playerImage, width)   <<< start of splitting sprite image page
+
+        Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle_sprite);
+
+        Bitmap[] sprites = new Bitmap[10];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 3; j++) {
+
+            }
+        }
     }
 
 
