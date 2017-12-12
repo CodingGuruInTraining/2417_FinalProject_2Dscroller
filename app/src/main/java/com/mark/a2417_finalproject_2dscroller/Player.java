@@ -48,8 +48,8 @@ public class Player {
 //        Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle_sprite);
 //        Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.attack_sprite);
 
-        idle = makeSprite(R.drawable.idle_sprite, 1f);
-        attack = makeSprite(R.drawable.attack_sprite, 1.5f);
+        idle = makeSprite(R.drawable.idle_sprite, 1f, 4, 3, 10);
+        attack = makeSprite(R.drawable.attack_sprite, 1.5f, 4, 3, 10);
 
         float scaler = idle.getWholeHeight() / height;
 // TODO this width may be a problem since sprites are all different.
@@ -103,10 +103,10 @@ public class Player {
     }
 
 
-    private Sprite makeSprite(int id, float time) {
+    private Sprite makeSprite(int id, float time, int rows, int cols, int count) {
 
         Bitmap sprite = BitmapFactory.decodeResource(mContext.getResources(), id);
-        return new Sprite(sprite, time);
+        return new Sprite(sprite, time, rows, cols, count);
     }
 
 

@@ -66,7 +66,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 Constants.PLAYER_START_Y + Constants.PLAYER_HEIGHT), context);
 
         // Instantiates enemy manager object for handling all enemy objects.
-        mEnemyManager = new EnemyManager();
+        mEnemyManager = new EnemyManager(mContext);
 
         // Instantiates action button object.
         attackButton = new ActionButtons();

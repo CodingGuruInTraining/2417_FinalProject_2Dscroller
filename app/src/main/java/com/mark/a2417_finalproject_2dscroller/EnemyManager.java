@@ -1,5 +1,8 @@
 package com.mark.a2417_finalproject_2dscroller;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
@@ -15,11 +18,23 @@ public class EnemyManager {
 
     private ArrayList<Enemy> enemies;
     private int activeEnemies;
+    private Context mContext;
+    private Sprite walk;
+    private Sprite attack;
+    private Sprite die;
+    private AnimationManager mAnimationManager;
 
 
     // Constructor.
-    public EnemyManager() {
+    public EnemyManager(Context context) {
         enemies = new ArrayList<Enemy>();
+        mContext = context;
+
+        walk = makeSprite(R.drawable.zombie_walk, 2f, 4, 3, 10);
+        attack = makeSprite(R.drawable.zombie_attack, 2f, 4, 2, 7);
+        die = makeSprite(R.drawable.zombie_die, 2f, 4, 2, 8);
+
+        mAnimationManager = new AnimationManager(new Sprite[] {walk, attack, die});
     }
 
 
@@ -74,5 +89,12 @@ public class EnemyManager {
         int side = random.nextInt(3);
         Enemy enemy = new Enemy(side);
         enemies.add(enemy);
+    }
+
+
+    private Sprite makeSprite(int id, float time, int rows, int cols, int count) {
+
+        Bitmap sprite = BitmapFactory.decodeResource(mContext.getResources(), id);
+        return new Sprite(sprite, time, rows, cols, count);
     }
 }

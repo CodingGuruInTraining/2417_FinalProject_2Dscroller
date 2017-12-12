@@ -11,21 +11,6 @@ import android.graphics.Rect;
 
 public class Sprite {
 
-    private int x;
-    private int y;
-    private int xSpd;
-    private int ySpd;
-    private int width;
-    private int height;
-
-    private Bitmap mBitmap;
-    private Context mContext;
-
-    private int currentFrame = 0;
-    private int direction = 0;      // left or right for me; all 4 directions for tutorial
-
-
-    private Bitmap[] frames;
     private int frameIndex;
     private float frameTime;
     private long lastFrame;
@@ -37,34 +22,17 @@ public class Sprite {
     private float picWidth;
     private float picHeight;
 
+    private int rows;
+    private int cols;
+    private int count;
 
-//    public Sprite(Context context, Bitmap bitmap) {
-//        this.mContext = context;
-//        this.mBitmap = bitmap;
-//        // divide by number of rows
-//        width = mBitmap.getWidth();
-//        // divide by number of columns
-//        height = mBitmap.getHeight();
-//        x = 0;
-//        y = 0;
-//        xSpd = 5;
-//        ySpd = 0;
-//    }
-
-
-//    public Sprite(Bitmap[] sprites, float animTime) {
-//        this.frames = sprites;
-//        frameIndex = 0;
-//
-//        // Evenly space the time between frames.
-//        frameTime = animTime / frames.length;
-//
-//        lastFrame = System.currentTimeMillis();
-//    }
 
     // TODO pass number of rows and columns to constructor
-    public Sprite(Bitmap sprite, float animTime) {
+    public Sprite(Bitmap sprite, float animTime, int rows, int cols, int count) {
         spriteSheet = sprite;
+        this.rows = rows;
+        this.cols = cols;
+        this.count = count;
         frameIndex = 0;
         rowIndex = 0;
         colIndex = 0;
@@ -74,11 +42,12 @@ public class Sprite {
         int scaler = sprite.getHeight() / (int)picHeight;
         picWidth = sprite.getWidth() / scaler;
 
-        spriteSheet = Bitmap.createScaledBitmap(spriteSheet, (int)(picWidth * 3), (int)(picHeight * 4), true);
+        spriteSheet = Bitmap.createScaledBitmap(spriteSheet, (int)(picWidth * this.cols),
+                (int)(picHeight * this.rows), true);
 
 // TODO get height and width of spritesheet broken up
 
-        frameTime = animTime / 10;
+        frameTime = animTime / this.count;
         lastFrame = System.currentTimeMillis();
     }
 
@@ -111,27 +80,28 @@ public class Sprite {
 
         if (System.currentTimeMillis() - lastFrame > frameTime * 1000) {
             frameIndex++;
-            frameIndex = frameIndex >= 10 ? 0 : frameIndex;
-            lastFrame = System.currentTimeMillis();
-            colIndex++;
-            if (colIndex > 2) {
-                colIndex = 0;
-                rowIndex++;
-                if (rowIndex > 3) {
-                    rowIndex = 0;
-                }
-            } else if (colIndex == 1 && rowIndex == 3) {
+            if (frameIndex >= count) {
+                frameIndex = 0;
                 colIndex = 0;
                 rowIndex = 0;
+            } else {
+                colIndex++;
+                if (colIndex >= cols) {
+                    colIndex = 0;
+                    rowIndex++;
+                    if (rowIndex >= rows) {
+                        rowIndex = 0;
+                    }
+                }
             }
+//            frameIndex = frameIndex >= count ? 0 : frameIndex;
+            lastFrame = System.currentTimeMillis();
+
+//            else if (frameIndex) // (colIndex == 1 && rowIndex == 3) {
+//                colIndex = 0;
+//                rowIndex = 0;
+//            }
         }
-
-
-//        // if facing this, change speed
-//
-//        currentFrame = ++currentFrame % 4;  // number of columns is 4 here
-//        x += xSpd;
-//        y += ySpd;
     }
 
 
@@ -147,18 +117,10 @@ public class Sprite {
         isPlaying = false;
     }
 
-    private void scaleRect(Rect rect) {
-        float widthHeightRatio = (float)(frames[frameIndex].getWidth()/frames[frameIndex].getHeight());
-        if (rect.width() > rect.height()) {
-            rect.left = rect.right - (int)(rect.height() * widthHeightRatio);
-        } else {
-            rect.top = rect.bottom - (int)(rect.width() * (1/widthHeightRatio));
-        }
-    }
 
 
     public boolean isPlaying() { return isPlaying; }
-    public float getWholeWidth() { return picWidth * 3; }
-    public float getWholeHeight() { return picHeight * 4; }
+    public float getWholeWidth() { return picWidth * cols; }
+    public float getWholeHeight() { return picHeight * rows; }
     public float getWidth() { return picWidth; }
 }
