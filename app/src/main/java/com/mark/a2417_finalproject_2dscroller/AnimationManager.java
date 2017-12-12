@@ -17,16 +17,18 @@ public class AnimationManager {
     }
 
     public void playAnim(int index) {
-        for (int i = 0; i < animations.length; i++) {
-            if (i == index) {
-                if (!animations[index].isPlaying()) {
-                    animations[i].play();
+//        if (!animations[animIndex].isPlaying()) {
+            for (int i = 0; i < animations.length; i++) {
+                if (i == index) {
+                    if (!animations[index].isPlaying()) {
+                        animations[i].play();
+                    }
+                } else {
+                    animations[i].stop();
                 }
-            } else {
-                animations[i].stop();
             }
-        }
-        animIndex = index;
+            animIndex = index;
+//        }
     }
 
 
@@ -51,4 +53,6 @@ public class AnimationManager {
         }
         return 0;
     }
+
+    public boolean isDone(int index) { return animations[index].isDone(); }
 }

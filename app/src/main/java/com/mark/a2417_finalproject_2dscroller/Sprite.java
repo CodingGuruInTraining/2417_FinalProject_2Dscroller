@@ -26,6 +26,8 @@ public class Sprite {
     private int cols;
     private int count;
 
+    private boolean done;
+
 
     public Sprite(Bitmap sprite, float animTime, int rows, int cols, int count) {
         spriteSheet = sprite;
@@ -81,6 +83,8 @@ public class Sprite {
                 frameIndex = 0;
                 colIndex = 0;
                 rowIndex = 0;
+                done = true;
+//                isPlaying = false;
             } else {
                 colIndex++;
                 if (colIndex >= cols) {
@@ -108,6 +112,7 @@ public class Sprite {
         rowIndex = 0;
         colIndex = 0;
         lastFrame = System.currentTimeMillis();
+        done = false;
     }
 
     public void stop() {
@@ -120,4 +125,5 @@ public class Sprite {
     public float getWholeWidth() { return picWidth * cols; }
     public float getWholeHeight() { return picHeight * rows; }
     public float getWidth() { return picWidth; }
+    public boolean isDone() { return done; }
 }

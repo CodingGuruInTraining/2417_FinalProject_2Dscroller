@@ -71,8 +71,8 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         // Instantiates enemy manager object for handling all enemy objects.
         mEnemyManager = new EnemyManager(mContext);
 
-//        // Instantiates action button object.
-//        attackButton = new ActionButtons();
+        // Instantiates action button object.
+        attackButton = new ActionButtons();
 
         setFocusable(true);
     }
@@ -126,9 +126,15 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
             // Lifting finger off screen.
             case MotionEvent.ACTION_UP:
                 // Sets flag back to false.
-                playerAttacking = false;
+//                playerAttacking = false;
                 break;
+
+            case MotionEvent.ACTION_BUTTON_PRESS:
+                Log.d("tag", "action button press motion");
+                break;
+
         }
+        Log.d("tag", MotionEvent.actionToString(event.getAction()) + "   action string");
         Log.d("tag", "attack button pressed");
         // Always returning true detects every touch to screen.
         return true;
@@ -164,6 +170,9 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
         // Calls player's update function and passes flags.
         mPlayer.update(playerDirection, playerAttacking);
+//        if (mPlayer.getState() == 0) {
+//            playerAttacking = false;
+//        }
 
         // Calls the enemy manager to run its updates.
         mEnemyManager.update();
@@ -171,6 +180,10 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         // Checks with the enemy manager whether any collisions occurred.
         boolean collision = mEnemyManager.checkCollisions(mPlayer.getPlayerRect());
 // TODO do something with this perhaps.
+
+
+//        setFocusable(true);
+        parent.getChildAt(1).setFocusable(true);
     }
 
 

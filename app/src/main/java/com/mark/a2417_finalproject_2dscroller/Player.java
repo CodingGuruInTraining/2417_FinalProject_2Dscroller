@@ -32,7 +32,10 @@ public class Player {
     private AnimationManager mAnimationManager;
     private Sprite idle;
     private Sprite attack;
+    private Sprite walk;
     private Context mContext;
+
+    private int state = 0;
 
     // Constructor.
     public Player(Rect rectangle, Context context) {
@@ -49,7 +52,8 @@ public class Player {
 //        Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.attack_sprite);
 
         idle = makeSprite(R.drawable.idle_sprite, 1f, 4, 3, 10);
-        attack = makeSprite(R.drawable.attack_sprite, 1.5f, 4, 3, 10);
+        attack = makeSprite(R.drawable.attack_sprite, 0.5f, 4, 3, 10);
+        walk = makeSprite(R.drawable.run_sprite, 1f, 4, 3, 10);
 
         float scaler = idle.getWholeHeight() / height;
 // TODO this width may be a problem since sprites are all different.
@@ -65,7 +69,7 @@ public class Player {
 //        }
 //        idle = new Sprite(sprite, 2);
 
-        mAnimationManager = new AnimationManager(new Sprite[] {idle, attack});
+        mAnimationManager = new AnimationManager(new Sprite[] {idle, attack, walk});
     }
 
 
@@ -91,9 +95,23 @@ public class Player {
             int currWidth = (int)mAnimationManager.getActiveWidth();
             playerRect.set(xPos, yPos, xPos + currWidth, yPos + height);
         }
+
+        if (attacking) {
+            if (!mAnimationManager.isDone(1)) {
+//            if (!attack.isPlaying()) {
+//                state = 0;
+//            } else {
+                state = 1;
+//            }
+            } else {
+                state = 0;
+            }
+        }
+
 // TODO will need to change once more sprites are added.
-        mAnimationManager.playAnim(0);
+        mAnimationManager.playAnim(state);
         mAnimationManager.update();
+
     }
 
 
@@ -119,4 +137,5 @@ public class Player {
     public int getMovementSpeed() {
         return movementSpeed;
     }
+    public int getState() { return state; }
 }
