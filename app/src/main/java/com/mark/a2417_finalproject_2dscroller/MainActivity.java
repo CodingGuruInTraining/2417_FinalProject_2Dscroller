@@ -97,7 +97,7 @@ public class MainActivity extends Activity {
     // enemy class setup - http://www.kilobolt.com/day-6-adding-enemies/unit-2-day-6-adding-enemies
     // finding parent layout - https://stackoverflow.com/questions/17879743/get-parents-view-from-a-layout
     // setting size of joystick - https://stackoverflow.com/questions/5042197/android-set-height-and-width-of-custom-view-programmatically
-
+    // combining sprites into sheet - css.spritegen.com
 
 
 

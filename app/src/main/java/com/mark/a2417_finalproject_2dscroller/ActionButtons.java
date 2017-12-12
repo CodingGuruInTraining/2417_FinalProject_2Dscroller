@@ -27,10 +27,11 @@ public class ActionButtons {
 
         // Constant values of button's size and position.
         // Values won't change during game.
-        xPos = 1300;
-        yPos = 800;
-        width = 200;
-        height = 200;
+        width = Constants.SCREEN_WIDTH / Constants.ACTION_X_RATIO;
+        height = Constants.SCREEN_WIDTH / Constants.ACTION_X_RATIO;
+        xPos = Constants.SCREEN_WIDTH - (Constants.SCREEN_WIDTH / Constants.STICK_X_RATIO) - width;
+        yPos = (int) (Constants.SCREEN_HEIGHT - height * Constants.ACTION_Y_RATIO);
+
         radius = width / 2;
 
         // Creates rectangle of button to be used in onTouch event.
