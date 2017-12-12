@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 
 import com.erz.joysticklibrary.JoyStick;
 
+import java.util.ArrayList;
+
 public class MainActivity extends Activity {
 
     @Override
@@ -32,12 +34,16 @@ public class MainActivity extends Activity {
         GameManager gameManager = new GameManager(this);
 
 
-        RelativeLayout button = setupButton();
+        final RelativeLayout button = setupButton();
 
+        ArrayList<View> arrayList = new ArrayList<>();
+        arrayList.add(button);
+
+        gameManager.addTouchables(arrayList);
 
         relativeLayout.addView(gameManager);
         relativeLayout.addView(joyStick);
-        relativeLayout.addView(button);
+//        relativeLayout.addView(button);
 
         setContentView(relativeLayout);
     }

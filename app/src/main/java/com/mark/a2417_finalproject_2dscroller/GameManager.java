@@ -12,8 +12,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -41,7 +43,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     public Rect mRect;
     private int playerDirection = 0;
     private EnemyManager mEnemyManager;
-    private ActionButtons attackButton;
+    private RelativeLayout attackButton;
     private boolean playerAttacking = false;
 
 
@@ -68,8 +70,8 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         // Instantiates enemy manager object for handling all enemy objects.
         mEnemyManager = new EnemyManager(mContext);
 
-        // Instantiates action button object.
-        attackButton = new ActionButtons();
+//        // Instantiates action button object.
+//        attackButton = new ActionButtons();
 
         setFocusable(true);
     }
@@ -105,28 +107,28 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // Detect how the screen was touched and acts on it.
-        switch (event.getAction()) {
-            // Press down.
-            case MotionEvent.ACTION_DOWN:
-                // Checks if action button was pressed.
-                if (attackButton.getButton().contains((int)event.getX(), (int)event.getY())) {
-                    playerAttacking = true;
-                    Log.d("tag", "attack button pressed");
-                }
-                break;
-
-            // Moving finger across screen.
-            case MotionEvent.ACTION_MOVE:
-                // N/A
-                break;
-
-            // Lifting finger off screen.
-            case MotionEvent.ACTION_UP:
-                // Sets flag back to false.
-                playerAttacking = false;
-                break;
-        }
-
+//        switch (event.getAction()) {
+//            // Press down.
+//            case MotionEvent.ACTION_DOWN:
+//                // Checks if action button was pressed.
+//                if (attackButton.getButton().contains((int)event.getX(), (int)event.getY())) {
+//                    playerAttacking = true;
+//                    Log.d("tag", "attack button pressed");
+//                }
+//                break;
+//
+//            // Moving finger across screen.
+//            case MotionEvent.ACTION_MOVE:
+//                // N/A
+//                break;
+//
+//            // Lifting finger off screen.
+//            case MotionEvent.ACTION_UP:
+//                // Sets flag back to false.
+//                playerAttacking = false;
+//                break;
+//        }
+        Log.d("tag", "attack button pressed");
         // Always returning true detects every touch to screen.
         return true;
     }
@@ -153,6 +155,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         if (parent == null) {
             findParentLayout();
             setupJoystick();
+            setupAttackButton();
         }
 
 // TODO find out where to move to and adjust.
@@ -200,6 +203,35 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
             @Override
             public void onDoubleTap() {
                 // N/A
+            }
+        });
+    }
+
+
+    private void setupAttackButton() {
+
+        ArrayList<View> arrayList = this.getTouchables();
+        attackButton = (RelativeLayout) arrayList.get(0);
+
+        attackButton = (RelativeLayout) parent.getChildAt(2);
+
+        attackButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("tag", "button clicked");
+            }
+        });
+
+        attackButton.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch (event.getAction()) {
+
+                }
+                Log.d("tag", "button touched");
+
+                return true;
             }
         });
     }
