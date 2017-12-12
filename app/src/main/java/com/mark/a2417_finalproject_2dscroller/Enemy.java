@@ -45,8 +45,10 @@ public class Enemy {
     public Enemy(int side, Sprite[] sprites) {   // Context context) {
         direction = side;
 //        rectangle = rect;
-        width = 300;  //rectangle.width();
-        height = 400; // rectangle.height();
+        height = Constants.PLAYER_HEIGHT; // 400; // rectangle.height();
+        float scaler = sprites[0].getWholeHeight() / height;
+        width = (int)(sprites[0].getWholeWidth() / scaler); // 300;  //rectangle.width();
+
         painter = new Paint();
         painter.setColor(Color.RED);
 
@@ -57,7 +59,7 @@ public class Enemy {
             xPos = 2 * -width;
             xSpeed = 100; // TODO Constant.
         }
-        yPos = 800; // TODO Constant.
+        yPos = Constants.PLAYER_START_Y; // 800; // TODO Constant.
 
 //        xPos = rectangle.left;
 //        yPos = rectangle.top;
