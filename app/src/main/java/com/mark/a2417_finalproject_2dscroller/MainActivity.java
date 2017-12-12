@@ -3,6 +3,7 @@ package com.mark.a2417_finalproject_2dscroller;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.text.Layout;
@@ -29,10 +30,14 @@ public class MainActivity extends Activity {
         RelativeLayout relativeLayout = new RelativeLayout(this);
         JoyStick joyStick = setupJoystick();
         GameManager gameManager = new GameManager(this);
+
+
+        RelativeLayout button = setupButton();
+
+
         relativeLayout.addView(gameManager);
-
         relativeLayout.addView(joyStick);
-
+        relativeLayout.addView(button);
 
         setContentView(relativeLayout);
     }
@@ -76,6 +81,24 @@ public class MainActivity extends Activity {
 
         return joyStick;
     }
+
+    private RelativeLayout setupButton() {
+        GradientDrawable pic = new GradientDrawable();
+        float w = Constants.SCREEN_WIDTH / Constants.ACTION_X_RATIO;
+        float x = Constants.SCREEN_WIDTH - (Constants.SCREEN_WIDTH / Constants.STICK_X_RATIO) - w;
+        float y = Constants.SCREEN_HEIGHT - (w * Constants.ACTION_Y_RATIO);
+//        pic.setBounds((int)x, (int)y, (int)(x + w), (int)(y + w));
+        pic.setCornerRadius(100);
+        pic.setColor(Color.argb(80,0,0,0));
+
+        RelativeLayout button = new RelativeLayout(this);
+        button.setBackground(pic);
+        button.setLayoutParams(new RelativeLayout.LayoutParams((int)w, (int)w));
+        button.setX(x);
+        button.setY(y);
+
+        return button;
+    }
 }
 
 
@@ -98,6 +121,8 @@ public class MainActivity extends Activity {
     // finding parent layout - https://stackoverflow.com/questions/17879743/get-parents-view-from-a-layout
     // setting size of joystick - https://stackoverflow.com/questions/5042197/android-set-height-and-width-of-custom-view-programmatically
     // combining sprites into sheet - css.spritegen.com
+    // making circle button programmatically - https://stackoverflow.com/questions/18391830/how-to-programmatically-round-corners-and-set-random-background-colors
+
 
 
 

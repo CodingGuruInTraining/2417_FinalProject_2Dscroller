@@ -24,5 +24,5 @@ public class Constants {
     public static final int STICK_SIZE_RATIO = 6;
     public static float SCREEN_SCALER;
     public static final int ACTION_X_RATIO = 11;
-    public static final float ACTION_Y_RATIO = 1.25f;
+    public static final float ACTION_Y_RATIO = 1.65f;
 }

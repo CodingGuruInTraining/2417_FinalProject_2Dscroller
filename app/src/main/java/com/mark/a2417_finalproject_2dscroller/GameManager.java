@@ -140,7 +140,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         mBackground.draw(canvas);
         mPlayer.draw(canvas);
         mEnemyManager.draw(canvas);
-        attackButton.draw(canvas);
+//        attackButton.draw(canvas);
     }
 
 
