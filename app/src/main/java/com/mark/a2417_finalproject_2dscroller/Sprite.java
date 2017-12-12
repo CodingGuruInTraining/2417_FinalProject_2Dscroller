@@ -27,7 +27,6 @@ public class Sprite {
     private int count;
 
 
-    // TODO pass number of rows and columns to constructor
     public Sprite(Bitmap sprite, float animTime, int rows, int cols, int count) {
         spriteSheet = sprite;
         this.rows = rows;
@@ -44,8 +43,6 @@ public class Sprite {
 
         spriteSheet = Bitmap.createScaledBitmap(spriteSheet, (int)(picWidth * this.cols),
                 (int)(picHeight * this.rows), true);
-
-// TODO get height and width of spritesheet broken up
 
         frameTime = animTime / this.count;
         lastFrame = System.currentTimeMillis();

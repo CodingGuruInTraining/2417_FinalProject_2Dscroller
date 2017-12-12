@@ -23,6 +23,7 @@ public class EnemyManager {
     private Sprite attack;
     private Sprite die;
     private AnimationManager mAnimationManager;
+    private Sprite[] allSprites;
 
 
     // Constructor.
@@ -34,7 +35,9 @@ public class EnemyManager {
         attack = makeSprite(R.drawable.zombie_attack, 2f, 4, 2, 7);
         die = makeSprite(R.drawable.zombie_die, 2f, 4, 2, 8);
 
-        mAnimationManager = new AnimationManager(new Sprite[] {walk, attack, die});
+        allSprites = new Sprite[] {walk, attack, die};
+
+//        mAnimationManager = new AnimationManager(new Sprite[] {walk, attack, die});
     }
 
 
@@ -42,6 +45,7 @@ public class EnemyManager {
     // Function that draws each Enemy object.
     public void draw(Canvas canvas) {
         for (Enemy enemy : enemies) {
+//            mAnimationManager.draw(canvas, enemy.getRectangle());
                 enemy.draw(canvas);
         }
     }
@@ -59,6 +63,7 @@ public class EnemyManager {
         // Loops through array and calls each enemy's update function.
         for (Enemy enemy : enemies) {
             enemy.update();
+//            mAnimationManager.update();
         }
     }
 
@@ -87,7 +92,7 @@ public class EnemyManager {
         // There is a higher chance to spawn on the right side.
         Random random = new Random();
         int side = random.nextInt(3);
-        Enemy enemy = new Enemy(side);
+        Enemy enemy = new Enemy(side, allSprites);
         enemies.add(enemy);
     }
 

@@ -33,6 +33,7 @@ public class Enemy {
     private int direction;
     private int xSpeed;
 
+    private AnimationManager mAnimationManager;
 
     public Enemy(int centerX, int centerY) {
         setCenterX(centerX);
@@ -41,7 +42,7 @@ public class Enemy {
 
 // TODO determine sizes in MainActivity
 // TODO add values to Constants
-    public Enemy(int side) {   // Context context) {
+    public Enemy(int side, Sprite[] sprites) {   // Context context) {
         direction = side;
 //        rectangle = rect;
         width = 300;  //rectangle.width();
@@ -61,6 +62,8 @@ public class Enemy {
 //        xPos = rectangle.left;
 //        yPos = rectangle.top;
         rectangle = new Rect(xPos, yPos, xPos + width, yPos + height);
+
+        mAnimationManager = new AnimationManager(sprites);
     }
 
 
@@ -69,13 +72,16 @@ public class Enemy {
     public void draw(Canvas canvas) {
 //        Paint paint = new Paint();
 //        paint.setColor(Color.RED);
-        canvas.drawRect(rectangle, painter);
+//        canvas.drawRect(rectangle, painter);
+        mAnimationManager.draw(canvas, rectangle);
     }
 
     public void update() {
         xPos += xSpeed;
 // TODO check bounds
         rectangle.set(xPos, yPos, xPos + width, yPos + height);
+        mAnimationManager.playAnim(0);
+        mAnimationManager.update();
 //        centerX += speedX;
 //        speedX = bg.getSpeedX();
     }
@@ -160,4 +166,7 @@ public class Enemy {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+
+    public Rect getRectangle() { return rectangle; }
 }
