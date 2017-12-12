@@ -36,14 +36,14 @@ public class MainActivity extends Activity {
 
         final RelativeLayout button = setupButton();
 
-        ArrayList<View> arrayList = new ArrayList<>();
-        arrayList.add(button);
+//        ArrayList<View> arrayList = new ArrayList<>();
+//        arrayList.add(button);
 
-        gameManager.addTouchables(arrayList);
-
+//        gameManager.addTouchables(arrayList);
+gameManager.setClickable(true);
         relativeLayout.addView(gameManager);
         relativeLayout.addView(joyStick);
-//        relativeLayout.addView(button);
+        relativeLayout.addView(button);
 
         setContentView(relativeLayout);
     }
@@ -128,6 +128,7 @@ public class MainActivity extends Activity {
     // setting size of joystick - https://stackoverflow.com/questions/5042197/android-set-height-and-width-of-custom-view-programmatically
     // combining sprites into sheet - css.spritegen.com
     // making circle button programmatically - https://stackoverflow.com/questions/18391830/how-to-programmatically-round-corners-and-set-random-background-colors
+    // might be helping with capturing touch events  - https://stackoverflow.com/questions/28979683/android-surfaceview-not-responding-to-touch-events
 
 
 
