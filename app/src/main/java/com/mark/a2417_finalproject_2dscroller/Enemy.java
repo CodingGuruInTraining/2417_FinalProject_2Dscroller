@@ -76,26 +76,37 @@ public class Enemy {
     }
 
     public void update() {
-        if (state == 0) {
+
+//        mAnimationManager.playAnim(state);
+//        mAnimationManager.update();
+//        if (mAnimationManager.isDone(state)) {
+//            state = 0;
+//        }
+
+//        if (state == 0) {
+//        if (state != 1) {
             xPos += xSpeed;
+//        }
             if (direction < 2 && (xPos + width) < 0) {
                 active = false;
             } else if (direction == 2 && xPos > Constants.SCREEN_WIDTH) {
                 active = false;
             }
-        } else {
+
+//        } else {
 // TODO if hit player, set flag variable
 // TODO then can check here if flag is true = move on
-        }
-// TODO check bounds
+//        }
         rectangle.set(xPos, yPos, xPos + width, yPos + height);
+            if (!active) {
+                die();
+                xSpeed = 0;
+            }
         mAnimationManager.playAnim(state);
         mAnimationManager.update();
         if (mAnimationManager.isDone(state)) {
             state = 0;
         }
-//        centerX += speedX;
-//        speedX = bg.getSpeedX();
     }
 
     public void die() {
@@ -108,19 +119,38 @@ public class Enemy {
     }
 
 
-// TODO may need to change when adding bitmaps.
-    protected boolean checkCollision(Rect player, boolean attacking) {
+    protected boolean checkCollision(Rect player) {
         if (Rect.intersects(rectangle, player)) {
-            if (attacking) {
-                die();
-            } else {
-                attack();
-            }
+//            if (attacking) {
+//                die();
+//            } else {
+//                attack();
+//            }
+            attack();
+//            mAnimationManager.playAnim(state);
             return true;
         }
         return false;
     }
 
+    protected boolean checkAttackRange(Rect player, boolean attacking) {
+        float buffer = (player.right - player.left) / 2;
+        if (xPos <= player.right + buffer && xPos > player.left) {
+            // Moving left and in range.
+            if (attacking) {
+                die();
+            }
+            return true;
+
+        } else if (xPos + width >= player.left + buffer && xPos < player.left) {
+            // Moving right and in range.
+            if (attacking) {
+                die();
+            }
+            return true;
+        }
+        return false;
+    }
 
 
 

@@ -38,7 +38,8 @@ public class Player {
     private int state = 0;
     private int threshold;
     private boolean attacking = false;
-    private int enemyHits = 0;
+    private int enemyHitPlayer = 0;
+    private int playerHitEnemy = 0;
 
     // Constructor.
     public Player(Rect rectangle, Context context) {
@@ -93,17 +94,15 @@ public class Player {
     protected void update(int direction, boolean attacking) {
         int currWidth = 0;
         currWidth = (int)mAnimationManager.getActiveWidth();
-        if (direction > 0) {
-
-
-            if (direction == 1) {
+        if (direction > 0) {    // Is moving.
+            if (direction == 1) {   // Moving left.
                 xPos -= movementSpeed;
                 if (xPos < 0) {
                     xPos = 0;
                 } else if ((xPos + currWidth) >= threshold) {
                     xPos -= (currWidth / 2);
                 }
-            } else if (direction == 2) {
+            } else if (direction == 2) {    // Moving right.
                 xPos += movementSpeed;
             }
 
@@ -164,7 +163,11 @@ public class Player {
     public int getState() { return state; }
     public boolean isAttacking() { return attacking; }
     public void hitPlayer() {
-        enemyHits++;
-        Log.d("tag", "enemy hit the player!");
+        enemyHitPlayer++;
+        Log.d("tag", "enemy +1");
+    }
+    public void playerHit() {
+        playerHitEnemy++;
+        Log.d("tag", "player +1");
     }
 }

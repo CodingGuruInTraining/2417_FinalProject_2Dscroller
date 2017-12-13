@@ -71,21 +71,29 @@ public class EnemyManager {
     }
 
 
+    public boolean checkAttackRanges(Rect player, boolean attacking) {
+        for (Enemy enemy : enemies) {
+            if (enemy.checkAttackRange(player, attacking)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     // Function to check whether an enemy has collided with the player.
     // This is called from the GameManager.
     public boolean checkCollisions(Player player) {
         for (Enemy enemy : enemies) {
-// TODO check if enemy is in range to attack
-// TODO check if in player's attack range and player is attacking
-            if (enemy.checkCollision(player.getPlayerRect(), player.isAttacking())) {
-                if (enemy.isActive()) {
+            if (enemy.checkCollision(player.getPlayerRect())) {
+//                if (enemy.isActive()) {
                     // Enemy attacked player.
                     player.hitPlayer();
-                }
-                else {
-                    // Removes enemy from array.
-//                    enemies.remove(enemy);
-                }
+//                }
+//                else {
+//                    // Removes enemy from array.
+////                    enemies.remove(enemy);
+//                }
 
                 return true;
             }

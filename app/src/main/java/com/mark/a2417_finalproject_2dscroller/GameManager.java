@@ -178,6 +178,8 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         // Calls the enemy manager to run its updates.
         mEnemyManager.update();
 
+        boolean playerHit = mEnemyManager.checkAttackRanges(mPlayer.getPlayerRect(), mPlayer.isAttacking());
+
         // Checks with the enemy manager whether any collisions occurred.
         boolean collision = mEnemyManager.checkCollisions(mPlayer);
 // TODO do something with this perhaps.

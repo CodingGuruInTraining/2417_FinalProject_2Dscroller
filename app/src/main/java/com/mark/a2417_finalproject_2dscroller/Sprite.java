@@ -41,8 +41,8 @@ public class Sprite {
 
         // Height and width of image on screen.
         picHeight = Constants.PLAYER_HEIGHT; // sprite.getHeight() / 4;
-        int scaler = sprite.getHeight() / (int)picHeight;
-        picWidth = sprite.getWidth() / scaler;
+        double scaler = sprite.getHeight() / picHeight;
+        picWidth = (int)(sprite.getWidth() / scaler);
 
         spriteSheet = Bitmap.createScaledBitmap(spriteSheet, (int)(picWidth * this.cols),
                 (int)(picHeight * this.rows), true);
