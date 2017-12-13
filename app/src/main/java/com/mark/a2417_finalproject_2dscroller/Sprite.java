@@ -3,6 +3,7 @@ package com.mark.a2417_finalproject_2dscroller;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 
 /**
@@ -54,6 +55,13 @@ public class Sprite {
         if (!isPlaying) {
             return;
         }
+// TODO maybe try implementing this for flipping image
+//        Matrix m = new Matrix();
+//        m.setScale(-1, 1);
+//        m.postTranslate(Constants.SCREEN_WIDTH, 0);
+//        canvas.drawBitmap(spriteSheet, m, null);
+//        https://stackoverflow.com/questions/7925278/drawing-mirrored-bitmaps-in-android
+
 
 //        scaleRect(destination);
         Rect src = new Rect((int)(colIndex * picWidth),

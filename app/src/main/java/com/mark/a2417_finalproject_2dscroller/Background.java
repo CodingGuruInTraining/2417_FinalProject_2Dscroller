@@ -26,6 +26,8 @@ public class Background {
     private Drawable ground;
     private int groundHeight;
     private int groundY;
+    private int groundWidth;
+    private boolean shortGround = false;
 
     private int dx;
     private int startX = 0;
@@ -45,22 +47,19 @@ public class Background {
             Log.e("tag", "error getting background height");
         }
 
-//        cityBackground2 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.city_background_night);
-//        dx = -10;
 
         this.x = 0;
         this.y = 0;
 // TODO make these constants and set in MainActivity
         this.width = Constants.SCREEN_WIDTH; // (int)(cityBackground2.getWidth() * Constants.SCREEN_SCALER); // Constants.SCREEN_WIDTH;
         this.height = 4 * (Constants.SCREEN_HEIGHT / 5);
-//        this.height = Constants.SCREEN_HEIGHT;
 
-//        cityBackground2 = lessResolution(width, height);
-//
-//        cityBackground2 = Bitmap.createScaledBitmap(cityBackground2, width, height, true);
 
-// TODO fix numbers (scaling, covers empty space, something)
         ground = mContext.getDrawable(R.drawable.ground);
+        if (ground.getIntrinsicWidth() < Constants.SCREEN_WIDTH) {
+            groundWidth = ground.getIntrinsicWidth();
+            shortGround = true;
+        }
         groundHeight = Constants.SCREEN_HEIGHT - height;
         groundY = Constants.SCREEN_HEIGHT - groundHeight;
     }
@@ -69,15 +68,29 @@ public class Background {
 
 
 
-// TODO maybe save color values to constants...
+
         canvas.drawColor(Color.rgb( 53, 43, 140));
-// TODO maybe try scaling width off the screen
-        cityBackground.setBounds(x, y, width, height);
+
+        cityBackground.setBounds(x, y, width*2, height);
         cityBackground.draw(canvas);
+        if (width *2 < Constants.SCREEN_WIDTH) {
+            cityBackground.setBounds((width *2) + x, y, (width * 4) + x, height);
+            cityBackground.draw(canvas);
+        }
 //        canvas.drawBitmap(cityBackground2,new Rect(x, y, width, height), new Rect(x, y, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT), null);
 
-        ground.setBounds(x, groundY, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+        ground.setBounds(x, groundY, groundWidth, Constants.SCREEN_HEIGHT);
         ground.draw(canvas);
+        if (shortGround) {
+            int counter = 1;
+            int rightX = 0;
+            while (rightX < Constants.SCREEN_WIDTH) {
+                rightX = x + groundWidth + (groundWidth * counter);
+                ground.setBounds(x + (groundWidth * counter), groundY, rightX, Constants.SCREEN_HEIGHT);
+                ground.draw(canvas);
+                counter++;
+            }
+        }
 //        canvas.drawBitmap(cityBackground2, null, new Rect(x, y, width, height), null);
 //
 //        if (x < 0) {
@@ -96,34 +109,34 @@ public class Background {
 
 
 
-    private Bitmap lessResolution(int width, int height) {
-        int reqHeight = height;
-        int reqWidth = width;
-        BitmapFactory.Options options = new BitmapFactory.Options();
-
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.city_background_night, options);
-
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        options.inJustDecodeBounds = false;
-
-        return BitmapFactory.decodeResource(mContext.getResources(), R.drawable.city_background_night, options);
-    }
-
-    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-        }
-        return inSampleSize;
-    }
+//    private Bitmap lessResolution(int width, int height) {
+//        int reqHeight = height;
+//        int reqWidth = width;
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//
+//        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.city_background_night, options);
+//
+//        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+//
+//        options.inJustDecodeBounds = false;
+//
+//        return BitmapFactory.decodeResource(mContext.getResources(), R.drawable.city_background_night, options);
+//    }
+//
+//    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+//        final int height = options.outHeight;
+//        final int width = options.outWidth;
+//        int inSampleSize = 1;
+//
+//        if (height > reqHeight || width > reqWidth) {
+//            final int heightRatio = Math.round((float) height / (float) reqHeight);
+//            final int widthRatio = Math.round((float) width / (float) reqWidth);
+//
+//            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+//        }
+//        return inSampleSize;
+//    }
 
 
 
