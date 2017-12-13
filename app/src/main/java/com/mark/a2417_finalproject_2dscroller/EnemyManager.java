@@ -30,6 +30,8 @@ public class EnemyManager {
         enemies = new ArrayList<Enemy>();
         mContext = context;
 
+        // Retrieves each spritesheet and creates individual objects.
+        // The specifics for each sheet are passed during creation.
         walk = makeSprite(R.drawable.zombie_walk, 2f, 4, 3, 10);
         attack = makeSprite(R.drawable.zombie_attack, 1f, 4, 2, 7);
         die = makeSprite(R.drawable.zombie_die, 1f, 4, 2, 8);
@@ -58,11 +60,13 @@ public class EnemyManager {
 
         // Loops through array and calls each enemy's update function.
         for (Enemy enemy : enemies) {
-
-            if ((!enemy.isReadyForDeath() || !enemy.isHitPlayer()) && enemy.isDone()) {
+            // Checks if some form of collision has occurred and the corresponding
+            // animation has finished before removing enemy from array.
+            if ((enemy.isReadyForDeath() || enemy.isHitPlayer()) && enemy.isDone()) {
                 enemies.remove(enemy);
+            } else {
+                enemy.update();
             }
-            enemy.update();
         }
     }
 
@@ -85,9 +89,9 @@ public class EnemyManager {
     public boolean checkCollisions(Rect player) {
         for (Enemy enemy : enemies) {
             if (!enemy.isReadyForDeath() && !enemy.isHitPlayer()) {
-            if (enemy.checkCollision(player)) {
-                return true;
-            }
+                if (enemy.checkCollision(player)) {
+                    return true;
+                }
             }
         }
         return false;
