@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -63,7 +64,7 @@ public class EnemyManager {
         // Loops through array and calls each enemy's update function.
         for (Enemy enemy : enemies) {
 
-            if (!enemy.isActive() && enemy.isDone()) {
+            if ((!enemy.isReadyForDeath() || !enemy.isHitPlayer()) && enemy.isDone()) {
                 enemies.remove(enemy);
             }
             enemy.update();
@@ -74,8 +75,9 @@ public class EnemyManager {
 
     public boolean checkAttackRanges(Rect player, boolean attacking) {
         for (Enemy enemy : enemies) {
-            if (!enemy.isActive()) {
+            if (!enemy.isReadyForDeath() && !enemy.isHitPlayer()) {
                 if (enemy.checkAttackRange(player, attacking)) {
+                    Log.d("tag", "player is in range and attacking");
                     return true;
                 }
             }
@@ -88,7 +90,7 @@ public class EnemyManager {
     // This is called from the GameManager.
     public boolean checkCollisions(Rect player) {
         for (Enemy enemy : enemies) {
-            if (!enemy.isActive()) {
+            if (!enemy.isReadyForDeath() && !enemy.isHitPlayer()) {
             if (enemy.checkCollision(player)) {
 //                if (enemy.isActive()) {
                 // Enemy attacked player.

@@ -25,6 +25,8 @@ public class Enemy {
     private int width;
     private int height;
     private boolean active = true;
+    private boolean readyForDeath = false;
+    private boolean hitPlayer = false;
 
     private Paint painter;
     private int xPos;
@@ -36,6 +38,7 @@ public class Enemy {
     private AnimationManager mAnimationManager;
 
     private int state = 0;
+    private int defaultSpeed;
 
 // TODO determine sizes in MainActivity
 // TODO add values to Constants
@@ -52,9 +55,11 @@ public class Enemy {
         if (side < 2) { // Start on Right and move left.
             xPos = (2 * width) + Constants.SCREEN_WIDTH;
             xSpeed = -100; // TODO Constant.
+            defaultSpeed = -100;
         } else { // Start on Left and move right.
             xPos = 2 * -width;
             xSpeed = 100; // TODO Constant.
+            defaultSpeed = 100;
         }
         yPos = Constants.PLAYER_START_Y; // 800; // TODO Constant.
 
@@ -89,8 +94,10 @@ public class Enemy {
 //        }
             if (direction < 2 && (xPos + width) < 0) {
                 active = false;
+                readyForDeath = true;
             } else if (direction == 2 && xPos > Constants.SCREEN_WIDTH) {
                 active = false;
+                readyForDeath = true;
             }
 
 //        } else {
@@ -98,13 +105,27 @@ public class Enemy {
 // TODO then can check here if flag is true = move on
 //        }
         rectangle.set(xPos, yPos, xPos + width, yPos + height);
-            if (!active) {
-                die();
+
+
+            if (readyForDeath) {
+                state = 2;
                 xSpeed = 0;
+            } else if (hitPlayer) {
+                state = 1;
+                xSpeed = 0;
+            } else {
+                state = 0;
+                xSpeed = defaultSpeed;
             }
-        mAnimationManager.update();
-            mAnimationManager.playAnim(state);
+
+
+//            if (!active) {
+//                die();
+//                xSpeed = 0;
+//            }
 //        mAnimationManager.update();
+            mAnimationManager.playAnim(state);
+        mAnimationManager.update();
         if (mAnimationManager.isDone(state)) {
             state = 0;
         }
@@ -127,27 +148,39 @@ public class Enemy {
 //            } else {
 //                attack();
 //            }
-            attack();
+//            attack();
 //            mAnimationManager.playAnim(state);
-            return true;
+            if (!readyForDeath && !hitPlayer) {
+                return true;
+            }
         }
         return false;
     }
 
     protected boolean checkAttackRange(Rect player, boolean attacking) {
         float buffer = (player.right - player.left) / 2;
+
+        if (Rect.intersects(rectangle, new Rect((int)(player.left - buffer), player.top, (int)(player.right + buffer), player.bottom))) {
+            if (attacking) {
+                readyForDeath = true;
+                return true;
+            }
+        }
+
         if (xPos <= player.right + buffer && xPos > player.left) {
             // Moving left and in range.
             if (attacking) {
-                die();
+//                die();
 
+                readyForDeath = true;
                 return true;
             }
         } else if (xPos + width >= player.left + buffer && xPos < player.left) {
             // Moving right and in range.
             if (attacking) {
-                die();
+//                die();
 
+                readyForDeath = true;
                 return true;
             }
         }
@@ -224,4 +257,12 @@ public class Enemy {
     public Rect getRectangle() { return rectangle; }
 
     public boolean isDone() { return mAnimationManager.isDone(state); }
+
+    public boolean isReadyForDeath() {
+        return readyForDeath;
+    }
+
+    public boolean isHitPlayer() {
+        return hitPlayer;
+    }
 }

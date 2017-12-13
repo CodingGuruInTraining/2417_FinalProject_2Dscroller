@@ -178,6 +178,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         if (mPlayer.getState() == 0) {
             playerAttacking = false;
         }
+        playerAttacking = mPlayer.isAttacking();
 
         // Calls the enemy manager to run its updates.
         mEnemyManager.update();
