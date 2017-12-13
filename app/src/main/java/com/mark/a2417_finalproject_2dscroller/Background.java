@@ -71,7 +71,7 @@ public class Background {
 
 
 
-        canvas.drawColor(Color.rgb( 53, 43, 140));
+        canvas.drawColor(Color.BLACK); // .rgb( 53, 43, 140));
 
         cityBackground.setBounds(x, y, width*2, height);
         cityBackground.draw(canvas);
