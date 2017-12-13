@@ -183,10 +183,15 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         mEnemyManager.update();
 
         boolean playerHit = mEnemyManager.checkAttackRanges(mPlayer.getPlayerRect(), mPlayer.isAttacking());
+        if (playerHit) {
+            mScoreKeeper.addForPlayer();
+        }
 
         // Checks with the enemy manager whether any collisions occurred.
-        boolean collision = mEnemyManager.checkCollisions(mPlayer);
-// TODO do something with this perhaps.
+        boolean collision = mEnemyManager.checkCollisions(mPlayer.getPlayerRect());
+        if (collision) {
+            mScoreKeeper.addForEnemy();
+        }
 
 
         setFocusable(true);

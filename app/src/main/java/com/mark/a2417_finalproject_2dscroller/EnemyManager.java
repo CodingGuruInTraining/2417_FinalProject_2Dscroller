@@ -83,12 +83,12 @@ public class EnemyManager {
 
     // Function to check whether an enemy has collided with the player.
     // This is called from the GameManager.
-    public boolean checkCollisions(Player player) {
+    public boolean checkCollisions(Rect player) {
         for (Enemy enemy : enemies) {
-            if (enemy.checkCollision(player.getPlayerRect())) {
+            if (enemy.checkCollision(player)) {
 //                if (enemy.isActive()) {
                     // Enemy attacked player.
-                    player.hitPlayer();
+//                    player.hitPlayer();
 //                }
 //                else {
 //                    // Removes enemy from array.

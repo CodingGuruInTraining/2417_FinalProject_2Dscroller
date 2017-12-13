@@ -139,15 +139,16 @@ public class Enemy {
             // Moving left and in range.
             if (attacking) {
                 die();
-            }
-            return true;
 
+                return true;
+            }
         } else if (xPos + width >= player.left + buffer && xPos < player.left) {
             // Moving right and in range.
             if (attacking) {
                 die();
+
+                return true;
             }
-            return true;
         }
         return false;
     }

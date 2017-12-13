@@ -58,7 +58,7 @@ public class Player {
 //        Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.attack_sprite);
 
         idle = makeSprite(R.drawable.idle_sprite, 1f, 4, 3, 10);
-        attack = makeSprite(R.drawable.attack_sprite, 0.5f, 4, 3, 10);
+        attack = makeSprite(R.drawable.attack_sprite_fix, 0.5f, 10, 1, 10);
         walk = makeSprite(R.drawable.run_sprite, 1f, 4, 3, 10);
 
         float scaler = idle.getWholeHeight() / height;
