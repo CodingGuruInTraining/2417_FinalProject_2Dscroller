@@ -34,16 +34,16 @@ public class MainActivity extends Activity {
         GameManager gameManager = new GameManager(this);
 
 
-        final RelativeLayout button = setupButton();
+//        final RelativeLayout button = setupButton();
 
 //        ArrayList<View> arrayList = new ArrayList<>();
 //        arrayList.add(button);
 
 //        gameManager.addTouchables(arrayList);
-gameManager.setClickable(true);
+//gameManager.setClickable(true);
         relativeLayout.addView(gameManager);
         relativeLayout.addView(joyStick);
-        relativeLayout.addView(button);
+//        relativeLayout.addView(button);
 
         setContentView(relativeLayout);
     }

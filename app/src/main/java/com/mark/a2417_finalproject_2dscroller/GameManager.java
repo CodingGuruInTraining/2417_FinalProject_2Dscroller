@@ -162,7 +162,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         if (parent == null) {
             findParentLayout();
             setupJoystick();
-            setupAttackButton();
+//            setupAttackButton();
         }
 
 // TODO find out where to move to and adjust.
@@ -170,9 +170,9 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
         // Calls player's update function and passes flags.
         mPlayer.update(playerDirection, playerAttacking);
-//        if (mPlayer.getState() == 0) {
-//            playerAttacking = false;
-//        }
+        if (mPlayer.getState() == 0) {
+            playerAttacking = false;
+        }
 
         // Calls the enemy manager to run its updates.
         mEnemyManager.update();
@@ -182,8 +182,8 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 // TODO do something with this perhaps.
 
 
-//        setFocusable(true);
-        parent.getChildAt(1).setFocusable(true);
+        setFocusable(true);
+//        parent.getChildAt(1).setFocusable(true);
     }
 
 

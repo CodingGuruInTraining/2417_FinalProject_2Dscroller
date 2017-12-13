@@ -17,7 +17,20 @@ public class AnimationManager {
     }
 
     public void playAnim(int index) {
+//        if (animations[animIndex].isDone()) {
+//            animations[animIndex].stop();
+//            animations[index].play();
+//            animIndex = index;
+//        }
 //        if (!animations[animIndex].isPlaying()) {
+//            for (int i = 0; i < animations.length; i++) {
+//                if (animations[i].isPlaying())
+//            }
+//
+//
+//
+//
+//
             for (int i = 0; i < animations.length; i++) {
                 if (i == index) {
                     if (!animations[index].isPlaying()) {

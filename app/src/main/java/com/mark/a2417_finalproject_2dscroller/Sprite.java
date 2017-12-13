@@ -12,7 +12,7 @@ import android.graphics.Rect;
 public class Sprite {
 
     private int frameIndex;
-    private float frameTime;
+    private double frameTime;
     private long lastFrame;
     private boolean isPlaying = false;
 
@@ -29,7 +29,7 @@ public class Sprite {
     private boolean done;
 
 
-    public Sprite(Bitmap sprite, float animTime, int rows, int cols, int count) {
+    public Sprite(Bitmap sprite, double animTime, int rows, int cols, int count) {
         spriteSheet = sprite;
         this.rows = rows;
         this.cols = cols;
