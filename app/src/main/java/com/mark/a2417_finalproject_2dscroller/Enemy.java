@@ -102,8 +102,9 @@ public class Enemy {
                 die();
                 xSpeed = 0;
             }
-        mAnimationManager.playAnim(state);
         mAnimationManager.update();
+            mAnimationManager.playAnim(state);
+//        mAnimationManager.update();
         if (mAnimationManager.isDone(state)) {
             state = 0;
         }
@@ -120,7 +121,7 @@ public class Enemy {
 
 
     protected boolean checkCollision(Rect player) {
-        if (Rect.intersects(rectangle, player)) {
+        if (Rect.intersects(rectangle, player) && !active) {
 //            if (attacking) {
 //                die();
 //            } else {

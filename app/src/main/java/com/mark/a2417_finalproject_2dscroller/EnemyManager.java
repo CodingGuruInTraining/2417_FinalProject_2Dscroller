@@ -32,8 +32,8 @@ public class EnemyManager {
         mContext = context;
 
         walk = makeSprite(R.drawable.zombie_walk, 2f, 4, 3, 10);
-        attack = makeSprite(R.drawable.zombie_attack, 2f, 4, 2, 7);
-        die = makeSprite(R.drawable.zombie_die, 2f, 4, 2, 8);
+        attack = makeSprite(R.drawable.zombie_attack, 1f, 4, 2, 7);
+        die = makeSprite(R.drawable.zombie_die, 1f, 4, 2, 8);
 
         allSprites = new Sprite[] {walk, attack, die};
 
@@ -62,10 +62,11 @@ public class EnemyManager {
 
         // Loops through array and calls each enemy's update function.
         for (Enemy enemy : enemies) {
-            enemy.update();
+
             if (!enemy.isActive() && enemy.isDone()) {
                 enemies.remove(enemy);
             }
+            enemy.update();
 //            mAnimationManager.update();
         }
     }
@@ -73,8 +74,10 @@ public class EnemyManager {
 
     public boolean checkAttackRanges(Rect player, boolean attacking) {
         for (Enemy enemy : enemies) {
-            if (enemy.checkAttackRange(player, attacking)) {
-                return true;
+            if (!enemy.isActive()) {
+                if (enemy.checkAttackRange(player, attacking)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -85,9 +88,10 @@ public class EnemyManager {
     // This is called from the GameManager.
     public boolean checkCollisions(Rect player) {
         for (Enemy enemy : enemies) {
+            if (!enemy.isActive()) {
             if (enemy.checkCollision(player)) {
 //                if (enemy.isActive()) {
-                    // Enemy attacked player.
+                // Enemy attacked player.
 //                    player.hitPlayer();
 //                }
 //                else {
@@ -96,6 +100,7 @@ public class EnemyManager {
 //                }
 
                 return true;
+            }
             }
         }
         return false;
