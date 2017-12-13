@@ -46,6 +46,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 //    private RelativeLayout attackButton;
     private ActionButtons attackButton;
     private boolean playerAttacking = false;
+    private ScoreKeeper mScoreKeeper;
 
 
     public GameManager(Context context) {
@@ -73,6 +74,8 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
         // Instantiates action button object.
         attackButton = new ActionButtons();
+
+        mScoreKeeper = new ScoreKeeper();
 
         setFocusable(true);
     }
@@ -150,6 +153,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         mPlayer.draw(canvas);
         mEnemyManager.draw(canvas);
         attackButton.draw(canvas);
+        mScoreKeeper.draw(canvas);
     }
 
 

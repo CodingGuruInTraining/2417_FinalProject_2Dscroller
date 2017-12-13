@@ -27,4 +27,9 @@ public class Constants {
     public static final float ACTION_Y_RATIO = 1.25f;
     public static final float THRESHHOLD_RATIO = 0.75f;
     public static final int MOVE_SPEED = 85;
+    public static final int POINTS = 10;
+    public static final int SCORE_WIDTH_RATIO = 30;
+    public static final int SCORE_HEIGHT_RATIO = 15;
+    public static final int FONT_RATIO = 27;
+
 }
