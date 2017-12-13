@@ -1,13 +1,11 @@
 package com.mark.a2417_finalproject_2dscroller;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Rect;
 
 /**
- * Practice Sprite Class from tutorial.
+ * Class for an individual animation and its individual sprite images.
  */
 
 public class Sprite {
@@ -30,7 +28,10 @@ public class Sprite {
     private boolean done;
 
 
+
+    // Constructor.
     public Sprite(Bitmap sprite, double animTime, int rows, int cols, int count) {
+        // Sets up initial values.
         spriteSheet = sprite;
         this.rows = rows;
         this.cols = cols;
@@ -40,17 +41,23 @@ public class Sprite {
         colIndex = 0;
 
         // Height and width of image on screen.
-        picHeight = Constants.PLAYER_HEIGHT; // sprite.getHeight() / 4;
+        picHeight = Constants.PLAYER_HEIGHT;
         double scaler = sprite.getHeight() / picHeight;
         picWidth = (int)(sprite.getWidth() / scaler);
 
+        // Scales the spritesheet using a calculated ratio value.
         spriteSheet = Bitmap.createScaledBitmap(spriteSheet, (int)(picWidth * this.cols),
                 (int)(picHeight * this.rows), true);
 
+
+        // Calculates how long each frame will be.
         frameTime = animTime / this.count;
         lastFrame = System.currentTimeMillis();
     }
 
+
+
+    // Draw function for displaying animation object.
     public void draw(Canvas canvas, Rect destination) {
         if (!isPlaying) {
             return;
@@ -63,23 +70,19 @@ public class Sprite {
 //        https://stackoverflow.com/questions/7925278/drawing-mirrored-bitmaps-in-android
 
 
-//        scaleRect(destination);
+        // Creates rectangle object for comparisons.
         Rect src = new Rect((int)(colIndex * picWidth),
                 (int)(rowIndex * picHeight),
                 (int)(colIndex * picWidth + picWidth),
                 (int)(rowIndex * picHeight + picHeight));
 
-//        canvas.drawBitmap(frames[frameIndex], null, destination, null);
+        // Draws image to screen.
         canvas.drawBitmap(spriteSheet, src, destination, null);
-
-//        update();
-//        int srcX = currentFrame * width;
-//        int srcY = direction * height;      // <<< which row of spritesheet.
-//        Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);      // <<< what part of spritesheet to cut
-//        Rect dst = new Rect(x, y, x + width, y + height);   // where moving object to
-//        canvas.drawBitmap(mBitmap, src, dst, null);
     }
 
+
+
+    // Update function for navigating around the spritesheet to display the correct image.
     public void update() {
         if (!isPlaying) {
             return;
@@ -92,7 +95,6 @@ public class Sprite {
                 colIndex = 0;
                 rowIndex = 0;
                 done = true;
-//                isPlaying = false;
             } else {
                 colIndex++;
                 if (colIndex >= cols) {
@@ -103,17 +105,13 @@ public class Sprite {
                     }
                 }
             }
-//            frameIndex = frameIndex >= count ? 0 : frameIndex;
             lastFrame = System.currentTimeMillis();
-
-//            else if (frameIndex) // (colIndex == 1 && rowIndex == 3) {
-//                colIndex = 0;
-//                rowIndex = 0;
-//            }
         }
     }
 
 
+
+    // Function for initializing animation loop and resets values.
     public void play() {
         isPlaying = true;
         frameIndex = 0;
@@ -123,12 +121,15 @@ public class Sprite {
         done = false;
     }
 
+
+    // Function for stopping animation.
     public void stop() {
         isPlaying = false;
     }
 
 
 
+    // Getters.
     public boolean isPlaying() { return isPlaying; }
     public float getWholeWidth() { return picWidth * cols; }
     public float getWholeHeight() { return picHeight * rows; }

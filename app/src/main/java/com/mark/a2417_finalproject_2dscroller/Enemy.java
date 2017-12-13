@@ -1,25 +1,13 @@
 package com.mark.a2417_finalproject_2dscroller;
 
-import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 
 /**
- * Class outline for a generic Enemy.
+ * Class outline for a generic Enemy instance.
  */
 
 public class Enemy {
-
-
-    private int maxHealth;
-    private int currentHealth;
-    private int power;
-    private int speedX;
-    private int centerX;
-    private int centerY;
-    private Background bg;
 
     private Rect rectangle;
     private int width;
@@ -28,7 +16,6 @@ public class Enemy {
     private boolean readyForDeath = false;
     private boolean hitPlayer = false;
 
-    private Paint painter;
     private int xPos;
     private int yPos;
 
@@ -40,18 +27,18 @@ public class Enemy {
     private int state = 0;
     private int defaultSpeed;
 
-// TODO determine sizes in MainActivity
-// TODO add values to Constants
-    public Enemy(int side, Sprite[] sprites) {   // Context context) {
+
+
+    // Constructor.
+    public Enemy(int side, Sprite[] sprites) {
+        // Sets up initial values.
         direction = side;
-//        rectangle = rect;
-        height = Constants.PLAYER_HEIGHT; // 400; // rectangle.height();
+        height = Constants.PLAYER_HEIGHT;
         float scaler = sprites[0].getWholeHeight() / height;
-        width = (int)(sprites[0].getWholeWidth() / scaler); // 300;  //rectangle.width();
+        width = (int)(sprites[0].getWholeWidth() / scaler);
 
-        painter = new Paint();
-        painter.setColor(Color.RED);
 
+        // Sets the object's speed based on the side of screen it starts.
         if (side < 2) { // Start on Right and move left.
             xPos = (2 * width) + Constants.SCREEN_WIDTH;
             xSpeed = -100; // TODO Constant.
@@ -61,105 +48,73 @@ public class Enemy {
             xSpeed = 100; // TODO Constant.
             defaultSpeed = 100;
         }
-        yPos = Constants.PLAYER_START_Y; // 800; // TODO Constant.
+        // Y coordinate will be the same as the player's for now.
+        yPos = Constants.PLAYER_START_Y;
 
-//        xPos = rectangle.left;
-//        yPos = rectangle.top;
+        // Creates a rectangle object for comparisons.
         rectangle = new Rect(xPos, yPos, xPos + width, yPos + height);
 
+        // Instantiates the Animation Manager for animations.
         mAnimationManager = new AnimationManager(sprites);
     }
 
 
 
-
+    // Draw function for telling manager to draw animation.
     public void draw(Canvas canvas) {
-//        Paint paint = new Paint();
-//        paint.setColor(Color.RED);
-//        canvas.drawRect(rectangle, painter);
         mAnimationManager.draw(canvas, rectangle);
     }
 
-    public void update() {
 
-//        mAnimationManager.playAnim(state);
-//        mAnimationManager.update();
+
+    // Update function for increasing objects location and determines its state.
+    public void update() {
+        xPos += xSpeed;
+        // Checks if objects moving left have gone off the screen.
+        if (direction < 2 && (xPos + width) < 0) {
+            active = false;
+            readyForDeath = true;
+        // Checks if objects moving right have gone off the screen.
+        } else if (direction == 2 && xPos > Constants.SCREEN_WIDTH) {
+            active = false;
+            readyForDeath = true;
+        }
+
+        // Recreates rectangle object.
+        rectangle.set(xPos, yPos, xPos + width, yPos + height);
+
+        // Looks at flags and sets state accordingly.
+        if (readyForDeath) {    // Player hit enemy or gone off screen.
+            state = 2;
+            xSpeed = 0;
+        } else if (hitPlayer) { // Enemy collided with player.
+            state = 1;
+            xSpeed = 0;
+        } else {    // Moving.
+            state = 0;
+            xSpeed = defaultSpeed;
+        }
+
+        // Instructs animation manager to play animation based on state.
+        mAnimationManager.playAnim(state);
+        mAnimationManager.update();
+        // Checks if the current animation has gone through all frames yet.
 //        if (mAnimationManager.isDone(state)) {
 //            state = 0;
 //        }
-
-//        if (state == 0) {
-//        if (state != 1) {
-            xPos += xSpeed;
-//        }
-            if (direction < 2 && (xPos + width) < 0) {
-                active = false;
-                readyForDeath = true;
-            } else if (direction == 2 && xPos > Constants.SCREEN_WIDTH) {
-                active = false;
-                readyForDeath = true;
-            }
-
-//        } else {
-// TODO if hit player, set flag variable
-// TODO then can check here if flag is true = move on
-//        }
-        rectangle.set(xPos, yPos, xPos + width, yPos + height);
-
-
-            if (readyForDeath) {
-                state = 2;
-                xSpeed = 0;
-            } else if (hitPlayer) {
-                state = 1;
-                xSpeed = 0;
-            } else {
-                state = 0;
-                xSpeed = defaultSpeed;
-            }
-
-
-//            if (!active) {
-//                die();
-//                xSpeed = 0;
-//            }
-//        mAnimationManager.update();
-            mAnimationManager.playAnim(state);
-        mAnimationManager.update();
-        if (mAnimationManager.isDone(state)) {
-            state = 0;
-        }
-    }
-
-    public void die() {
-        state = 2;
-        active = false;
-    }
-
-    public void attack() {
-        state = 1;
     }
 
 
-    protected boolean checkCollision(Rect player) {
-        if (Rect.intersects(rectangle, player) && !active) {
-//            if (attacking) {
-//                die();
-//            } else {
-//                attack();
-//            }
-//            attack();
-//            mAnimationManager.playAnim(state);
-            if (!readyForDeath && !hitPlayer) {
-                return true;
-            }
-        }
-        return false;
-    }
 
+
+
+    // Function to compare player's location with enemy's location.
     protected boolean checkAttackRange(Rect player, boolean attacking) {
+        // Calculates a little buffer room around player for the player to have
+        // striking room with sword.
         float buffer = (player.right - player.left) / 2;
 
+        // Checks if rectangles intersect.
         if (Rect.intersects(rectangle, new Rect((int)(player.left - buffer), player.top, (int)(player.right + buffer), player.bottom))) {
             if (attacking) {
                 readyForDeath = true;
@@ -167,20 +122,28 @@ public class Enemy {
             }
         }
 
-        if (xPos <= player.right + buffer && xPos > player.left) {
-            // Moving left and in range.
-            if (attacking) {
-//                die();
+//        if (xPos <= player.right + buffer && xPos > player.left) {
+//            // Moving left and in range.
+//            if (attacking) {
+//                readyForDeath = true;
+//                return true;
+//            }
+//        } else if (xPos + width >= player.left + buffer && xPos < player.left) {
+//            // Moving right and in range.
+//            if (attacking) {
+//                readyForDeath = true;
+//                return true;
+//            }
+//        }
+        return false;
+    }
 
-                readyForDeath = true;
-                return true;
-            }
-        } else if (xPos + width >= player.left + buffer && xPos < player.left) {
-            // Moving right and in range.
-            if (attacking) {
-//                die();
 
-                readyForDeath = true;
+
+    // Function that compares player's location with enemy.
+    protected boolean checkCollision(Rect player) {
+        if (Rect.intersects(rectangle, player) && !active) {
+            if (!readyForDeath || !hitPlayer) {
                 return true;
             }
         }
@@ -188,80 +151,18 @@ public class Enemy {
     }
 
 
-
-    public int getMaxHealth() {
-        return maxHealth;
-    }
-
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
-    }
-
-    public int getCurrentHealth() {
-        return currentHealth;
-    }
-
-    public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
-    }
-
-    public int getPower() {
-        return power;
-    }
-
-    public void setPower(int power) {
-        this.power = power;
-    }
-
-    public int getSpeedX() {
-        return speedX;
-    }
-
-    public void setSpeedX(int speedX) {
-        this.speedX = speedX;
-    }
-
-    public int getCenterX() {
-        return centerX;
-    }
-
-    public void setCenterX(int centerX) {
-        this.centerX = centerX;
-    }
-
-    public int getCenterY() {
-        return centerY;
-    }
-
-    public void setCenterY(int centerY) {
-        this.centerY = centerY;
-    }
-
-    public Background getBg() {
-        return bg;
-    }
-
-    public void setBg(Background bg) {
-        this.bg = bg;
-    }
-
+    // Getters and Setters.
     public boolean isActive() {
         return active;
     }
-
     public void setActive(boolean active) {
         this.active = active;
     }
-
-
     public Rect getRectangle() { return rectangle; }
-
     public boolean isDone() { return mAnimationManager.isDone(state); }
-
     public boolean isReadyForDeath() {
         return readyForDeath;
     }
-
     public boolean isHitPlayer() {
         return hitPlayer;
     }
