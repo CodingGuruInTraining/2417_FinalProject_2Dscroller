@@ -89,13 +89,17 @@ public class Player {
 
     // Update function.
     protected void update(int direction, boolean attacking) {
+        int currWidth = 0;
+        currWidth = (int)mAnimationManager.getActiveWidth();
         if (direction > 0) {
-            int currWidth = (int)mAnimationManager.getActiveWidth();
+
 
             if (direction == 1) {
                 xPos -= movementSpeed;
                 if (xPos < 0) {
                     xPos = 0;
+                } else if ((xPos + currWidth) >= threshold) {
+                    xPos -= (currWidth / 2);
                 }
             } else if (direction == 2) {
                 xPos += movementSpeed;
@@ -119,9 +123,12 @@ public class Player {
             } else {
                 state = 0;
             }
+        } else if (direction > 0) {
+            state = 2;
+        } else {
+            state = 0;
         }
 
-// TODO will need to change once more sprites are added.
         mAnimationManager.playAnim(state);
         mAnimationManager.update();
 
