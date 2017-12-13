@@ -166,8 +166,9 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         }
 
 // TODO find out where to move to and adjust.
-        mBackground.update();
-
+        if (mPlayer.getPlayerRect().right >= (Constants.SCREEN_WIDTH * Constants.THRESHHOLD_RATIO)) {
+            mBackground.update(true);
+        }
         // Calls player's update function and passes flags.
         mPlayer.update(playerDirection, playerAttacking);
         if (mPlayer.getState() == 0) {

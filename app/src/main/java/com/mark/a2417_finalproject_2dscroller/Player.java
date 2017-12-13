@@ -20,7 +20,7 @@ public class Player {
 
     private Rect playerRect;
     private boolean isMoving;
-    private int movementSpeed = 75;     // TODO add to constants.
+    private int movementSpeed;     // TODO add to constants.
     private int xPos;
     private int yPos;
     private int width;
@@ -36,6 +36,7 @@ public class Player {
     private Context mContext;
 
     private int state = 0;
+    private int threshold;
 
     // Constructor.
     public Player(Rect rectangle, Context context) {
@@ -45,6 +46,8 @@ public class Player {
         height = playerRect.height();
         xPos = playerRect.left;
         yPos = playerRect.top;
+        movementSpeed = Constants.MOVE_SPEED;
+        threshold = (int) (Constants.SCREEN_WIDTH * Constants.THRESHHOLD_RATIO);
 //        playerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle__000);
 //        playerImage = Bitmap.createScaledBitmap(playerImage, width)   <<< start of splitting sprite image page
 
@@ -87,13 +90,23 @@ public class Player {
     // Update function.
     protected void update(int direction, boolean attacking) {
         if (direction > 0) {
+            int currWidth = (int)mAnimationManager.getActiveWidth();
+
             if (direction == 1) {
                 xPos -= movementSpeed;
+                if (xPos < 0) {
+                    xPos = 0;
+                }
             } else if (direction == 2) {
                 xPos += movementSpeed;
             }
-            int currWidth = (int)mAnimationManager.getActiveWidth();
-            playerRect.set(xPos, yPos, xPos + currWidth, yPos + height);
+
+            int rightX = xPos + currWidth;
+            if (rightX >= threshold) {
+                rightX = threshold + (currWidth / 2);
+                xPos = rightX - currWidth;
+            }
+            playerRect.set(xPos, yPos, rightX, yPos + height);
         }
 
         if (attacking) {

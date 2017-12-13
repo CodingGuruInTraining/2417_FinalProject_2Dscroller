@@ -28,6 +28,7 @@ public class Background {
     private int groundY;
     private int groundWidth;
     private boolean shortGround = false;
+    private int groundX;
 
     private int dx;
     private int startX = 0;
@@ -50,10 +51,11 @@ public class Background {
 
         this.x = 0;
         this.y = 0;
+        this.groundX = 0;
 // TODO make these constants and set in MainActivity
         this.width = Constants.SCREEN_WIDTH; // (int)(cityBackground2.getWidth() * Constants.SCREEN_SCALER); // Constants.SCREEN_WIDTH;
         this.height = 4 * (Constants.SCREEN_HEIGHT / 5);
-
+        this.dx = Constants.MOVE_SPEED;
 
         ground = mContext.getDrawable(R.drawable.ground);
         if (ground.getIntrinsicWidth() < Constants.SCREEN_WIDTH) {
@@ -79,14 +81,14 @@ public class Background {
         }
 //        canvas.drawBitmap(cityBackground2,new Rect(x, y, width, height), new Rect(x, y, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT), null);
 
-        ground.setBounds(x, groundY, groundWidth, Constants.SCREEN_HEIGHT);
+        ground.setBounds(groundX, groundY, groundWidth, Constants.SCREEN_HEIGHT);
         ground.draw(canvas);
         if (shortGround) {
             int counter = 1;
             int rightX = 0;
             while (rightX < Constants.SCREEN_WIDTH) {
-                rightX = x + groundWidth + (groundWidth * counter);
-                ground.setBounds(x + (groundWidth * counter), groundY, rightX, Constants.SCREEN_HEIGHT);
+                rightX = groundX + groundWidth + (groundWidth * counter);
+                ground.setBounds(groundX + (groundWidth * counter), groundY, rightX, Constants.SCREEN_HEIGHT);
                 ground.draw(canvas);
                 counter++;
             }
@@ -98,13 +100,14 @@ public class Background {
 //        }
     }
 
-    public void update() {
-
-        // Moves the background's x coordinate.
-//        x += dx;
-//        if (x < -width) {
-//            x = startX;
-//        }
+    public void update(boolean movingTime) {
+        if (movingTime) {
+            // Moves the background's x coordinate.
+            x -= dx;
+            if (x < -(width * 2)) {
+                x = startX;
+            }
+        }
     }
 
 
