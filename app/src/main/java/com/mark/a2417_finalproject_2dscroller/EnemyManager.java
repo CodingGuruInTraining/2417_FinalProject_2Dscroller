@@ -63,6 +63,9 @@ public class EnemyManager {
         // Loops through array and calls each enemy's update function.
         for (Enemy enemy : enemies) {
             enemy.update();
+            if (!enemy.isActive() && enemy.isDone()) {
+                enemies.remove(enemy);
+            }
 //            mAnimationManager.update();
         }
     }
@@ -70,13 +73,20 @@ public class EnemyManager {
 
     // Function to check whether an enemy has collided with the player.
     // This is called from the GameManager.
-    public boolean checkCollisions(Rect player) {
+    public boolean checkCollisions(Player player) {
         for (Enemy enemy : enemies) {
 // TODO check if enemy is in range to attack
 // TODO check if in player's attack range and player is attacking
-            if (enemy.checkCollision(player)) {
-                // Removes enemy from array.
-                enemies.remove(enemy);
+            if (enemy.checkCollision(player.getPlayerRect(), player.isAttacking())) {
+                if (enemy.isActive()) {
+                    // Enemy attacked player.
+                    player.hitPlayer();
+                }
+                else {
+                    // Removes enemy from array.
+//                    enemies.remove(enemy);
+                }
+
                 return true;
             }
         }

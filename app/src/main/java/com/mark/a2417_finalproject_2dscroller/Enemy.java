@@ -24,7 +24,7 @@ public class Enemy {
     private Rect rectangle;
     private int width;
     private int height;
-    private boolean active;
+    private boolean active = true;
 
     private Paint painter;
     private int xPos;
@@ -35,10 +35,7 @@ public class Enemy {
 
     private AnimationManager mAnimationManager;
 
-    public Enemy(int centerX, int centerY) {
-        setCenterX(centerX);
-        setCenterY(centerY);
-    }
+    private int state = 0;
 
 // TODO determine sizes in MainActivity
 // TODO add values to Constants
@@ -52,10 +49,10 @@ public class Enemy {
         painter = new Paint();
         painter.setColor(Color.RED);
 
-        if (side < 2) {
+        if (side < 2) { // Start on Right and move left.
             xPos = (2 * width) + Constants.SCREEN_WIDTH;
             xSpeed = -100; // TODO Constant.
-        } else {
+        } else { // Start on Left and move right.
             xPos = 2 * -width;
             xSpeed = 100; // TODO Constant.
         }
@@ -79,27 +76,49 @@ public class Enemy {
     }
 
     public void update() {
-        xPos += xSpeed;
+        if (state == 0) {
+            xPos += xSpeed;
+            if (direction < 2 && (xPos + width) < 0) {
+                active = false;
+            } else if (direction == 2 && xPos > Constants.SCREEN_WIDTH) {
+                active = false;
+            }
+        } else {
+// TODO if hit player, set flag variable
+// TODO then can check here if flag is true = move on
+        }
 // TODO check bounds
         rectangle.set(xPos, yPos, xPos + width, yPos + height);
-        mAnimationManager.playAnim(0);
+        mAnimationManager.playAnim(state);
         mAnimationManager.update();
+        if (mAnimationManager.isDone(state)) {
+            state = 0;
+        }
 //        centerX += speedX;
 //        speedX = bg.getSpeedX();
     }
 
     public void die() {
-
+        state = 2;
+        active = false;
     }
 
     public void attack() {
-
+        state = 1;
     }
 
 
 // TODO may need to change when adding bitmaps.
-    protected boolean checkCollision(Rect player) {
-        return Rect.intersects(rectangle, player);
+    protected boolean checkCollision(Rect player, boolean attacking) {
+        if (Rect.intersects(rectangle, player)) {
+            if (attacking) {
+                die();
+            } else {
+                attack();
+            }
+            return true;
+        }
+        return false;
     }
 
 
@@ -171,4 +190,6 @@ public class Enemy {
 
 
     public Rect getRectangle() { return rectangle; }
+
+    public boolean isDone() { return mAnimationManager.isDone(state); }
 }

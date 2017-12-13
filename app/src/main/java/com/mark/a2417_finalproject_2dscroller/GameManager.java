@@ -134,8 +134,8 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 break;
 
         }
-        Log.d("tag", MotionEvent.actionToString(event.getAction()) + "   action string");
-        Log.d("tag", "attack button pressed");
+//        Log.d("tag", MotionEvent.actionToString(event.getAction()) + "   action string");
+        Log.d("tag", "attacking now!");
         // Always returning true detects every touch to screen.
         return true;
     }
@@ -179,7 +179,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         mEnemyManager.update();
 
         // Checks with the enemy manager whether any collisions occurred.
-        boolean collision = mEnemyManager.checkCollisions(mPlayer.getPlayerRect());
+        boolean collision = mEnemyManager.checkCollisions(mPlayer);
 // TODO do something with this perhaps.
 
 

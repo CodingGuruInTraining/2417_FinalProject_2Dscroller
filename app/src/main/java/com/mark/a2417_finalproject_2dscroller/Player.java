@@ -37,6 +37,8 @@ public class Player {
 
     private int state = 0;
     private int threshold;
+    private boolean attacking = false;
+    private int enemyHits = 0;
 
     // Constructor.
     public Player(Rect rectangle, Context context) {
@@ -119,9 +121,11 @@ public class Player {
 //                state = 0;
 //            } else {
                 state = 1;
+                this.attacking = attacking;
 //            }
             } else {
                 state = 0;
+                this.attacking = !attacking;
             }
         } else if (direction > 0) {
             state = 2;
@@ -158,4 +162,9 @@ public class Player {
         return movementSpeed;
     }
     public int getState() { return state; }
+    public boolean isAttacking() { return attacking; }
+    public void hitPlayer() {
+        enemyHits++;
+        Log.d("tag", "enemy hit the player!");
+    }
 }
