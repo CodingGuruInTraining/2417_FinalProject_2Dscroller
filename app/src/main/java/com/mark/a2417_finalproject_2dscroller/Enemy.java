@@ -80,18 +80,10 @@ public class Enemy {
         mAnimationManager.draw(canvas, rectangle);
     }
 
-    public void update() {
+    public void update(Rect player) {
 
-//        mAnimationManager.playAnim(state);
-//        mAnimationManager.update();
-//        if (mAnimationManager.isDone(state)) {
-//            state = 0;
-//        }
-
-//        if (state == 0) {
-//        if (state != 1) {
             xPos += xSpeed;
-//        }
+
             if (direction < 2 && (xPos + width) < 0) {
                 active = false;
                 readyForDeath = true;
@@ -100,49 +92,22 @@ public class Enemy {
                 readyForDeath = true;
             }
 
-//        } else {
-// TODO if hit player, set flag variable
-// TODO then can check here if flag is true = move on
-//        }
         rectangle.set(xPos, yPos, xPos + width, yPos + height);
 
 
-            if (readyForDeath) {
-                state = 2;
-                xSpeed = 0;
-            } else if (hitPlayer) {
-                state = 1;
-                xSpeed = 0;
-            } else {
-                state = 0;
-                xSpeed = defaultSpeed;
-            }
-
-
-//            if (!active) {
-//                die();
-//                xSpeed = 0;
-//            }
-//        mAnimationManager.update();
             mAnimationManager.playAnim(state);
         mAnimationManager.update();
-        if (mAnimationManager.isDone(state)) {
-            state = 0;
-        }
+
     }
 
-    public void die() {
-        state = 2;
-        active = false;
-    }
 
-    public void attack() {
-        state = 1;
-    }
 
 
     protected boolean checkCollision(Rect player) {
-        if (Rect.intersects(rectangle, player) && !active) {
+        if (Rect.intersects(rectangle, player)) {
+            state = 2;
+            xSpeed = 0;
+//        if (Rect.intersects(rectangle, player) && !active) {
 //            if (attacking) {
 //                die();
 //            } else {
@@ -150,9 +115,9 @@ public class Enemy {
 //            }
 //            attack();
 //            mAnimationManager.playAnim(state);
-            if (!readyForDeath && !hitPlayer) {
-                return true;
-            }
+//            if (!readyForDeath && !hitPlayer) {
+//                return true;
+//            }
         }
         return false;
     }

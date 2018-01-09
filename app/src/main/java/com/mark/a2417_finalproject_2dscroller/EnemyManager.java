@@ -53,7 +53,7 @@ public class EnemyManager {
 
 
     // Function that updates each Enemy object.
-    public void update() {
+    public void update(Rect player) {
         // Checks if there are at least a certain number of active
         // enemies in play.
 // TODO determine constant value for size check.
@@ -64,49 +64,52 @@ public class EnemyManager {
         // Loops through array and calls each enemy's update function.
         for (Enemy enemy : enemies) {
 
-            if ((!enemy.isReadyForDeath() || !enemy.isHitPlayer()) && enemy.isDone()) {
-                enemies.remove(enemy);
-            }
-            enemy.update();
+//            if ((!enemy.isReadyForDeath() || !enemy.isHitPlayer()) && enemy.isDone()) {
+//                enemies.remove(enemy);
+//            }
+            enemy.update(player);
 //            mAnimationManager.update();
         }
     }
 
 
-    public boolean checkAttackRanges(Rect player, boolean attacking) {
-        for (Enemy enemy : enemies) {
-            if (!enemy.isReadyForDeath() && !enemy.isHitPlayer()) {
-                if (enemy.checkAttackRange(player, attacking)) {
-                    Log.d("tag", "player is in range and attacking");
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
-    // Function to check whether an enemy has collided with the player.
-    // This is called from the GameManager.
-    public boolean checkCollisions(Rect player) {
-        for (Enemy enemy : enemies) {
-            if (!enemy.isReadyForDeath() && !enemy.isHitPlayer()) {
-            if (enemy.checkCollision(player)) {
-//                if (enemy.isActive()) {
-                // Enemy attacked player.
-//                    player.hitPlayer();
-//                }
-//                else {
-//                    // Removes enemy from array.
-////                    enemies.remove(enemy);
-//                }
-
-                return true;
-            }
-            }
-        }
-        return false;
-    }
+//    public boolean checkAttackRanges(Rect player, boolean attacking) {
+////        for (Enemy enemy : enemies) {
+////            if (!enemy.isReadyForDeath() && !enemy.isHitPlayer()) {
+////                if (enemy.checkAttackRange(player, attacking)) {
+////                    Log.d("tag", "player is in range and attacking");
+////                    return true;
+////                }
+////            }
+////        }
+//        return false;
+//    }
+//
+//
+//    // Function to check whether an enemy has collided with the player.
+//    // This is called from the GameManager.
+//    public boolean checkCollisions(Rect player) {
+//        for (Enemy enemy : enemies) {
+//
+//            boolean a = enemy.checkCollision(player);
+//
+////            if (!enemy.isReadyForDeath() && !enemy.isHitPlayer()) {
+////            if (enemy.checkCollision(player)) {
+//////                if (enemy.isActive()) {
+////                // Enemy attacked player.
+//////                    player.hitPlayer();
+//////                }
+//////                else {
+//////                    // Removes enemy from array.
+////////                    enemies.remove(enemy);
+//////                }
+////
+////                return true;
+////            }
+////            }
+//        }
+//        return false;
+//    }
 
 
 
@@ -123,7 +126,6 @@ public class EnemyManager {
 
 
     private Sprite makeSprite(int id, float time, int rows, int cols, int count) {
-
         Bitmap sprite = BitmapFactory.decodeResource(mContext.getResources(), id);
         return new Sprite(sprite, time, rows, cols, count);
     }
