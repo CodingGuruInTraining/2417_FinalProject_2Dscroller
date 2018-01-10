@@ -68,6 +68,10 @@ public class EnemyManager {
 //                enemies.remove(enemy);
 //            }
             enemy.update(player);
+            if (!enemy.active) {
+                enemies.remove(enemy);
+                Log.d("tag", "removed enemy; count = " + enemies.size());
+            }
 //            mAnimationManager.update();
         }
     }

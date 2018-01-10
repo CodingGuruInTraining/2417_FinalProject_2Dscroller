@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 /**
  * Class outline for a generic Enemy.
@@ -24,9 +25,10 @@ public class Enemy {
     private Rect rectangle;
     private int width;
     private int height;
-    private boolean active = true;
+    protected boolean active = true;
     private boolean readyForDeath = false;
     private boolean hitPlayer = false;
+    private boolean collided = false;
 
     private Paint painter;
     private int xPos;
@@ -80,47 +82,89 @@ public class Enemy {
         mAnimationManager.draw(canvas, rectangle);
     }
 
-    public void update(Rect player) {
 
+
+
+
+
+
+
+    public void update(Rect player) {
+        if (xSpeed != 0) {
+            // Adjusting x position (moving).
             xPos += xSpeed;
 
-            if (direction < 2 && (xPos + width) < 0) {
-                active = false;
-                readyForDeath = true;
-            } else if (direction == 2 && xPos > Constants.SCREEN_WIDTH) {
-                active = false;
-                readyForDeath = true;
-            }
+            // Check if out of bounds.
+            checkBounds();
 
-        rectangle.set(xPos, yPos, xPos + width, yPos + height);
+            // Adjusts location rectangle.
+            rectangle.set(xPos, yPos, xPos + width, yPos + height);
 
+            // Check for collision with player.
+            checkCollision(player);
 
-            mAnimationManager.playAnim(state);
-        mAnimationManager.update();
-
-    }
-
-
-
-
-    protected boolean checkCollision(Rect player) {
-        if (Rect.intersects(rectangle, player)) {
-            state = 2;
-            xSpeed = 0;
-//        if (Rect.intersects(rectangle, player) && !active) {
-//            if (attacking) {
-//                die();
-//            } else {
-//                attack();
-//            }
-//            attack();
-//            mAnimationManager.playAnim(state);
-//            if (!readyForDeath && !hitPlayer) {
-//                return true;
-//            }
+//TODO issue might be with the animation's done check.
+            //
+            checkFinished();
         }
-        return false;
+
+        if (active) {
+            mAnimationManager.playAnim(state);
+            mAnimationManager.update();
+        }
     }
+
+
+
+    private void checkBounds() {
+        // Check if out of bounds.
+        if ((direction < 2 && (xPos + width) < 0) || (direction == 2 && xPos > Constants.SCREEN_WIDTH)) {
+            Log.d("tag", "enemy off screen");
+            active = false;
+            readyForDeath = true;
+        }
+    }
+
+    private void checkCollision(Rect player) {
+        if (!readyForDeath && !collided) {
+            if (Rect.intersects(rectangle, player)) {
+                Log.d("tag", "changing enemy state to 2");
+                state = 2;
+                xSpeed = 0;
+                collided = true;
+            }
+        }
+    }
+
+    private void checkFinished() {
+        if (collided) {
+            if (mAnimationManager.isDone(state)) {
+                Log.d("tag", "animation is done");
+                readyForDeath = true;
+                active = false;
+            }
+        }
+    }
+
+
+//    protected boolean checkCollision(Rect player) {
+//        if (Rect.intersects(rectangle, player)) {
+//            state = 2;
+//            xSpeed = 0;
+////        if (Rect.intersects(rectangle, player) && !active) {
+////            if (attacking) {
+////                die();
+////            } else {
+////                attack();
+////            }
+////            attack();
+////            mAnimationManager.playAnim(state);
+////            if (!readyForDeath && !hitPlayer) {
+////                return true;
+////            }
+//        }
+//        return false;
+//    }
 
     protected boolean checkAttackRange(Rect player, boolean attacking) {
         float buffer = (player.right - player.left) / 2;

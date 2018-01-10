@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.util.Log;
 
 /**
  * Practice Sprite Class from tutorial.
@@ -27,7 +28,7 @@ public class Sprite {
     private int cols;
     private int count;
 
-    private boolean done;
+    private boolean done = false;
 
 
     public Sprite(Bitmap sprite, double animTime, int rows, int cols, int count) {
@@ -92,6 +93,7 @@ public class Sprite {
                 colIndex = 0;
                 rowIndex = 0;
                 done = true;
+                Log.d("tag", "sprite done");
 //                isPlaying = false;
             } else {
                 colIndex++;
