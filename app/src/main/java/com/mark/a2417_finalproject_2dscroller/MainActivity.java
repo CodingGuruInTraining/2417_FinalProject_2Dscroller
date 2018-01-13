@@ -1,12 +1,8 @@
 package com.mark.a2417_finalproject_2dscroller;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.v4.view.ViewCompat;
-import android.text.Layout;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
@@ -14,8 +10,6 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.erz.joysticklibrary.JoyStick;
-
-import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
@@ -34,16 +28,8 @@ public class MainActivity extends Activity {
         GameManager gameManager = new GameManager(this);
 
 
-//        final RelativeLayout button = setupButton();
-
-//        ArrayList<View> arrayList = new ArrayList<>();
-//        arrayList.add(button);
-
-//        gameManager.addTouchables(arrayList);
-//gameManager.setClickable(true);
         relativeLayout.addView(gameManager);
         relativeLayout.addView(joyStick);
-//        relativeLayout.addView(button);
 
         setContentView(relativeLayout);
     }
@@ -63,8 +49,6 @@ public class MainActivity extends Activity {
         // Set player's start location.
         Constants.PLAYER_START_X = (dm.widthPixels / Constants.PLAYER_START_X_RATIO);
         Constants.PLAYER_START_Y = (int)(dm.heightPixels - (Constants.PLAYER_HEIGHT * Constants.PLAYER_START_Y_RATIO));
-                // (int)(dm.heightPixels * Constants.PLAYER_START_Y_RATIO);
-                // dm.heightPixels - (dm.heightPixels / Constants.PLAYER_START_RATIO);
 
         // Set joystick's location and size.
         Constants.STICK_X = (dm.widthPixels / Constants.STICK_X_RATIO);
@@ -86,24 +70,6 @@ public class MainActivity extends Activity {
         joyStick.setY(Constants.STICK_Y);
 
         return joyStick;
-    }
-
-    private RelativeLayout setupButton() {
-        GradientDrawable pic = new GradientDrawable();
-        float w = Constants.SCREEN_WIDTH / Constants.ACTION_X_RATIO;
-        float x = Constants.SCREEN_WIDTH - (Constants.SCREEN_WIDTH / Constants.STICK_X_RATIO) - w;
-        float y = Constants.SCREEN_HEIGHT - (w * Constants.ACTION_Y_RATIO);
-//        pic.setBounds((int)x, (int)y, (int)(x + w), (int)(y + w));
-        pic.setCornerRadius(100);
-        pic.setColor(Color.argb(80,0,0,0));
-
-        RelativeLayout button = new RelativeLayout(this);
-        button.setBackground(pic);
-        button.setLayoutParams(new RelativeLayout.LayoutParams((int)w, (int)w));
-        button.setX(x);
-        button.setY(y);
-
-        return button;
     }
 }
 

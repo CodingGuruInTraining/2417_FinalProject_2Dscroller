@@ -5,13 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
-import android.view.SurfaceHolder;
 
 /**
- * Class for drawing the background scene.
+ * Class for drawing the background scene and updating the scrolling.
  */
 
 public class Background {
@@ -34,13 +32,18 @@ public class Background {
     private int startX = 0;
 
 
+    // Constructor.
     public Background(Context context) {
         mContext = context;
+        // Retrieves the indicated background image.
         cityBackground =  mContext.getDrawable(R.drawable.city_background_night);
-
+        // Second image captured to originally follow the first, but should now
+        // replace the original instance.
+        // TODO replace bitmap with drawable.
         cityBackground2 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.city_background_night);
 
-
+        // Calculates a scaling ratio of the image height and the screen's height.
+        // This is currently not being used anymore.
         try {
             Constants.SCREEN_SCALER = (Constants.SCREEN_HEIGHT / cityBackground2.getHeight());
         }
@@ -49,43 +52,55 @@ public class Background {
         }
 
 
+        // Sets initial values.
         this.x = 0;
         this.y = 0;
         this.groundX = 0;
-// TODO make these constants and set in MainActivity
-        this.width = Constants.SCREEN_WIDTH; // (int)(cityBackground2.getWidth() * Constants.SCREEN_SCALER); // Constants.SCREEN_WIDTH;
+        // TODO make these constants and set in MainActivity
+        this.width = Constants.SCREEN_WIDTH;
         this.height = 4 * (Constants.SCREEN_HEIGHT / 5);
+        // Static speed for the background to move each frame.
         this.dx = Constants.MOVE_SPEED;
 
+
+        // Retrieves ground image and compares its width against the screen.
         ground = mContext.getDrawable(R.drawable.ground);
         if (ground.getIntrinsicWidth() < Constants.SCREEN_WIDTH) {
             groundWidth = ground.getIntrinsicWidth();
             shortGround = true;
         }
+        // Calculates the y and height values.
         groundHeight = Constants.SCREEN_HEIGHT - height;
         groundY = Constants.SCREEN_HEIGHT - groundHeight;
     }
 
+
+
+
+    // Draw function to draw the background images to the canvas.
     public void draw(Canvas canvas) {
+        // Covers the canvas for a baseline.
+        canvas.drawColor(Color.BLACK);
 
-
-
-
-        canvas.drawColor(Color.BLACK); // .rgb( 53, 43, 140));
-
+        // Draws the background image.
         cityBackground.setBounds(x, y, width*2, height);
         cityBackground.draw(canvas);
+        // Checks if the edge of the image has reached the active screen.
+        // Adds a second image after it if so.
         if (width *2 < Constants.SCREEN_WIDTH) {
             cityBackground.setBounds((width *2) + x, y, (width * 4) + x, height);
             cityBackground.draw(canvas);
         }
-//        canvas.drawBitmap(cityBackground2,new Rect(x, y, width, height), new Rect(x, y, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT), null);
 
+
+        // Draws the ground image.
         ground.setBounds(groundX, groundY, groundWidth, Constants.SCREEN_HEIGHT);
         ground.draw(canvas);
+        // Checks whether the ground image is smaller than the screen.
         if (shortGround) {
             int counter = 1;
             int rightX = 0;
+            // Adds more copies of image side by side until the whole screen is filled.
             while (rightX < Constants.SCREEN_WIDTH) {
                 rightX = groundX + groundWidth + (groundWidth * counter);
                 ground.setBounds(groundX + (groundWidth * counter), groundY, rightX, Constants.SCREEN_HEIGHT);
@@ -93,13 +108,11 @@ public class Background {
                 counter++;
             }
         }
-//        canvas.drawBitmap(cityBackground2, null, new Rect(x, y, width, height), null);
-//
-//        if (x < 0) {
-//            canvas.drawBitmap(cityBackground2, x + width, y, null);
-//        }
     }
 
+
+
+    // Update function for increasing the x value of background.
     public void update(boolean movingTime) {
         if (movingTime) {
             // Moves the background's x coordinate.
@@ -112,37 +125,8 @@ public class Background {
 
 
 
-//    private Bitmap lessResolution(int width, int height) {
-//        int reqHeight = height;
-//        int reqWidth = width;
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.city_background_night, options);
-//
-//        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-//
-//        options.inJustDecodeBounds = false;
-//
-//        return BitmapFactory.decodeResource(mContext.getResources(), R.drawable.city_background_night, options);
-//    }
-//
-//    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-//        final int height = options.outHeight;
-//        final int width = options.outWidth;
-//        int inSampleSize = 1;
-//
-//        if (height > reqHeight || width > reqWidth) {
-//            final int heightRatio = Math.round((float) height / (float) reqHeight);
-//            final int widthRatio = Math.round((float) width / (float) reqWidth);
-//
-//            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-//        }
-//        return inSampleSize;
-//    }
 
-
-
+    // Getters that are currently not being used.
     public void setScrollSpeed(int dx) {
         this.dx = dx;
     }
