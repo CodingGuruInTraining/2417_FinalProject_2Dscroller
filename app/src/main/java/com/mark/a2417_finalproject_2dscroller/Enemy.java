@@ -42,6 +42,9 @@ public class Enemy {
     private int state = 0;
     private int defaultSpeed;
 
+    private double animStartTime;
+    private double animTime;
+
 // TODO determine sizes in MainActivity
 // TODO add values to Constants
     public Enemy(int side, Sprite[] sprites) {   // Context context) {
@@ -70,6 +73,7 @@ public class Enemy {
         rectangle = new Rect(xPos, yPos, xPos + width, yPos + height);
 
         mAnimationManager = new AnimationManager(sprites);
+        animTime = mAnimationManager.getAnimTime(2);
     }
 
 
@@ -132,13 +136,15 @@ public class Enemy {
                 state = 2;
                 xSpeed = 0;
                 collided = true;
+                animStartTime = System.currentTimeMillis();
             }
         }
     }
 
     private void checkFinished() {
         if (collided) {
-            if (mAnimationManager.isDone(state)) {
+//            if (mAnimationManager.isDone(state)) {
+            if (animStartTime + animTime >= System.currentTimeMillis()) {
                 Log.d("tag", "animation is done");
                 readyForDeath = true;
                 active = false;

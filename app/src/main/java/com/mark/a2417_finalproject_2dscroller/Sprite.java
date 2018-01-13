@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class Sprite {
 
-    private int frameIndex;
+    private int frameIndex;     // Current frame.
     private double frameTime;
     private long lastFrame;
     private boolean isPlaying = false;
@@ -26,9 +26,10 @@ public class Sprite {
 
     private int rows;
     private int cols;
-    private int count;
+    private int count;      // Number of frames in animation.
 
-    private boolean done = false;
+    private boolean done;
+    private double animTime;
 
 
     public Sprite(Bitmap sprite, double animTime, int rows, int cols, int count) {
@@ -48,8 +49,9 @@ public class Sprite {
         spriteSheet = Bitmap.createScaledBitmap(spriteSheet, (int)(picWidth * this.cols),
                 (int)(picHeight * this.rows), true);
 
-        frameTime = animTime / this.count;
+        frameTime = 1000 * (animTime / this.count);
         lastFrame = System.currentTimeMillis();
+        this.animTime = animTime;
     }
 
     public void draw(Canvas canvas, Rect destination) {
@@ -86,7 +88,7 @@ public class Sprite {
             return;
         }
 
-        if (System.currentTimeMillis() - lastFrame > frameTime * 1000) {
+        if (System.currentTimeMillis() - lastFrame > frameTime) { // * 1000) {
             frameIndex++;
             if (frameIndex >= count) {
                 frameIndex = 0;
@@ -136,4 +138,5 @@ public class Sprite {
     public float getWholeHeight() { return picHeight * rows; }
     public float getWidth() { return picWidth; }
     public boolean isDone() { return done; }
+    public double getAnimTime() {return animTime; }
 }

@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 
@@ -62,18 +63,29 @@ public class EnemyManager {
         }
 
         // Loops through array and calls each enemy's update function.
-        for (Enemy enemy : enemies) {
 
-//            if ((!enemy.isReadyForDeath() || !enemy.isHitPlayer()) && enemy.isDone()) {
-//                enemies.remove(enemy);
-//            }
+        Iterator<Enemy> iterator = enemies.iterator();
+        while (iterator.hasNext()) {
+            Enemy enemy = iterator.next();
             enemy.update(player);
             if (!enemy.active) {
-                enemies.remove(enemy);
-                Log.d("tag", "removed enemy; count = " + enemies.size());
+                iterator.remove();
             }
-//            mAnimationManager.update();
         }
+
+
+//        for (Enemy enemy : enemies) {
+//
+////            if ((!enemy.isReadyForDeath() || !enemy.isHitPlayer()) && enemy.isDone()) {
+////                enemies.remove(enemy);
+////            }
+//            enemy.update(player);
+//            if (!enemy.active) {
+//                enemies.remove(enemy);
+//                Log.d("tag", "removed enemy; count = " + enemies.size());
+//            }
+////            mAnimationManager.update();
+//        }
     }
 
 

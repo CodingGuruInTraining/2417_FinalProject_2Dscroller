@@ -68,4 +68,5 @@ public class AnimationManager {
     }
 
     public boolean isDone(int index) { return animations[index].isDone(); }
+    public double getAnimTime(int index) { return animations[index].getAnimTime(); }
 }
