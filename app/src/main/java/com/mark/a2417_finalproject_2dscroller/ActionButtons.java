@@ -29,11 +29,9 @@ public class ActionButtons {
         // Values won't change during game.
         widthHeight = Constants.SCREEN_WIDTH / Constants.ACTION_X_RATIO;
 
-        // Calculates the x and y coordinates.
         xPos = Constants.SCREEN_WIDTH - (Constants.SCREEN_WIDTH / Constants.STICK_X_RATIO) - widthHeight;
         yPos = Constants.SCREEN_HEIGHT - (widthHeight * Constants.ACTION_Y_RATIO);
 
-        // Calculate the radius.
         radius = widthHeight / 2;
 
         // Creates rectangle of button to be used in onTouch event.

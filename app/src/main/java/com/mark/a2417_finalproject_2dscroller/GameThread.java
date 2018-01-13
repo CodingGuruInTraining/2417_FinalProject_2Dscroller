@@ -44,6 +44,7 @@ public class GameThread extends Thread {
 
             // Attempt to synchronize with the game manager in case
             // there is a problem with multiple threads.
+// TODO may not need this; check later on.
             try {
                 mCanvas = this.mSurfaceHolder.lockCanvas();
                 synchronized (mSurfaceHolder) {
@@ -80,6 +81,7 @@ public class GameThread extends Thread {
             totalTime += System.nanoTime() - startTime;
             frameCount++;
             if (frameCount == maxFps) {
+//                averageFps = 1000/((totalTime / frameCount) / 1000000);
                 frameCount = 0;
                 totalTime = 0;
             }
