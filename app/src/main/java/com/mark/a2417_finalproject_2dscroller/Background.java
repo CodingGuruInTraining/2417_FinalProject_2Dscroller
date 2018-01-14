@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -17,14 +18,14 @@ import android.view.SurfaceHolder;
 public class Background {
 
     private Drawable cityBackground;
-    private Context mContext;
+    private Bitmap cityBackground2;
+    private Drawable ground;
+
     private int x;
     private int y;
     private int width;
     private int height;
-    private Bitmap cityBackground2;
-    private Drawable ground;
-    private int groundHeight;
+
     private int groundY;
     private int groundWidth;
     private boolean shortGround = false;
@@ -34,13 +35,14 @@ public class Background {
     private int startX = 0;
 
 
+
+    // Constructor.
     public Background(Context context) {
-        mContext = context;
-        cityBackground =  mContext.getDrawable(R.drawable.city_background_night);
+        // Retrieves background images.
+        cityBackground =  context.getDrawable(R.drawable.city_background_night);
+        cityBackground2 = BitmapFactory.decodeResource(context.getResources(), R.drawable.city_background_night);
 
-        cityBackground2 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.city_background_night);
-
-
+        // Error handler.
         try {
             Constants.SCREEN_SCALER = (Constants.SCREEN_HEIGHT / cityBackground2.getHeight());
         }
@@ -48,41 +50,61 @@ public class Background {
             Log.e("tag", "error getting background height");
         }
 
-
+        // Initializes values.
         this.x = 0;
         this.y = 0;
         this.groundX = 0;
-// TODO make these constants and set in MainActivity
-        this.width = Constants.SCREEN_WIDTH; // (int)(cityBackground2.getWidth() * Constants.SCREEN_SCALER); // Constants.SCREEN_WIDTH;
-        this.height = 4 * (Constants.SCREEN_HEIGHT / 5);
+        this.width = Constants.SCREEN_WIDTH;
+        this.height = (int)(Constants.SCREEN_HEIGHT * Constants.BACKGROUND_HEIGHT_RATIO);
         this.dx = Constants.MOVE_SPEED;
 
-        ground = mContext.getDrawable(R.drawable.ground);
-        if (ground.getIntrinsicWidth() < Constants.SCREEN_WIDTH) {
-            groundWidth = ground.getIntrinsicWidth();
-            shortGround = true;
+
+        // Sets up the ground image of background.
+        // Retrieves ground image.
+        ground = context.getDrawable(R.drawable.ground);
+
+        // Error handler - Drawable's getter may throw error.
+        try {
+            // Compares image width to screen to determine whether to replicate image.
+            if (ground.getIntrinsicWidth() < Constants.SCREEN_WIDTH) {
+                groundWidth = ground.getIntrinsicWidth();
+                shortGround = true;
+            }
+        } catch (NullPointerException e) {
+            Log.e("tag", "error getting ground image height");
         }
-        groundHeight = Constants.SCREEN_HEIGHT - height;
+
+        // Initializes values.
+        int groundHeight = Constants.SCREEN_HEIGHT - height;
         groundY = Constants.SCREEN_HEIGHT - groundHeight;
     }
 
+
+
+    // Draw method.
     public void draw(Canvas canvas) {
+        // Clears the canvas before redrawing.
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        // Colors the base black.
+        canvas.drawColor(Color.BLACK);
 
-
-
-
-        canvas.drawColor(Color.BLACK); // .rgb( 53, 43, 140));
-
+        // Draws background image.
         cityBackground.setBounds(x, y, width*2, height);
         cityBackground.draw(canvas);
+
+        // Checks if right edge of background image has reached the screen.
+        // Adds a second image to end.
+// TODO fix transition while scrolling.
         if (width *2 < Constants.SCREEN_WIDTH) {
             cityBackground.setBounds((width *2) + x, y, (width * 4) + x, height);
             cityBackground.draw(canvas);
         }
-//        canvas.drawBitmap(cityBackground2,new Rect(x, y, width, height), new Rect(x, y, Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT), null);
 
+        // Draws ground image.
         ground.setBounds(groundX, groundY, groundWidth, Constants.SCREEN_HEIGHT);
         ground.draw(canvas);
+
+        // Continues adding another image to right side till the screen width is covered.
         if (shortGround) {
             int counter = 1;
             int rightX = 0;
@@ -93,58 +115,19 @@ public class Background {
                 counter++;
             }
         }
-//        canvas.drawBitmap(cityBackground2, null, new Rect(x, y, width, height), null);
-//
-//        if (x < 0) {
-//            canvas.drawBitmap(cityBackground2, x + width, y, null);
-//        }
     }
 
+
+
+    // Update method.
     public void update(boolean movingTime) {
         if (movingTime) {
             // Moves the background's x coordinate.
             x -= dx;
+// TODO test whether this part is issue with background scrolling.
             if (x < -(width * 2)) {
                 x = startX;
             }
         }
     }
-
-
-
-//    private Bitmap lessResolution(int width, int height) {
-//        int reqHeight = height;
-//        int reqWidth = width;
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeResource(mContext.getResources(), R.drawable.city_background_night, options);
-//
-//        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-//
-//        options.inJustDecodeBounds = false;
-//
-//        return BitmapFactory.decodeResource(mContext.getResources(), R.drawable.city_background_night, options);
-//    }
-//
-//    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-//        final int height = options.outHeight;
-//        final int width = options.outWidth;
-//        int inSampleSize = 1;
-//
-//        if (height > reqHeight || width > reqWidth) {
-//            final int heightRatio = Math.round((float) height / (float) reqHeight);
-//            final int widthRatio = Math.round((float) width / (float) reqWidth);
-//
-//            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-//        }
-//        return inSampleSize;
-//    }
-
-
-
-    public void setScrollSpeed(int dx) {
-        this.dx = dx;
-    }
-    public int getGroundY() { return groundY; }
 }

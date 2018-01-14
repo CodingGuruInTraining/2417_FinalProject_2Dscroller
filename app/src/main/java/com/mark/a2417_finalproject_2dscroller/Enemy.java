@@ -8,120 +8,108 @@ import android.graphics.Rect;
 import android.util.Log;
 
 /**
- * Class outline for a generic Enemy.
+ * This Class outlines the Enemy objects.
  */
+
 
 public class Enemy {
 
-
-    private int maxHealth;
-    private int currentHealth;
-    private int power;
-    private int speedX;
-    private int centerX;
-    private int centerY;
-    private Background bg;
-
+    // Variables.
     private Rect rectangle;
     private int width;
     private int height;
+    private int xPos;
+    private int yPos;
+
     protected boolean active = true;
     private boolean readyForDeath = false;
     private boolean hitPlayer = false;
     private boolean collided = false;
 
-    private Paint painter;
-    private int xPos;
-    private int yPos;
-
     private int direction;
     private int xSpeed;
 
     private AnimationManager mAnimationManager;
-
     private int state = 0;
-    private int defaultSpeed;
 
     private double animStartTime;
     private double animTime;
 
-// TODO determine sizes in MainActivity
-// TODO add values to Constants
-    public Enemy(int side, Sprite[] sprites) {   // Context context) {
+
+
+    // Constructor.
+    public Enemy(int side, Sprite[] sprites) {
+        // Which side of the screen does this Enemy spawn.
         direction = side;
-//        rectangle = rect;
-        height = Constants.PLAYER_HEIGHT; // 400; // rectangle.height();
+
+        // Initializes values.
+        height = Constants.PLAYER_HEIGHT;
         float scaler = sprites[0].getWholeHeight() / height;
-        width = (int)(sprites[0].getWholeWidth() / scaler); // 300;  //rectangle.width();
+        width = (int)(sprites[0].getWholeWidth() / scaler);
 
-        painter = new Paint();
-        painter.setColor(Color.RED);
-
-        if (side < 2) { // Start on Right and move left.
+        // Determines and sets X and Y coordinates.
+        if (side < 2) {     // Start on Right and move left.
             xPos = (2 * width) + Constants.SCREEN_WIDTH;
-            xSpeed = -100; // TODO Constant.
-            defaultSpeed = -100;
-        } else { // Start on Left and move right.
+            xSpeed = -(Constants.ENEMY_SPEED);
+        } else {            // Start on Left and move right.
             xPos = 2 * -width;
-            xSpeed = 100; // TODO Constant.
-            defaultSpeed = 100;
+            xSpeed = Constants.ENEMY_SPEED;
         }
-        yPos = Constants.PLAYER_START_Y; // 800; // TODO Constant.
+        yPos = Constants.PLAYER_START_Y;
 
-//        xPos = rectangle.left;
-//        yPos = rectangle.top;
+        // Creates a rectangle object for collision detection.
         rectangle = new Rect(xPos, yPos, xPos + width, yPos + height);
 
+        // Instantiates an Animation Manager.
         mAnimationManager = new AnimationManager(sprites);
-        animTime = mAnimationManager.getAnimTime(2);
+
+// TODO trying finding an alternative to this strategy.
+        // Retrieves the animation time for the dying sprite.
+        animTime = (mAnimationManager.getAnimTime(2)) * 1000;
     }
 
 
 
-
+    // Draw method.
     public void draw(Canvas canvas) {
-//        Paint paint = new Paint();
-//        paint.setColor(Color.RED);
-//        canvas.drawRect(rectangle, painter);
         mAnimationManager.draw(canvas, rectangle);
     }
 
 
 
-
-
-
-
-
+    // Update method.
     public void update(Rect player) {
-        if (xSpeed != 0) {
-            // Adjusting x position (moving).
-            xPos += xSpeed;
+        if (active) {
+            // Checks whether the enemy is moving.
+            if (xSpeed != 0) {
+                // Adjusts X position (moving).
+                xPos += xSpeed;
 
-            // Check if out of bounds.
-            checkBounds();
+                // Adjusts location rectangle.
+                rectangle.set(xPos, yPos, xPos + width, yPos + height);
 
-            // Adjusts location rectangle.
-            rectangle.set(xPos, yPos, xPos + width, yPos + height);
+                // Check if out of bounds.
+                checkBounds();
 
-            // Check for collision with player.
-            checkCollision(player);
+                // Check for collision with player.
+                checkCollision(player);
 
 //TODO issue might be with the animation's done check.
-            //
-            checkFinished();
-        }
-
-        if (active) {
-            mAnimationManager.playAnim(state);
-            mAnimationManager.update();
+                // Checks if animation has completed after collision.
+                checkFinished();
+            }
+            // Checks if enemy is active before playing animation.
+            if (active) {
+                mAnimationManager.playAnim(state);
+                mAnimationManager.update();
+            }
         }
     }
 
 
 
+    // Check if out of bounds.
     private void checkBounds() {
-        // Check if out of bounds.
         if ((direction < 2 && (xPos + width) < 0) || (direction == 2 && xPos > Constants.SCREEN_WIDTH)) {
             Log.d("tag", "enemy off screen");
             active = false;
@@ -129,10 +117,14 @@ public class Enemy {
         }
     }
 
+
+
+    // Check if enemy has collided with player.
     private void checkCollision(Rect player) {
-        if (!readyForDeath && !collided) {
+        if (!collided) {
+            // Checks for any overlap.
             if (Rect.intersects(rectangle, player)) {
-                Log.d("tag", "changing enemy state to 2");
+                Log.d("tag", "COLLISION");
                 state = 2;
                 xSpeed = 0;
                 collided = true;
@@ -141,10 +133,12 @@ public class Enemy {
         }
     }
 
+
+
+    // Check if dying animation has finished.
     private void checkFinished() {
         if (collided) {
-//            if (mAnimationManager.isDone(state)) {
-            if (animStartTime + animTime >= System.currentTimeMillis()) {
+            if (System.currentTimeMillis() >= (animStartTime + animTime)) {
                 Log.d("tag", "animation is done");
                 readyForDeath = true;
                 active = false;
@@ -153,130 +147,12 @@ public class Enemy {
     }
 
 
-//    protected boolean checkCollision(Rect player) {
-//        if (Rect.intersects(rectangle, player)) {
-//            state = 2;
-//            xSpeed = 0;
-////        if (Rect.intersects(rectangle, player) && !active) {
-////            if (attacking) {
-////                die();
-////            } else {
-////                attack();
-////            }
-////            attack();
-////            mAnimationManager.playAnim(state);
-////            if (!readyForDeath && !hitPlayer) {
-////                return true;
-////            }
-//        }
-//        return false;
-//    }
 
-    protected boolean checkAttackRange(Rect player, boolean attacking) {
-        float buffer = (player.right - player.left) / 2;
-
-        if (Rect.intersects(rectangle, new Rect((int)(player.left - buffer), player.top, (int)(player.right + buffer), player.bottom))) {
-            if (attacking) {
-                readyForDeath = true;
-                return true;
-            }
-        }
-
-        if (xPos <= player.right + buffer && xPos > player.left) {
-            // Moving left and in range.
-            if (attacking) {
-//                die();
-
-                readyForDeath = true;
-                return true;
-            }
-        } else if (xPos + width >= player.left + buffer && xPos < player.left) {
-            // Moving right and in range.
-            if (attacking) {
-//                die();
-
-                readyForDeath = true;
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-
-    public int getMaxHealth() {
-        return maxHealth;
-    }
-
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
-    }
-
-    public int getCurrentHealth() {
-        return currentHealth;
-    }
-
-    public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
-    }
-
-    public int getPower() {
-        return power;
-    }
-
-    public void setPower(int power) {
-        this.power = power;
-    }
-
-    public int getSpeedX() {
-        return speedX;
-    }
-
-    public void setSpeedX(int speedX) {
-        this.speedX = speedX;
-    }
-
-    public int getCenterX() {
-        return centerX;
-    }
-
-    public void setCenterX(int centerX) {
-        this.centerX = centerX;
-    }
-
-    public int getCenterY() {
-        return centerY;
-    }
-
-    public void setCenterY(int centerY) {
-        this.centerY = centerY;
-    }
-
-    public Background getBg() {
-        return bg;
-    }
-
-    public void setBg(Background bg) {
-        this.bg = bg;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-
+    // Getters.
+    public boolean isActive() { return active; }
     public Rect getRectangle() { return rectangle; }
-
     public boolean isDone() { return mAnimationManager.isDone(state); }
-
-    public boolean isReadyForDeath() {
-        return readyForDeath;
-    }
-
+    public boolean isReadyForDeath() { return readyForDeath; }
     public boolean isHitPlayer() {
         return hitPlayer;
     }

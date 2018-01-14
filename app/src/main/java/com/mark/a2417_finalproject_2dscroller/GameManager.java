@@ -31,24 +31,21 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameThread thread;
     private Player mPlayer;
-    private Point playerPoint;
     private JoyStick mJoyStick;
     private Background mBackground;
-    private boolean playerMoving = false;
     private RelativeLayout parent;
     private Context mContext;
-
-    private double angle;
-    private double power;
-    public Rect mRect;
-    private int playerDirection = 0;
     private EnemyManager mEnemyManager;
-//    private RelativeLayout attackButton;
     private ActionButtons attackButton;
-    private boolean playerAttacking = false;
     private ScoreKeeper mScoreKeeper;
 
+    private int playerDirection = 0;
+    private boolean playerAttacking = false;
+    private float screenThreshold;
 
+
+
+    // Constructor.
     public GameManager(Context context) {
         super(context);
         this.mContext = context;
@@ -75,11 +72,18 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         // Instantiates action button object.
         attackButton = new ActionButtons();
 
+        // Instantiates scorekeeper object.
         mScoreKeeper = new ScoreKeeper();
+
+        // Calculates the point on screen where scrolling should begin.
+        screenThreshold = Constants.SCREEN_WIDTH * Constants.THRESHHOLD_RATIO;
 
         setFocusable(true);
     }
 
+
+
+    // SurfaceView required methods.
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
         // Restart game thread.
@@ -87,12 +91,10 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         thread.setRunning(true);
         thread.start();
     }
-
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
         // N/A
     }
-
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         // Closes game thread.
@@ -107,13 +109,16 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
             retry = false;
         }
     }
+
+
+
+    // TouchEvent for SurfaceView. Used to react to certain touch locations.
 // TODO may need to use floating action button instead.
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         // Detect how the screen was touched and acts on it.
         switch (event.getAction()) {
-            // Press down.
-            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_DOWN:       // Press down.
                 // Checks if action button was pressed.
                 if (attackButton.getButton().contains((int)event.getX(), (int)event.getY())) {
                     playerAttacking = true;
@@ -121,15 +126,13 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 break;
 
-            // Moving finger across screen.
-            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_MOVE:       // Moving finger across screen.
                 // N/A
                 break;
 
-            // Lifting finger off screen.
-            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_UP:         // Lifting finger off screen.
                 // Sets flag back to false.
-//                playerAttacking = false;
+                playerAttacking = false;
                 break;
 
             case MotionEvent.ACTION_BUTTON_PRESS:
@@ -137,11 +140,11 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
                 break;
 
         }
-//        Log.d("tag", MotionEvent.actionToString(event.getAction()) + "   action string");
-        Log.d("tag", "attacking now!");
         // Always returning true detects every touch to screen.
         return true;
     }
+
+
 
 
     // Draw function that determines which objects should be drawn.
@@ -157,20 +160,22 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
+
     // Update function that determines which objects are updated.
     public void update() {
         // Checks if the SurfaceView's parent object has been captured in variable yet.
         // Currently, this is only needed during the first update in order to create
-        // a reference to the joystick. Joystick widget seems to only work if added in
-        // a View/Layout at the start of the app (MainActivity).
+        // a reference to the joystick (won't work in constructor). Joystick widget
+        // seems to only work if added in a View/Layout at the start of the app (MainActivity).
         if (parent == null) {
             findParentLayout();
             setupJoystick();
-//            setupAttackButton();
         }
+        // Makes temporary object to reduce method calls.
+        Rect tempRect = mPlayer.getPlayerRect();
 
-// TODO find out where to move to and adjust.
-        if (mPlayer.getPlayerRect().right >= (Constants.SCREEN_WIDTH * Constants.THRESHHOLD_RATIO)) {
+        // Checks if player has reached point where background should start moving.
+        if (tempRect.right >= screenThreshold) {
             mBackground.update(true);
         }
         // Calls player's update function and passes flags.
@@ -181,23 +186,11 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         playerAttacking = mPlayer.isAttacking();
 
         // Calls the enemy manager to run its updates.
-        mEnemyManager.update(mPlayer.getPlayerRect());
-
-//        boolean playerHit = mEnemyManager.checkAttackRanges(mPlayer.getPlayerRect(), mPlayer.isAttacking());
-//        if (playerHit) {
-//            mScoreKeeper.addForPlayer();
-//        }
-//
-//        // Checks with the enemy manager whether any collisions occurred.
-//        boolean collision = mEnemyManager.checkCollisions(mPlayer.getPlayerRect());
-//        if (collision) {
-//            mScoreKeeper.addForEnemy();
-//        }
-
+        mEnemyManager.update(tempRect);
 
         setFocusable(true);
-//        parent.getChildAt(1).setFocusable(true);
     }
+
 
 
     // Function to create reference to joystick widget and add event listener.
@@ -209,6 +202,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         // Set up listener.
         mJoyStick.setListener(new JoyStick.JoyStickListener() {
             @Override
+// TODO find more accurate way to detect movement.
             public void onMove(JoyStick joyStick, double angle, double power, int direction) {
                 // Checks if joystick is in motion.
                 // A flag variable is set depending on outcome.
@@ -234,6 +228,9 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         });
     }
 
+
+
+    // Event listener used for testing touch events (TESTING).
     @Override
     public boolean performClick() {
         Log.d("tag", "performed click");
@@ -241,50 +238,6 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
     }
 
 
-
-
-
-    private void setupAttackButton() {
-//        attackButton = (RelativeLayout) parent.getChildAt(2);
-        this.setOnTouchListener((OnTouchListener) this);
-
-
-
-
-//        this.setOnTouchListener(new OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                Log.d("tag", "button touched");
-//                return true;
-//            }
-//        });
-////        ArrayList<View> arrayList = this.getTouchables();
-////        attackButton = (RelativeLayout) arrayList.get(0);
-////
-//
-//
-//        this.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d("tag", "button clicked");
-//            }
-//        });
-//
-//        attackButton.setOnTouchListener(new OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//                switch (event.getAction()) {
-//
-//                }
-//                Log.d("tag", "button touched");
-//
-//                return true;
-//            }
-//        });
-
-
-    }
 
 
     // Function to capture reference to SurfaceView's parent layout.

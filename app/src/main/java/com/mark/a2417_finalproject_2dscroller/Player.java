@@ -17,32 +17,28 @@ import android.util.Log;
  */
 
 public class Player {
-
+    // Variables.
     private Rect playerRect;
     private boolean isMoving;
-    private int movementSpeed;     // TODO add to constants.
+    private int movementSpeed;
     private int xPos;
     private int yPos;
     private int width;
     private int height;
 
-// TODO probably need a class later to handle sprites so this is temporary.
-    private Bitmap playerImage;
-
     private AnimationManager mAnimationManager;
-    private Sprite idle;
-    private Sprite attack;
-    private Sprite walk;
     private Context mContext;
 
     private int state = 0;
     private int threshold;
     private boolean attacking = false;
-    private int enemyHitPlayer = 0;
-    private int playerHitEnemy = 0;
+
+
+
 
     // Constructor.
     public Player(Rect rectangle, Context context) {
+        // Sets up variables.
         mContext = context;
         playerRect = rectangle;
         width = playerRect.width();
@@ -51,104 +47,102 @@ public class Player {
         yPos = playerRect.top;
         movementSpeed = Constants.MOVE_SPEED;
         threshold = (int) (Constants.SCREEN_WIDTH * Constants.THRESHHOLD_RATIO);
-//        playerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle__000);
-//        playerImage = Bitmap.createScaledBitmap(playerImage, width)   <<< start of splitting sprite image page
 
-//        Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.idle_sprite);
-//        Bitmap sprite = BitmapFactory.decodeResource(context.getResources(), R.drawable.attack_sprite);
+        // Creates Sprite objects.
+        Sprite idle = makeSprite(R.drawable.idle_sprite, 1f, 4, 3, 10);
+        Sprite attack = makeSprite(R.drawable.attack_sprite_fix, 0.5f, 10, 1, 10);
+        Sprite walk = makeSprite(R.drawable.run_sprite, 1f, 4, 3, 10);
 
-        idle = makeSprite(R.drawable.idle_sprite, 1f, 4, 3, 10);
-        attack = makeSprite(R.drawable.attack_sprite_fix, 0.5f, 10, 1, 10);
-        walk = makeSprite(R.drawable.run_sprite, 1f, 4, 3, 10);
-
+        // Calculates scaling ratio and changes width based on that.
         float scaler = idle.getWholeHeight() / height;
-// TODO this width may be a problem since sprites are all different.
+// TODO this width may be a problem since sprites are slightly different.
 // TODO maybe find the widest and use that's width.
         width = (int)(idle.getWholeWidth() / scaler);
 
+        // Adjusts rectangle object to use newly calculated width.
         playerRect.right = xPos + width;
-//        Bitmap[] sprites = new Bitmap[10];
-//        for (int i = 0; i < 4; i++) {
-//            for (int j = 0; j < 3; j++) {
-//
-//            }
-//        }
-//        idle = new Sprite(sprite, 2);
 
+        // Instantiates animation manager object.
         mAnimationManager = new AnimationManager(new Sprite[] {idle, attack, walk});
     }
 
 
+
     // Draw function.
     protected void draw(Canvas canvas) {
-// TODO replace with sprite once mechanics are worked out.
-//        Paint paint = new Paint();
-//        paint.setColor(Color.GREEN);
-//        canvas.drawRect(playerRect, paint);
-//        canvas.drawBitmap(playerImage, null, playerRect, null);
         mAnimationManager.draw(canvas, playerRect);
     }
 
 
+
     // Update function.
     protected void update(int direction, boolean attacking) {
-        int currWidth = 0;
-        currWidth = (int)mAnimationManager.getActiveWidth();
-        if (direction > 0) {    // Is moving.
+// TODO was there a reason not to use a static width???
+        // Retrieves the width of current sprite.
+        int currWidth = (int)mAnimationManager.getActiveWidth();
+
+// TODO move out to a function.
+        // Checks if player is moving.
+        // Value above 0 indicates is moving.
+        if (direction > 0) {
+            // Checks which direction player is heading and adjusts X position.
             if (direction == 1) {   // Moving left.
                 xPos -= movementSpeed;
+                // Checks if at left bounds.
                 if (xPos < 0) {
                     xPos = 0;
-                } else if ((xPos + currWidth) >= threshold) {
-                    xPos -= (currWidth / 2);
                 }
             } else if (direction == 2) {    // Moving right.
+                // Checks if at right/threshold bounds.
+                if ((xPos + currWidth) >= threshold) {
+                    xPos -= (currWidth / 2);
+                }
                 xPos += movementSpeed;
             }
-
+// TODO this might be a second (redundant?) check for right bounds.
             int rightX = xPos + currWidth;
             if (rightX >= threshold) {
                 rightX = threshold + (currWidth / 2);
                 xPos = rightX - currWidth;
             }
+
+            // Updates player's rectangle object.
             playerRect.set(xPos, yPos, rightX, yPos + height);
         }
 
+// TODO move out to function.
+        // Checks whether the player is attacking and activates sprite.
         if (attacking) {
+            state = 1;
             if (!mAnimationManager.isDone(1)) {
-//            if (!attack.isPlaying()) {
-//                state = 0;
-//            } else {
                 state = 1;
                 this.attacking = attacking;
-//            }
             } else {
                 state = 0;
                 this.attacking = !attacking;
             }
+// TODO try moving state changes to start of update method.
         } else if (direction > 0) {
             state = 2;
         } else {
             state = 0;
         }
 
+
+
+        // Plays sprite animation.
         mAnimationManager.playAnim(state);
         mAnimationManager.update();
-
     }
 
 
-    // Function to use attack sprite for engaging an enemy.
-    private void attack() {
-        Log.d("tag", "attacking!");
-    }
 
-
+    // Method to retrieve sprite image.
     private Sprite makeSprite(int id, float time, int rows, int cols, int count) {
-
         Bitmap sprite = BitmapFactory.decodeResource(mContext.getResources(), id);
         return new Sprite(sprite, time, rows, cols, count);
     }
+
 
 
     // Getters and Setters.
@@ -162,12 +156,4 @@ public class Player {
     }
     public int getState() { return state; }
     public boolean isAttacking() { return attacking; }
-    public void hitPlayer() {
-        enemyHitPlayer++;
-        Log.d("tag", "enemy +1");
-    }
-    public void playerHit() {
-        playerHitEnemy++;
-        Log.d("tag", "player +1");
-    }
 }

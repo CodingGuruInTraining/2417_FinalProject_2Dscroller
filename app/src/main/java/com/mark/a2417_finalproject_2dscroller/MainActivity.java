@@ -27,27 +27,29 @@ public class MainActivity extends Activity {
         // Get rid of title bar on top.
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        // Calculates multiple constant values to be used throughout game.
         setConstants();
 
+        // Creates a layout to hold joystick and SurfaceView.
+        // Note: This is the only way I found to implement joystick without
+        // making a layout resource.
         RelativeLayout relativeLayout = new RelativeLayout(this);
+
+        // Instantiates objects.
         JoyStick joyStick = setupJoystick();
         GameManager gameManager = new GameManager(this);
 
-
-//        final RelativeLayout button = setupButton();
-
-//        ArrayList<View> arrayList = new ArrayList<>();
-//        arrayList.add(button);
-
-//        gameManager.addTouchables(arrayList);
-//gameManager.setClickable(true);
+        // Adds objects to layout.
         relativeLayout.addView(gameManager);
         relativeLayout.addView(joyStick);
-//        relativeLayout.addView(button);
 
         setContentView(relativeLayout);
     }
 
+
+
+    // Function that calculates various variables that can be used throughout the game.
+    // These are also used to scale everything to the current device.
     private void setConstants() {
         // Set constant values for screen size.
         DisplayMetrics dm = new DisplayMetrics();
@@ -55,16 +57,15 @@ public class MainActivity extends Activity {
         Constants.SCREEN_WIDTH = dm.widthPixels;
         Constants.SCREEN_HEIGHT = dm.heightPixels;
 
-        // Set player's size based on screen size.
+        // Set player's default size based on screen size.
         // Currently, width is overridden when determining sprite width.
         Constants.PLAYER_WIDTH = (dm.widthPixels / Constants.PLAYER_SIZE_RATIO);
         Constants.PLAYER_HEIGHT = (dm.heightPixels / Constants.PLAYER_SIZE_RATIO);
 
         // Set player's start location.
         Constants.PLAYER_START_X = (dm.widthPixels / Constants.PLAYER_START_X_RATIO);
-        Constants.PLAYER_START_Y = (int)(dm.heightPixels - (Constants.PLAYER_HEIGHT * Constants.PLAYER_START_Y_RATIO));
-                // (int)(dm.heightPixels * Constants.PLAYER_START_Y_RATIO);
-                // dm.heightPixels - (dm.heightPixels / Constants.PLAYER_START_RATIO);
+        Constants.PLAYER_START_Y = (int)(dm.heightPixels -
+                (Constants.PLAYER_HEIGHT * Constants.PLAYER_START_Y_RATIO));
 
         // Set joystick's location and size.
         Constants.STICK_X = (dm.widthPixels / Constants.STICK_X_RATIO);
@@ -72,14 +73,20 @@ public class MainActivity extends Activity {
         Constants.STICK_SIZE = (dm.widthPixels / Constants.STICK_SIZE_RATIO);
     }
 
-    // Unable to modify joystick's properties from within SurfaceView.
-    private JoyStick setupJoystick() {
 
+
+    // Function to instantiate joystick object and set certain properties.
+    // Unable to modify joystick's properties from within SurfaceView (as far as I know).
+    private JoyStick setupJoystick() {
+        // Creates an empty view in order to set size.
         View view = new JoyStick(this);
+        // Sets size.
         view.setLayoutParams(new RelativeLayout.LayoutParams(Constants.STICK_SIZE, Constants.STICK_SIZE));
 
+        // Casts view to JoyStick.
         JoyStick joyStick = (JoyStick) view;
 
+        // Assigns properties.
         joyStick.setPadColor(Color.argb(80, 0, 0, 0));
         joyStick.setButtonColor(Color.argb(80, 41, 163, 41));
         joyStick.setX(Constants.STICK_X);
@@ -87,30 +94,7 @@ public class MainActivity extends Activity {
 
         return joyStick;
     }
-
-    private RelativeLayout setupButton() {
-        GradientDrawable pic = new GradientDrawable();
-        float w = Constants.SCREEN_WIDTH / Constants.ACTION_X_RATIO;
-        float x = Constants.SCREEN_WIDTH - (Constants.SCREEN_WIDTH / Constants.STICK_X_RATIO) - w;
-        float y = Constants.SCREEN_HEIGHT - (w * Constants.ACTION_Y_RATIO);
-//        pic.setBounds((int)x, (int)y, (int)(x + w), (int)(y + w));
-        pic.setCornerRadius(100);
-        pic.setColor(Color.argb(80,0,0,0));
-
-        RelativeLayout button = new RelativeLayout(this);
-        button.setBackground(pic);
-        button.setLayoutParams(new RelativeLayout.LayoutParams((int)w, (int)w));
-        button.setX(x);
-        button.setY(y);
-
-        return button;
-    }
 }
-
-
-
-
-
 
 
 
@@ -129,9 +113,8 @@ public class MainActivity extends Activity {
     // combining sprites into sheet - css.spritegen.com
     // making circle button programmatically - https://stackoverflow.com/questions/18391830/how-to-programmatically-round-corners-and-set-random-background-colors
     // might be helping with capturing touch events  - https://stackoverflow.com/questions/28979683/android-surfaceview-not-responding-to-touch-events
-
-
-
+    // clearing canvas - https://stackoverflow.com/questions/5729377/android-canvas-how-do-i-clear-delete-contents-of-a-canvas-bitmaps-livin
+    // adding iterator - https://stackoverflow.com/questions/18448671/how-to-avoid-concurrentmodificationexception-while-removing-elements-from-arr
 
 
 

@@ -17,116 +17,58 @@ import java.util.Random;
  */
 
 public class EnemyManager {
-
+    // Variables.
     private ArrayList<Enemy> enemies;
-    private int activeEnemies;
     private Context mContext;
-    private Sprite walk;
-    private Sprite attack;
-    private Sprite die;
-    private AnimationManager mAnimationManager;
     private Sprite[] allSprites;
+    private int maxEnemies;
+
 
 
     // Constructor.
     public EnemyManager(Context context) {
         enemies = new ArrayList<Enemy>();
         mContext = context;
+        maxEnemies = Constants.MAX_ENEMIES;
 
-        walk = makeSprite(R.drawable.zombie_walk, 2f, 4, 3, 10);
-        attack = makeSprite(R.drawable.zombie_attack, 1f, 4, 2, 7);
-        die = makeSprite(R.drawable.zombie_die, 1f, 4, 2, 8);
+        // Creates Sprite objects for each animation.
+        Sprite walk = makeSprite(R.drawable.zombie_walk, 2f, 4, 3, 10);
+        Sprite attack = makeSprite(R.drawable.zombie_attack, 1f, 4, 2, 7);
+        Sprite die = makeSprite(R.drawable.zombie_die, 1f, 4, 2, 8);
 
+        // Stores all sprites in a list.
         allSprites = new Sprite[] {walk, attack, die};
-
-//        mAnimationManager = new AnimationManager(new Sprite[] {walk, attack, die});
     }
 
 
 
-    // Function that draws each Enemy object.
+    // Draw method.
     public void draw(Canvas canvas) {
         for (Enemy enemy : enemies) {
-//            mAnimationManager.draw(canvas, enemy.getRectangle());
-                enemy.draw(canvas);
+            enemy.draw(canvas);
         }
     }
 
 
-    // Function that updates each Enemy object.
+    // Update method.
     public void update(Rect player) {
         // Checks if there are at least a certain number of active
         // enemies in play.
-// TODO determine constant value for size check.
-        if (enemies.size() < 3) {
+        if (enemies.size() < maxEnemies) {
             createEnemy();
         }
 
         // Loops through array and calls each enemy's update function.
-
         Iterator<Enemy> iterator = enemies.iterator();
         while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
             enemy.update(player);
             if (!enemy.active) {
                 iterator.remove();
+                Log.d("tag", "removed enemy; count = " + enemies.size());
             }
         }
-
-
-//        for (Enemy enemy : enemies) {
-//
-////            if ((!enemy.isReadyForDeath() || !enemy.isHitPlayer()) && enemy.isDone()) {
-////                enemies.remove(enemy);
-////            }
-//            enemy.update(player);
-//            if (!enemy.active) {
-//                enemies.remove(enemy);
-//                Log.d("tag", "removed enemy; count = " + enemies.size());
-//            }
-////            mAnimationManager.update();
-//        }
     }
-
-
-//    public boolean checkAttackRanges(Rect player, boolean attacking) {
-////        for (Enemy enemy : enemies) {
-////            if (!enemy.isReadyForDeath() && !enemy.isHitPlayer()) {
-////                if (enemy.checkAttackRange(player, attacking)) {
-////                    Log.d("tag", "player is in range and attacking");
-////                    return true;
-////                }
-////            }
-////        }
-//        return false;
-//    }
-//
-//
-//    // Function to check whether an enemy has collided with the player.
-//    // This is called from the GameManager.
-//    public boolean checkCollisions(Rect player) {
-//        for (Enemy enemy : enemies) {
-//
-//            boolean a = enemy.checkCollision(player);
-//
-////            if (!enemy.isReadyForDeath() && !enemy.isHitPlayer()) {
-////            if (enemy.checkCollision(player)) {
-//////                if (enemy.isActive()) {
-////                // Enemy attacked player.
-//////                    player.hitPlayer();
-//////                }
-//////                else {
-//////                    // Removes enemy from array.
-////////                    enemies.remove(enemy);
-//////                }
-////
-////                return true;
-////            }
-////            }
-//        }
-//        return false;
-//    }
-
 
 
 
@@ -141,6 +83,7 @@ public class EnemyManager {
     }
 
 
+    // Function to retrieve sprite image.
     private Sprite makeSprite(int id, float time, int rows, int cols, int count) {
         Bitmap sprite = BitmapFactory.decodeResource(mContext.getResources(), id);
         return new Sprite(sprite, time, rows, cols, count);

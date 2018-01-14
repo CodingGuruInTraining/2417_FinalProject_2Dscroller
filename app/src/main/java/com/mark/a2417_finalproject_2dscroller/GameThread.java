@@ -1,6 +1,7 @@
 package com.mark.a2417_finalproject_2dscroller;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 /**
@@ -8,7 +9,7 @@ import android.view.SurfaceHolder;
  */
 
 public class GameThread extends Thread {
-
+    // Variables.
     private SurfaceHolder mSurfaceHolder;
     private GameManager mGameManager;
 
@@ -19,6 +20,9 @@ public class GameThread extends Thread {
 
     private static int maxFps;
 
+
+
+
     // Constructor.
     public GameThread(SurfaceHolder holder, GameManager gameManager) {
         super();
@@ -28,23 +32,25 @@ public class GameThread extends Thread {
         maxFps = Constants.MAX_FPS;
     }
 
+
+
+    // Run method.
     @Override
     public void run() {
-
+        // Time variables used to manage frames.
         long startTime;
         long waitTime;
         long targetTime = 1000/maxFps;
         long timeMilliseconds;
-        long totalTime = 0;
         int frameCount = 0;
 
+        // Game loop.
         while (running) {
             startTime = System.nanoTime();
             mCanvas = null;
 
             // Attempt to synchronize with the game manager in case
             // there is a problem with multiple threads.
-// TODO may not need this; check later on.
             try {
                 mCanvas = this.mSurfaceHolder.lockCanvas();
                 synchronized (mSurfaceHolder) {
@@ -52,17 +58,18 @@ public class GameThread extends Thread {
                     this.mGameManager.draw(mCanvas);
                 }
             } catch (Exception error) {
+                Log.e("tag", "error with game thread: ");
                 error.printStackTrace();
             } finally {
                 if (mCanvas != null) {
                     try {
                         mSurfaceHolder.unlockCanvasAndPost(mCanvas);
                     } catch (Exception error) {
+                        Log.e("tag", "error with game thread: ");
                         error.printStackTrace();
                     }
                 }
             }
-
             // Get time in milliseconds.
             // Compare time at start of frame and current time.
             timeMilliseconds = (System.nanoTime() - startTime)/1000000;
@@ -76,18 +83,19 @@ public class GameThread extends Thread {
             } catch (InterruptedException error) {
                 error.printStackTrace();
             }
-
-            // Calling after sleep so getting new value rather than adding timeMilliseconds.
-            totalTime += System.nanoTime() - startTime;
+            // Increments frame counter.
             frameCount++;
+
+            // Checks if max frames has been reached.
             if (frameCount == maxFps) {
-//                averageFps = 1000/((totalTime / frameCount) / 1000000);
                 frameCount = 0;
-                totalTime = 0;
             }
         }
     }
 
+
+
+    // Setter.
     public void setRunning(boolean running) {
         this.running = running;
     }
