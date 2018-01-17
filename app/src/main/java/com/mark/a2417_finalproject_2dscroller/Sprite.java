@@ -107,7 +107,7 @@ public class Sprite {
                 colIndex = 0;
                 rowIndex = 0;
                 done = true;
-                Log.d("tag", "sprite done");
+//                Log.d("tag", "sprite done");
             } else {
                 // Increments column counter.
                 colIndex++;

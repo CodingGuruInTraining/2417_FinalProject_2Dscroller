@@ -35,8 +35,11 @@ public class ActionButtons {
 
         radius = widthHeight / 2;
 
+        int sqrX = (int)(xPos - radius);
+        int sqrY = (int)(yPos - radius);
+
         // Creates rectangle of button to be used in onTouch event.
-        rectangle = new Rect((int)xPos, (int)yPos, (int)(xPos + widthHeight), (int)(yPos + widthHeight));
+        rectangle = new Rect(sqrX, sqrY, (int)(sqrX + widthHeight), (int)(sqrY + widthHeight));
     }
 
     // Simple draw method placing circle on screen.

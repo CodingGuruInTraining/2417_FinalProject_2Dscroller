@@ -55,7 +55,7 @@ public class GameThread extends Thread {
                 mCanvas = this.mSurfaceHolder.lockCanvas();
                 synchronized (mSurfaceHolder) {
                     this.mGameManager.update();
-                    this.mGameManager.draw(mCanvas);
+                    this.mGameManager.mydraw(mCanvas);
                 }
             } catch (Exception error) {
                 Log.e("tag", "error with game thread: ");
@@ -77,12 +77,26 @@ public class GameThread extends Thread {
             waitTime = targetTime - timeMilliseconds;
             try {
                 // Check if finished the frame earlier than the target time.
-                if (waitTime > 0) {
-                    this.sleep(waitTime);
-                }
-            } catch (InterruptedException error) {
-                error.printStackTrace();
+
+
+//                if (waitTime > 0) {
+//                    while (waitTime > 0) {
+//
+//                    }
+//                }
+
+
+//                if (waitTime > 0) {
+//                    this.sleep(waitTime);
+//                }
+//            } catch (InterruptedException error) {
+//                error.printStackTrace();
+//            }
             }
+                catch(Exception e) {
+
+                }
+
             // Increments frame counter.
             frameCount++;
 

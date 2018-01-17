@@ -148,9 +148,9 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
 
     // Draw function that determines which objects should be drawn.
-    @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
+//    @Override
+    public void mydraw(Canvas canvas) {
+//        super.draw(canvas);
 
         mBackground.draw(canvas);
         mPlayer.draw(canvas);
@@ -188,7 +188,9 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         // Calls the enemy manager to run its updates.
         mEnemyManager.update(tempRect);
 
-        setFocusable(true);
+//        setFocusable(true);
+        this.setFocusableInTouchMode(true);
+        mJoyStick.setFocusableInTouchMode(true);
     }
 
 
