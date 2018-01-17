@@ -78,7 +78,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         // Calculates the point on screen where scrolling should begin.
         screenThreshold = Constants.SCREEN_WIDTH * Constants.THRESHHOLD_RATIO;
 
-        setFocusable(true);
+        setFocusableInTouchMode(true);
     }
 
 
@@ -132,7 +132,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
             case MotionEvent.ACTION_UP:         // Lifting finger off screen.
                 // Sets flag back to false.
-                playerAttacking = false;
+//                playerAttacking = false;
                 break;
 
             case MotionEvent.ACTION_BUTTON_PRESS:
@@ -180,10 +180,10 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
         }
         // Calls player's update function and passes flags.
         mPlayer.update(playerDirection, playerAttacking);
-        if (mPlayer.getState() == 0) {
+//        if (mPlayer.getState() == 0) {
             playerAttacking = false;
-        }
-        playerAttacking = mPlayer.isAttacking();
+//        }
+//        playerAttacking = mPlayer.isAttacking();
 
         // Calls the enemy manager to run its updates.
         mEnemyManager.update(tempRect);

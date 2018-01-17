@@ -112,22 +112,45 @@ public class Player {
 
 // TODO move out to function.
         // Checks whether the player is attacking and activates sprite.
-        if (attacking) {
-            state = 1;
-            if (!mAnimationManager.isDone(1)) {
-                state = 1;
-                this.attacking = attacking;
-            } else {
+
+
+        if (this.attacking) {
+            if (mAnimationManager.isDone(1)) {
+                this.attacking = false;
                 state = 0;
-                this.attacking = !attacking;
             }
-// TODO try moving state changes to start of update method.
-        } else if (direction > 0) {
-            state = 2;
         } else {
-            state = 0;
+            if (attacking) {
+                this.attacking = true;
+                state = 1;
+            } else {
+                if (direction > 0) {
+                    state = 2;
+                } else {
+                    state = 0;
+                }
+            }
         }
 
+
+//        if (attacking) {
+//            state = 1;
+//            if (!mAnimationManager.isDone(1)) {
+//                state = 1;
+//                this.attacking = true;
+//            } else {
+//                state = 0;
+//                this.attacking = false;
+//            }
+//        }
+//        else if (!this.attacking) {
+//// TODO try moving state changes to start of update method.
+//            if (direction > 0) {
+//                state = 2;
+//            } else {
+//                state = 0;
+//            }
+//        }
 
 
         // Plays sprite animation.
