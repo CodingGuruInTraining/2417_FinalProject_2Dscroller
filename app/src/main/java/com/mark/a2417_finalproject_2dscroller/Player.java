@@ -33,7 +33,7 @@ public class Player {
     private int threshold;
     private boolean attacking = false;
 
-
+    private int[] spriteWidths;
 
 
     // Constructor.
@@ -58,6 +58,11 @@ public class Player {
 // TODO this width may be a problem since sprites are slightly different.
 // TODO maybe find the widest and use that's width.
         width = (int)(idle.getWholeWidth() / scaler);
+
+        double atkWidth = width * 2;
+        double walkWidth = width * 1.5;
+
+        spriteWidths = new int[] {width, (int)atkWidth, (int)walkWidth};
 
         // Adjusts rectangle object to use newly calculated width.
         playerRect.right = xPos + width;
@@ -104,7 +109,7 @@ public class Player {
     private void checkMovement(int direction) {
 // TODO was there a reason not to use a static width???
         // Retrieves the width of current sprite.
-        int currWidth = (int)mAnimationManager.getActiveWidth();
+//        int currWidth = (int)mAnimationManager.getActiveWidth();
 
 // TODO move out to a function.
         // Checks if player is moving.
@@ -119,19 +124,19 @@ public class Player {
                 }
             } else if (direction == 2) {    // Moving right.
                 // Checks if at right/threshold bounds.
-                if ((xPos + currWidth) >= threshold) {
-                    xPos -= (currWidth / 2);
+                if ((xPos + spriteWidths[state]) >= threshold) {
+                    xPos -= (spriteWidths[state] / 2);
                 }
                 xPos += movementSpeed;
             }
 // TODO this might be a second (redundant?) check for right bounds.
-            int rightX = xPos + currWidth;
-            if (rightX >= threshold) {
-                rightX = threshold + (currWidth / 2);
-                xPos = rightX - currWidth;
-            }
+//            int rightX = xPos + spriteWidths[state];
+//            if (rightX >= threshold) {
+//                rightX = threshold + (spriteWidths[state] / 2);
+//                xPos = rightX - spriteWidths[state];
+//            }
             // Updates player's rectangle object.
-            playerRect.set(xPos, yPos, rightX, yPos + height);
+            playerRect.set(xPos, yPos, xPos + spriteWidths[state], yPos + height);
         }
     }
 
