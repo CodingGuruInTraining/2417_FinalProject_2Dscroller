@@ -38,6 +38,7 @@ public class AnimationManager {
     }
 
 
+
     // Draw method.
     public void draw(Canvas canvas, Rect rect) {
         if (animations[animIndex].isPlaying()) {
@@ -46,12 +47,14 @@ public class AnimationManager {
     }
 
 
+
     // Update method.
     public void update() {
         if (animations[animIndex].isPlaying()) {
             animations[animIndex].update();
         }
     }
+
 
 
     // Getters.
@@ -67,4 +70,6 @@ public class AnimationManager {
     // More Getters.
     public boolean isDone(int index) { return animations[index].isDone(); }
     public double getAnimTime(int index) { return animations[index].getTotalAnimTime(); }
+
+    public void setDone(boolean done, int index) { animations[index].setDone(done);}
 }

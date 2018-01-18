@@ -186,7 +186,7 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 //        playerAttacking = mPlayer.isAttacking();
 
         // Calls the enemy manager to run its updates.
-        mEnemyManager.update(tempRect);
+        mEnemyManager.update(tempRect, mPlayer.isAttacking());
 
 //        setFocusable(true);
         this.setFocusableInTouchMode(true);

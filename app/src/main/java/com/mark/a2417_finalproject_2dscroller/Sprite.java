@@ -95,37 +95,42 @@ public class Sprite {
             return;
         }
 
-        // Checks if it is time for the next frame to begin; otherwise,
-        // nothing is updated.
-        if (System.currentTimeMillis() - whenLastFrame > frameLength) {
-            // Increments frame counter.
-            frameIndex++;
-            // Checks if the last frame has been reached.
-            if (frameIndex >= count) {
-                // Resets counters.
-                frameIndex = 0;
-                colIndex = 0;
-                rowIndex = 0;
-                done = true;
-//                Log.d("tag", "sprite done");
-            } else {
-                // Increments column counter.
-                colIndex++;
-                // Checks if last column has been reached.
-                if (colIndex >= cols) {
-                    // Resets counter.
+
+        if (!done) {
+
+
+            // Checks if it is time for the next frame to begin; otherwise,
+            // nothing is updated.
+            if (System.currentTimeMillis() - whenLastFrame > frameLength) {
+                // Increments frame counter.
+                frameIndex++;
+                // Checks if the last frame has been reached.
+                if (frameIndex >= count) {
+                    // Resets counters.
+                    frameIndex = 0;
                     colIndex = 0;
-                    // Increments row counter.
-                    rowIndex++;
-                    // Checks if last row has been reached.
-                    if (rowIndex >= rows) {
+                    rowIndex = 0;
+                    done = true;
+//                Log.d("tag", "sprite done");
+                } else {
+                    // Increments column counter.
+                    colIndex++;
+                    // Checks if last column has been reached.
+                    if (colIndex >= cols) {
                         // Resets counter.
-                        rowIndex = 0;
+                        colIndex = 0;
+                        // Increments row counter.
+                        rowIndex++;
+                        // Checks if last row has been reached.
+                        if (rowIndex >= rows) {
+                            // Resets counter.
+                            rowIndex = 0;
+                        }
                     }
                 }
+                // Updates last frame variable.
+                whenLastFrame = System.currentTimeMillis();
             }
-            // Updates last frame variable.
-            whenLastFrame = System.currentTimeMillis();
         }
     }
 
@@ -140,7 +145,7 @@ public class Sprite {
         rowIndex = 0;
         colIndex = 0;
         whenLastFrame = System.currentTimeMillis();
-        done = false;
+//        done = false;
     }
 
 
@@ -157,4 +162,8 @@ public class Sprite {
     public float getWidth() { return picWidth; }
     public boolean isDone() { return done; }
     public double getTotalAnimTime() {return totalAnimTime; }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
 }

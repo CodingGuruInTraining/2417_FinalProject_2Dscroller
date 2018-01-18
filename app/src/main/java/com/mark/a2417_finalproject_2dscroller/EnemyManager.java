@@ -51,7 +51,7 @@ public class EnemyManager {
 
 
     // Update method.
-    public void update(Rect player) {
+    public void update(Rect player, boolean attacking) {
         // Checks if there are at least a certain number of active
         // enemies in play.
         if (enemies.size() < maxEnemies) {
@@ -62,7 +62,7 @@ public class EnemyManager {
         Iterator<Enemy> iterator = enemies.iterator();
         while (iterator.hasNext()) {
             Enemy enemy = iterator.next();
-            enemy.update(player);
+            enemy.update(player, attacking);
             if (!enemy.active) {
                 iterator.remove();
                 Log.d("tag", "removed enemy; count = " + enemies.size());

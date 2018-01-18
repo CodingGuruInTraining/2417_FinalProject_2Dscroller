@@ -1,9 +1,6 @@
 package com.mark.a2417_finalproject_2dscroller;
 
-import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
@@ -23,7 +20,7 @@ public class Enemy {
 
     protected boolean active = true;
     private boolean readyForDeath = false;
-    private boolean hitPlayer = false;
+    private boolean playerHitMe = false;
     private boolean collided = false;
 
     private int direction;
@@ -63,7 +60,7 @@ public class Enemy {
         // Instantiates an Animation Manager.
         mAnimationManager = new AnimationManager(sprites);
 
-// TODO trying finding an alternative to this strategy.
+// TODO try finding an alternative to this strategy.
         // Retrieves the animation time for the dying sprite.
         animTime = (mAnimationManager.getAnimTime(2)) * 1000;
     }
@@ -78,7 +75,7 @@ public class Enemy {
 
 
     // Update method.
-    public void update(Rect player) {
+    public void update(Rect player, boolean attacking) {
         if (active) {
             // Checks whether the enemy is moving.
             if (xSpeed != 0) {
@@ -92,12 +89,12 @@ public class Enemy {
                 checkBounds();
 
                 // Check for collision with player.
-                checkCollision(player);
-
-//TODO issue might be with the animation's done check.
-                // Checks if animation has completed after collision.
-                checkFinished();
+                checkCollision(player, attacking);
             }
+// TODO issue might be with the animation's done check.
+            // Checks if animation has completed after collision.
+            checkFinished();
+
             // Checks if enemy is active before playing animation.
             if (active) {
                 mAnimationManager.playAnim(state);
@@ -120,15 +117,17 @@ public class Enemy {
 
 
     // Check if enemy has collided with player.
-    private void checkCollision(Rect player) {
+    private void checkCollision(Rect player, boolean attacking) {
         if (!collided) {
             // Checks for any overlap.
             if (Rect.intersects(rectangle, player)) {
                 Log.d("tag", "COLLISION");
-                state = 2;
+                if (attacking) { state = 2; }
+                else { state = 1; }
+//                state = 2;
                 xSpeed = 0;
                 collided = true;
-                animStartTime = System.currentTimeMillis();
+//                animStartTime = System.currentTimeMillis();
             }
         }
     }
@@ -138,10 +137,13 @@ public class Enemy {
     // Check if dying animation has finished.
     private void checkFinished() {
         if (collided) {
-            if (System.currentTimeMillis() >= (animStartTime + animTime)) {
+            if (
+//                    (System.currentTimeMillis() >= (animStartTime + animTime)) ||
+                mAnimationManager.isDone(state)) {
                 Log.d("tag", "animation is done");
                 readyForDeath = true;
                 active = false;
+                mAnimationManager.setDone(false, state);
             }
         }
     }
@@ -153,7 +155,7 @@ public class Enemy {
     public Rect getRectangle() { return rectangle; }
     public boolean isDone() { return mAnimationManager.isDone(state); }
     public boolean isReadyForDeath() { return readyForDeath; }
-    public boolean isHitPlayer() {
-        return hitPlayer;
+    public boolean isPlayerHitMe() {
+        return playerHitMe;
     }
 }
