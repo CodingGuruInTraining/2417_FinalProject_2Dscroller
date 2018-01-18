@@ -68,6 +68,7 @@ public class Player {
 
 
 
+
     // Draw function.
     protected void draw(Canvas canvas) {
         mAnimationManager.draw(canvas, playerRect);
@@ -75,8 +76,32 @@ public class Player {
 
 
 
+
     // Update function.
     protected void update(int direction, boolean attacking) {
+        // Checks whether to move the player or not.
+        checkMovement(direction);
+
+        // Uses attacking flag to determine player's state.
+        checkAttacking(direction, attacking);
+
+        // Plays sprite animation.
+        mAnimationManager.playAnim(state);
+        mAnimationManager.update();
+    }
+
+
+
+
+    // Method to retrieve sprite image.
+    private Sprite makeSprite(int id, float time, int rows, int cols, int count) {
+        Bitmap sprite = BitmapFactory.decodeResource(mContext.getResources(), id);
+        return new Sprite(sprite, time, rows, cols, count);
+    }
+
+
+
+    private void checkMovement(int direction) {
 // TODO was there a reason not to use a static width???
         // Retrieves the width of current sprite.
         int currWidth = (int)mAnimationManager.getActiveWidth();
@@ -105,23 +130,24 @@ public class Player {
                 rightX = threshold + (currWidth / 2);
                 xPos = rightX - currWidth;
             }
-
             // Updates player's rectangle object.
             playerRect.set(xPos, yPos, rightX, yPos + height);
         }
-
-// TODO move out to function.
-        // Checks whether the player is attacking and activates sprite.
+    }
 
 
-        if (this.attacking) {
+
+
+    // Checks whether the player is attacking and activates sprite.
+    private void checkAttacking(int direction, boolean isAttacking) {
+        if (attacking) {
             if (mAnimationManager.isDone(1)) {
-                this.attacking = false;
+                attacking = false;
                 state = 0;
             }
         } else {
-            if (attacking) {
-                this.attacking = true;
+            if (isAttacking) {
+                attacking = true;
                 state = 1;
             } else {
                 if (direction > 0) {
@@ -131,40 +157,8 @@ public class Player {
                 }
             }
         }
-
-
-//        if (attacking) {
-//            state = 1;
-//            if (!mAnimationManager.isDone(1)) {
-//                state = 1;
-//                this.attacking = true;
-//            } else {
-//                state = 0;
-//                this.attacking = false;
-//            }
-//        }
-//        else if (!this.attacking) {
-//// TODO try moving state changes to start of update method.
-//            if (direction > 0) {
-//                state = 2;
-//            } else {
-//                state = 0;
-//            }
-//        }
-
-
-        // Plays sprite animation.
-        mAnimationManager.playAnim(state);
-        mAnimationManager.update();
     }
 
-
-
-    // Method to retrieve sprite image.
-    private Sprite makeSprite(int id, float time, int rows, int cols, int count) {
-        Bitmap sprite = BitmapFactory.decodeResource(mContext.getResources(), id);
-        return new Sprite(sprite, time, rows, cols, count);
-    }
 
 
 

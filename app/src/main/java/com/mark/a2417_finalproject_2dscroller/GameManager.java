@@ -232,12 +232,12 @@ public class GameManager extends SurfaceView implements SurfaceHolder.Callback {
 
 
 
-    // Event listener used for testing touch events (TESTING).
-    @Override
-    public boolean performClick() {
-        Log.d("tag", "performed click");
-        return true;
-    }
+//    // Event listener used for testing touch events (TESTING).
+//    @Override
+//    public boolean performClick() {
+//        Log.d("tag", "performed click");
+//        return true;
+//    }
 
 
 
